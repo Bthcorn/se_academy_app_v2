@@ -3,14 +3,15 @@ import Logo from "../Logo";
 import Button from "../Button";
 import SideBarContent from "./SideBarContent";
 import { X } from "lucide-react";
+import("tailwindcss-animate");
 
 const SideBar = ({ open, toggle }) => {
   // const [isOpen, setIsOpen] = React.useState(open);
   return (
     <div
-      className={`fixed inset-y-0 left-0 z-50 h-full w-3/4 flex-col shadow-lg transition ${open ? "duration-500 animate-in slide-in-from-left md:block" : "hidden duration-300 animate-out slide-out-to-left"}`}
+      className={`fixed inset-y-0 left-0 z-50 h-full w-3/4 flex-col shadow-lg transition ${open ? "animate-in slide-in-from-left duration-500 md:block" : "animate-out slide-out-to-left hidden duration-300"}`}
     >
-      <div className="flex h-full flex-col overflow-y-auto border-r bg-secondary shadow-sm">
+      <div className="bg-secondary flex h-full flex-col overflow-y-auto border-r shadow-sm">
         <div className="flex h-14 items-center justify-between px-4 lg:h-[60px] lg:px-6">
           <div className="inline-flex">
             <Logo />

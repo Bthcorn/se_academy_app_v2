@@ -17,13 +17,13 @@ function Home() {
       <div className="flex w-auto flex-col items-center pb-8 sm:flex-row lg:pb-12">
         <div className="w-auto sm:w-1/2">
           <div className="flex flex-col gap-4 md:max-w-lg">
-            <p className="text-xs text-accent-foreground md:text-sm">
+            <p className="text-accent-foreground text-xs md:text-sm">
               WELCOME TO SE ACADEMY
             </p>
-            <h1 className="text-3xl font-semibold leading-relaxed text-foreground md:text-5xl">
+            <h1 className="text-foreground text-3xl font-semibold leading-relaxed md:text-5xl">
               BEST ONLINE LEARNING PLATFORM FOR SE STUDENTS
             </h1>
-            <p className="text-sm text-accent-foreground md:text-base">
+            <p className="text-accent-foreground text-sm md:text-base">
               We offer a wide range of courses to help you excel in your
               software engineering career.
             </p>
@@ -49,8 +49,8 @@ function Home() {
           ></img>
         </div>
       </div>
-      <div className="mb-8 h-dvh items-center rounded-md bg-secondary/50 px-4 py-8 backdrop:blur supports-[backdrop-filter]:bg-secondary/20 lg:mb-12">
-        <h2 className="mb-4 text-2xl font-semibold text-foreground md:text-3xl">
+      <div className="bg-secondary/50 supports-[backdrop-filter]:bg-secondary/20 mb-8 h-dvh items-center rounded-md px-4 py-8 backdrop:blur lg:mb-12">
+        <h2 className="text-foreground mb-4 text-2xl font-semibold md:text-3xl">
           POPULAR COURSES
         </h2>
         <div className="/lg:justify-evenly flex flex-wrap items-center justify-start gap-4">
@@ -59,8 +59,8 @@ function Home() {
           <CourseCard />
         </div>
       </div>
-      <div className="mb-8 items-center rounded-md bg-secondary/50 px-4 py-8 backdrop-blur supports-[backdrop-filter]:bg-secondary/20 lg:mb-12">
-        <h2 className="mb-4 text-2xl font-semibold text-foreground md:text-3xl">
+      <div className="bg-secondary/50 supports-[backdrop-filter]:bg-secondary/20 mb-8 items-center rounded-md px-4 py-8 backdrop-blur lg:mb-12">
+        <h2 className="text-foreground mb-4 text-2xl font-semibold md:text-3xl">
           LEADER BOARD
         </h2>
         <div className="flex flex-wrap items-center justify-start gap-4">
@@ -71,16 +71,16 @@ function Home() {
               className="h-16 w-16 rounded-full"
             ></img>
             <div className="flex flex-col items-start gap-2">
-              <h3 className="text-lg font-semibold text-foreground">
+              <h3 className="text-foreground text-lg font-semibold">
                 John Doe
               </h3>
               <ul className="list-inside list-disc">
-                <li className="text-xs font-bold text-primary">Rank: 1</li>
-                <li className="text-xs text-accent-foreground">Points: 100</li>
-                <li className="text-xs text-accent-foreground">Courses: 5</li>
-                <li className="text-xs text-accent-foreground">Badges: 3</li>
-                <li className="text-xs text-accent-foreground">Level: 5</li>
-                <li className="text-xs text-accent-foreground">Quizzes: 100</li>
+                <li className="text-primary text-xs font-bold">Rank: 1</li>
+                <li className="text-accent-foreground text-xs">Points: 100</li>
+                <li className="text-accent-foreground text-xs">Courses: 5</li>
+                <li className="text-accent-foreground text-xs">Badges: 3</li>
+                <li className="text-accent-foreground text-xs">Level: 5</li>
+                <li className="text-accent-foreground text-xs">Quizzes: 100</li>
               </ul>
             </div>
             <div className="flex items-center gap-2">
@@ -95,16 +95,16 @@ function Home() {
               className="h-16 w-16 rounded-full"
             ></img>
             <div className="flex flex-col items-start gap-2">
-              <h3 className="text-lg font-semibold text-foreground">
+              <h3 className="text-foreground text-lg font-semibold">
                 John Doe
               </h3>
               <ul className="list-inside list-disc">
-                <li className="text-xs font-bold text-primary">Rank: 1</li>
-                <li className="text-xs text-accent-foreground">Points: 100</li>
-                <li className="text-xs text-accent-foreground">Courses: 5</li>
-                <li className="text-xs text-accent-foreground">Badges: 3</li>
-                <li className="text-xs text-accent-foreground">Level: 5</li>
-                <li className="text-xs text-accent-foreground">Quizzes: 100</li>
+                <li className="text-primary text-xs font-bold">Rank: 1</li>
+                <li className="text-accent-foreground text-xs">Points: 100</li>
+                <li className="text-accent-foreground text-xs">Courses: 5</li>
+                <li className="text-accent-foreground text-xs">Badges: 3</li>
+                <li className="text-accent-foreground text-xs">Level: 5</li>
+                <li className="text-accent-foreground text-xs">Quizzes: 100</li>
               </ul>
             </div>
             <div className="flex items-center gap-2">
@@ -120,35 +120,35 @@ function Home() {
             </div> */}
         </div>
       </div>
-      <div className="mb-8 h-dvh items-center rounded-md bg-secondary/50 px-4 py-8 backdrop:blur supports-[backdrop-filter]:bg-secondary/20 lg:mb-12">
-        <h2 className="mb-4 text-2xl font-semibold text-foreground md:text-3xl">
+      <div className="bg-secondary/50 supports-[backdrop-filter]:bg-secondary/20 mb-8 h-dvh items-center rounded-md px-4 py-8 backdrop:blur lg:mb-12">
+        <h2 className="text-foreground mb-4 text-2xl font-semibold md:text-3xl">
           BROWSE ONLINE COURSES
         </h2>
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <div className="group flex min-h-48 w-48 flex-col items-center gap-2 rounded-md bg-secondary p-4 hover:bg-secondary-color4">
+          <div className="bg-secondary hover:bg-secondary-color4 group flex min-h-48 w-48 flex-col items-center gap-2 rounded-md p-4">
             <Calculator size={60} />
-            <h3 className="text-center text-lg font-semibold text-foreground">
+            <h3 className="text-foreground text-center text-lg font-semibold">
               Mathematice Courses
             </h3>
-            <span className="rounded-md bg-secondary-color4 p-2 text-xs text-accent-foreground group-hover:bg-secondary">
+            <span className="bg-secondary-color4 text-accent-foreground group-hover:bg-secondary rounded-md p-2 text-xs">
               10 Courses
             </span>
           </div>
-          <div className="group flex min-h-48 w-48 flex-col items-center gap-2 rounded-md bg-secondary p-4 hover:bg-secondary-color4">
+          <div className="bg-secondary hover:bg-secondary-color4 group flex min-h-48 w-48 flex-col items-center gap-2 rounded-md p-4">
             <CodeSquare size={60} />
-            <h3 className="text-center text-lg font-semibold text-foreground">
+            <h3 className="text-foreground text-center text-lg font-semibold">
               Computer Science
             </h3>
-            <span className="rounded-md bg-secondary-color4 p-2 text-xs text-accent-foreground group-hover:bg-secondary">
+            <span className="bg-secondary-color4 text-accent-foreground group-hover:bg-secondary rounded-md p-2 text-xs">
               10 Courses
             </span>
           </div>
-          <div className="group flex min-h-48 w-48 flex-col items-center gap-2 rounded-md bg-secondary p-4 hover:bg-secondary-color4">
+          <div className="bg-secondary hover:bg-secondary-color4 group flex min-h-48 w-48 flex-col items-center gap-2 rounded-md p-4">
             <Trophy size={60} />
-            <h3 className="text-center text-lg font-semibold text-foreground">
+            <h3 className="text-foreground text-center text-lg font-semibold">
               Engineering
             </h3>
-            <span className="rounded-md bg-secondary-color4 p-2 text-xs text-accent-foreground group-hover:bg-secondary">
+            <span className="bg-secondary-color4 text-accent-foreground group-hover:bg-secondary rounded-md p-2 text-xs">
               10 Courses
             </span>
           </div>
