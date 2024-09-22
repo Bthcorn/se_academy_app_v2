@@ -18,8 +18,8 @@ const Item = [
   },
   {
     icon: <GalleryVerticalEnd size={24} />,
-    label: "Courses",
-    href: "/courses",
+    label: "Course",
+    href: "/course",
   },
   {
     icon: <LibraryBig size={24} />,

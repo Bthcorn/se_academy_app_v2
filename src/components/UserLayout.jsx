@@ -23,7 +23,7 @@ const UserLayout = (props) => {
       </div>
       <div className="flex flex-1 flex-col">
         <Header toggle={toggleSidebar} />
-        <main className="flex h-full min-h-screen flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        <main className="container flex h-full min-h-screen flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
           <Outlet />
         </main>
         <Footer />

@@ -1,5 +1,5 @@
 import React from "react";
-import CourseCard from "../components/CourseCard";
+import CourseCard from "../components/CourseCard.jsx";
 import Button from "../components/Button";
 import {
   ArrowRightCircleIcon,
@@ -10,6 +10,7 @@ import {
   Trophy,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import CategoryCard from "../components/CategoryCard.jsx";
 
 function Home() {
   return (
@@ -49,14 +50,14 @@ function Home() {
           ></img>
         </div>
       </div>
-      <div className="bg-secondary/50 supports-[backdrop-filter]:bg-secondary/20 mb-8 h-dvh items-center rounded-md px-4 py-8 backdrop:blur lg:mb-12">
+      <div className="bg-secondary/50 supports-[backdrop-filter]:bg-secondary/20 mb-8 min-h-dvh items-center rounded-md px-4 py-8 backdrop:blur lg:mb-12">
         <h2 className="text-foreground mb-4 text-2xl font-semibold md:text-3xl">
           POPULAR COURSES
         </h2>
-        <div className="/lg:justify-evenly flex flex-wrap items-center justify-start gap-4">
-          <CourseCard />
-          <CourseCard />
-          <CourseCard />
+        <div className="lg:justify-evenly flex flex-wrap items-center justify-start gap-4">
+          <CourseCard progress={null} />
+          <CourseCard progress={null} />
+          <CourseCard progress={null} />
         </div>
       </div>
       <div className="bg-secondary/50 supports-[backdrop-filter]:bg-secondary/20 mb-8 items-center rounded-md px-4 py-8 backdrop-blur lg:mb-12">
@@ -120,38 +121,14 @@ function Home() {
             </div> */}
         </div>
       </div>
-      <div className="bg-secondary/50 supports-[backdrop-filter]:bg-secondary/20 mb-8 h-dvh items-center rounded-md px-4 py-8 backdrop:blur lg:mb-12">
+      <div className="bg-secondary/50 supports-[backdrop-filter]:bg-secondary/20 mb-8 items-center rounded-md px-4 py-8 backdrop:blur lg:mb-12">
         <h2 className="text-foreground mb-4 text-2xl font-semibold md:text-3xl">
           BROWSE ONLINE COURSES
         </h2>
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <div className="bg-secondary hover:bg-secondary-color4 group flex min-h-48 w-48 flex-col items-center gap-2 rounded-md p-4">
-            <Calculator size={60} />
-            <h3 className="text-foreground text-center text-lg font-semibold">
-              Mathematice Courses
-            </h3>
-            <span className="bg-secondary-color4 text-accent-foreground group-hover:bg-secondary rounded-md p-2 text-xs">
-              10 Courses
-            </span>
-          </div>
-          <div className="bg-secondary hover:bg-secondary-color4 group flex min-h-48 w-48 flex-col items-center gap-2 rounded-md p-4">
-            <CodeSquare size={60} />
-            <h3 className="text-foreground text-center text-lg font-semibold">
-              Computer Science
-            </h3>
-            <span className="bg-secondary-color4 text-accent-foreground group-hover:bg-secondary rounded-md p-2 text-xs">
-              10 Courses
-            </span>
-          </div>
-          <div className="bg-secondary hover:bg-secondary-color4 group flex min-h-48 w-48 flex-col items-center gap-2 rounded-md p-4">
-            <Trophy size={60} />
-            <h3 className="text-foreground text-center text-lg font-semibold">
-              Engineering
-            </h3>
-            <span className="bg-secondary-color4 text-accent-foreground group-hover:bg-secondary rounded-md p-2 text-xs">
-              10 Courses
-            </span>
-          </div>
+          <CategoryCard />
+          <CategoryCard />
+          <CategoryCard />
         </div>
         <div className="mt-4 flex justify-center">
           <Link to={"/courses"}>

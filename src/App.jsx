@@ -18,11 +18,12 @@ import Themes from "./pages/admin/Themes";
 import Courses from "./pages/admin/Courses";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
-import UCourses from "./pages/UCourses";
+import Course from "./pages/Course.jsx";
 import Profile from "./pages/Profile";
 import MyCourses from "./pages/MyCourses";
 import Category from "./pages/Category";
-import UCousesDetails from "./pages/UCousesDetails";
+import CourseIdPage from "./pages/CourseIdPage.jsx";
+import ChapterIdPage from "./pages/ChapterIdPage.jsx";
 
 // const isAuthenticated = () => {
 //   return localStorage.getItem("token") ? true : false;
@@ -33,10 +34,12 @@ const router = createBrowserRouter(
     <Route errorElement={<ErrorBoundary />}>
       <Route path="/" element={<UserLayout />}>
         <Route index element={<Home />} />
-        <Route path="courses" element={<UCourses />} />
+        <Route path="course" element={<Course />} />
         <Route path="profile" element={<Profile />} />
         <Route path="my-courses" element={<MyCourses />} />
-        <Route path="courses-details/:courseId" element={<UCousesDetails />} />
+        <Route path="course/:courseId" element={<CourseIdPage />} >
+            <Route path="chapter/:chapterId" element={<ChapterIdPage />} />
+        </Route>
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
         <Route path="category/:categoryId" element={<Category />} />
