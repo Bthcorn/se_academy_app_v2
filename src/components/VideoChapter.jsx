@@ -2,8 +2,12 @@ import MuxPlayer from "@mux/mux-player-react";
 import React from "react";
 
 const VideoChapter = ({ chapter }) => {
-  function onTimeUpdate(time) {
-    console.log("time", time);
+  const [timeStart, setTimeStart] = React.useState(0);
+
+  function onTimeUpdate(event) {
+    // convert to seconds
+    const currentTime = event.target.currentTime;
+    console.log("time", currentTime);
   }
 
   return (
@@ -15,6 +19,7 @@ const VideoChapter = ({ chapter }) => {
           metadataVideoTitle="My Video Title"
           metadataViewerUserId="1234"
           onTimeUpdate={onTimeUpdate}
+          onPlaying={() => console.log("playing")}
           src={`https://stream.mux.com/EcHgOK9coz5K4rjSwOkoE7Y7O01201YMIC200RI6lNxnhs.m3u8`}
           className="w-full max-w-[800px] object-fill"
         />

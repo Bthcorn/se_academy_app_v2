@@ -24,6 +24,7 @@ import MyCourses from "./pages/MyCourses";
 import Category from "./pages/Category";
 import CourseIdPage from "./pages/CourseIdPage.jsx";
 import ChapterIdPage from "./pages/ChapterIdPage.jsx";
+import Signup from "./pages/Signup.jsx";
 
 // const isAuthenticated = () => {
 //   return localStorage.getItem("token") ? true : false;
@@ -37,8 +38,8 @@ const router = createBrowserRouter(
         <Route path="course" element={<Course />} />
         <Route path="profile" element={<Profile />} />
         <Route path="my-courses" element={<MyCourses />} />
-        <Route path="course/:courseId" element={<CourseIdPage />} >
-            <Route path="chapter/:chapterId" element={<ChapterIdPage />} />
+        <Route path="course/:courseId" element={<CourseIdPage />}>
+          <Route path="chapter/:chapterId" element={<ChapterIdPage />} />
         </Route>
         <Route path="about" element={<About />} />
         <Route path="contact" element={<Contact />} />
@@ -55,6 +56,7 @@ const router = createBrowserRouter(
         <Route path="courses" element={<Courses />} />
       </Route>
       <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
     </Route>,
   ),
 );
