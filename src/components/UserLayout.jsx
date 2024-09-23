@@ -10,8 +10,7 @@ const UserLayout = (props) => {
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-  // md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]
-  // pass state of isSidebarOpen to Sidebar component
+
   return (
     <div className="flex h-dvh min-h-screen w-full flex-col">
       <div className="fixed left-[5.625rem] top-[-11.6875rem] h-[74.9375rem] w-[0rem] opacity-40 blur-[96px] sm:w-[20rem] md:w-[80rem]">

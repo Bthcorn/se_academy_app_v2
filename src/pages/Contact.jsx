@@ -14,14 +14,14 @@ function Contact() {
         </p>
       </div>
       <div className="flex w-full flex-col items-start gap-4 px-4 py-8 md:flex-row">
-        <div className="flex w-full md:w-1/2 h-full flex-col items-center justify-center gap-2">
+        <div className="flex h-full w-full flex-col items-center justify-center gap-2 overflow-clip rounded-md md:w-1/2">
           <iframe
             title="map"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.8220465471154!2d100.77299367467117!3d13.729221297816732!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x311d664a2458d53d%3A0xd323a50b1d5b5562!2z4Lit4Liy4LiE4Liy4Lij4Lib4LiP4Li04Lia4Lix4LiV4Li04LiB4Liy4Lij4Lin4Li04Lio4Lin4LiB4Lij4Lij4Lih4Lio4Liy4Liq4LiV4Lij4LmMIDI!5e0!3m2!1sth!2sth!4v1726740777397!5m2!1sth!2sth"
             width="100%"
             height="100%"
             style={{ border: 0 }}
-            allowFullScreen="true"
+            allowFullScreen={false}
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
           ></iframe>
