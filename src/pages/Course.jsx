@@ -1,9 +1,9 @@
 import React from "react";
 import Button from "../components/Button";
-import Card from "../components/Card";
+import CourseCard from "../components/CourseCard.jsx";
 import CategoryCard from "../components/CategoryCard";
 
-function UCourses() {
+function Course() {
   return (
     <section className="relative flex w-full flex-col items-start justify-start gap-2 rounded-md px-4 py-8 sm:items-center md:py-12 md:pb-8 lg:py-12 lg:pb-10">
       <h1 className="text-3xl font-semibold leading-relaxed text-foreground md:text-5xl">
@@ -35,8 +35,8 @@ function UCourses() {
         id="display-courses"
         className="flex w-full max-w-5xl flex-wrap items-center justify-center gap-4 py-8 md:py-12 md:pb-8 lg:pb-10"
       >
-        <Card />
-        <Card />
+        <CourseCard progress={null} />
+        <CourseCard progress={null} />
       </div>
       <div className="flex items-center justify-center gap-4">
         <Button label="Previous" variant="link" size={"sm"} />
@@ -65,4 +65,4 @@ function UCourses() {
   );
 }
 
-export default UCourses;
+export default Course;

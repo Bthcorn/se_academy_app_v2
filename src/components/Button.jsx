@@ -1,4 +1,3 @@
-import { Icon } from "lucide-react";
 import React from "react";
 
 const Button = ({ label, variant, size, icon, onClick }) => {

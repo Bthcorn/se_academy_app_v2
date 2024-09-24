@@ -3,6 +3,7 @@ import Logo from "../Logo";
 import Button from "../Button";
 import SideBarContent from "./SideBarContent";
 import { X } from "lucide-react";
+import("tailwindcss-animate");
 
 const SideBar = ({ open, toggle }) => {
   // const [isOpen, setIsOpen] = React.useState(open);

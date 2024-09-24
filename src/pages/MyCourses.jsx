@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../components/Button";
-import Card from "../components/Card";
+import CourseCard from "../components/CourseCard.jsx";
 
 function MyCourses() {
   return (
@@ -31,10 +31,10 @@ function MyCourses() {
       </div>
       <div
         id="display-courses"
-        className="flex w-full max-w-5xl flex-wrap items-center justify-start gap-4 py-8 md:py-12 md:pb-8 lg:pb-10"
+        className="flex w-full max-w-5xl flex-wrap items-center justify-center gap-4 py-8 md:py-12 md:pb-8 lg:pb-10"
       >
-        <Card />
-        <Card />
+        <CourseCard progress={true} />
+        <CourseCard progress={true} />
       </div>
       <div className="flex items-center justify-center gap-4">
         <Button label="Previous" variant="link" size={"sm"} />

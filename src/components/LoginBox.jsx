@@ -1,6 +1,6 @@
-function LoginBox() {
+const LoginBox = () => {
   return (
-    <div className="max-w-2xl rounded-lg bg-white p-10 text-gray-400 shadow-xl">
+    <div className="max-w-2xl rounded-lg bg-white p-8 text-gray-400 shadow-xl md:p-10">
       {" "}
       {/* Adjusted max width */}
       <form>
@@ -36,6 +36,6 @@ function LoginBox() {
       </form>
     </div>
   );
-}
+};
 
 export default LoginBox;

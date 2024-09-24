@@ -131,8 +131,8 @@ function About() {
         <h2 className="text-center text-2xl font-semibold leading-relaxed text-foreground md:text-start md:text-3xl">
           Developers
         </h2>
-        <div className="flex flex-wrap gap-4">
-          <div className="rounded-md border p-2 duration-200 hover:scale-105">
+        <div className="flex flex-wrap gap-4 justify-center">
+          <div className="rounded-md border w-72 px-3 py-2 duration-200 hover:scale-105">
             <img
               src="https://avatar.iran.liara.run/public/42"
               alt="Avatar"
@@ -154,7 +154,7 @@ function About() {
               </div>
             </div>
           </div>
-          <div className="rounded-md border p-2 duration-200 hover:scale-105">
+          <div className="rounded-md border w-72 px-3 py-2 duration-200 hover:scale-105">
             <img
               src="https://avatar.iran.liara.run/public/42"
               alt="Avatar"
@@ -162,21 +162,21 @@ function About() {
             ></img>
             <div className="flex flex-col items-start gap-2">
               <h3 className="text-lg font-semibold text-foreground">
-                Cusson Laohapa
+                Cusson Laohapatanawong
               </h3>
               <p className="text-xs">Software Engineering</p>
               <p className="text-xs">2nd Year</p>
               <div className="inline-flex gap-2">
                 <a href="/">
-                  <Instagram size={16} />
+                  <Instagram size={24} />
                 </a>
                 <a href="/">
-                  <Github size={16} />
+                  <Github size={24} />
                 </a>
               </div>
             </div>
           </div>
-          <div className="rounded-md border p-2 duration-200 hover:scale-105">
+          <div className="rounded-md border w-72 px-3 py-2 duration-200 hover:scale-105">
             <img
               src="https://avatar.iran.liara.run/public/42"
               alt="Avatar"
@@ -184,16 +184,16 @@ function About() {
             ></img>
             <div className="flex flex-col items-start gap-2">
               <h3 className="text-lg font-semibold text-foreground">
-                Bowornthat Chaingthong
+                Authanee Supeeramongkolkul
               </h3>
               <p className="text-xs">Software Engineering</p>
               <p className="text-xs">2nd Year</p>
               <div className="inline-flex gap-2">
                 <a href="/">
-                  <Instagram size={16} />
+                  <Instagram size={24} />
                 </a>
                 <a href="/">
-                  <Github size={16} />
+                  <Github size={24} />
                 </a>
               </div>
             </div>
