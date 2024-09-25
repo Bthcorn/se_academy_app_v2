@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Navigate } from "react-router-dom";
 
 const SignUpForm = () => {
   const [firstname, setFirstname] = useState("");
@@ -49,6 +50,7 @@ const SignUpForm = () => {
         if (data["success"] == true) {
           alert("User created successfully");
           window.location.href = "/login";
+          return <Navigate to="/login" />;
         } else {
           alert("Error: " + data["error_msg"]);
         }
@@ -153,7 +155,10 @@ const SignUpForm = () => {
           <button
             type="submit"
             className="rounded bg-blue-500 px-6 py-2 text-white hover:bg-blue-600"
-            disabled={!validateForm()}
+            // disabled={!validateForm()}
+            onClick={() => {
+              console.log("Sign Up button clicked");
+            }}
           >
             <span className="inline-flex text-sm md:text-base">Sign Up</span>
           </button>

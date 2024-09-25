@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginBox = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const validateForm = () => {
     return username && password;
@@ -30,7 +31,7 @@ const LoginBox = () => {
         if (data["success"] == true) {
           alert("Login successful");
           localStorage.setItem("token", response.headers.get("Authorization"));
-          window.location.href = "/";
+          navigate("/");
         } else {
           alert("Error: " + data["error_msg"]);
         }

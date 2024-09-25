@@ -11,7 +11,7 @@ function Signup() {
         <div className="absolute bottom-0 right-0 h-[30.3125rem] w-[30.3125rem] rounded-[30.3125rem] bg-[#7F25FB]"></div>
       </div>
       {/* Flex container to align items side by side */}
-      <div className="container flex h-full w-full flex-col items-center px-4 py-8 md:px-10 md:py-20">
+      <div className="container flex h-full w-full flex-col items-center px-4 py-8 md:px-10 md:py-10">
         {" "}
         {/* Container for Logo, Title, and Subtitle */}
         <div className="relative mb-10 flex w-full items-center justify-center sm:justify-start">
