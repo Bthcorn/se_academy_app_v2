@@ -11,6 +11,7 @@ import ErrorBoundary from "./pages/ErrorBoundary";
 import Dashboard from "./pages/admin/Dashboard";
 import AdminLayout from "./components/AdminLayout";
 import Users from "./pages/admin/Users";
+import UserEdit from "./components/admin-userboard/user_edit.jsx";
 import Feedback from "./pages/admin/Feedback";
 import Leaderboard from "./pages/admin/Leaderboard";
 import Settings from "./pages/admin/Settings";
@@ -51,6 +52,7 @@ const router = createBrowserRouter(
       <Route path="/admin" element={<AdminLayout />}>
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="users" element={<Users />} />
+        <Route path="users/edit" element={<UserEdit />} /> 
         <Route path="feedback" element={<Feedback />} />
         <Route path="leaderboard" element={<Leaderboard />} />
         <Route path="settings" element={<Settings />} />
