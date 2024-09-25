@@ -28,8 +28,8 @@ export default function Users() {
     { username: 'Charlotte Adams', user_id: 'U12367', year: 'Sophomore', email: 'charlotteadams@example.com', password: 'password123', avatar_image: 'https://via.placeholder.com/150', level: 3, points: 2250, status: 'Active', total_studytime: 85 },
     { username: 'Mason Murphy', user_id: 'U12368', year: 'Freshman', email: 'masonmurphy@example.com', password: 'password123', avatar_image: 'https://via.placeholder.com/150', level: 2, points: 1100, status: 'Active', total_studytime: 55 },
     { username: 'Amelia Hughes', user_id: 'U12369', year: 'Post-Grad', email: 'ameliahughes@example.com', password: 'password123', avatar_image: 'https://via.placeholder.com/150', level: 6, points: 3600, status: 'Active', total_studytime: 140 },
-    { username: 'Cusson Laohapatanawong', user_id: '66010988', year: 'Sophomore', email: 'cusson.spoon@gmail.com', password: 'ObviouslyNot', avatar_image: 'https://via.placeholder.com/150', level: 600, points: 600000, status: 'Active', total_studytime: 80000 },
-    { username: 'Teemy Subarashi', user_id: '66011111', year: 'Sophomore', email: 'Teemy17@gmail.com', password: 'NegaButt', avatar_image: 'https://via.placeholder.com/150', level: 1000, points: 9999999999, status: 'Active', total_studytime: 89465132 },
+    { username: 'Cusson Laohapatanawong', user_id: '66010988', year: 'Sophomore', email: 'cusson.spoon@gmail.com', password: 'ObviouslyNot', avatar_image: 'https://upload-os-bbs.hoyolab.com/upload/2023/11/14/287007142/f77db0dc92f337be5a6c1752ae5cb00f_2479854509814665732.png?x-oss-process=image%2Fresize%2Cs_1000%2Fauto-orient%2C0%2Finterlace%2C1%2Fformat%2Cwebp%2Fquality%2Cq_70', level: 600, points: 600000, status: 'Active', total_studytime: 80000 },
+    { username: 'Teemy Subarashi', user_id: '66011111', year: 'Sophomore', email: 'Teemy17@gmail.com', password: 'supbro', avatar_image: 'https://via.placeholder.com/150', level: 1000, points: 9999999999, status: 'Active', total_studytime: 89465132 },
 
   ];
   
