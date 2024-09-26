@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const UserEdit = () => {
   const location = useLocation(); // Get passed state (user data)
@@ -17,10 +17,10 @@ const UserEdit = () => {
     total_studytime: user.total_studytime,
     avatar_image: user.avatar_image,
     password: user.password,
-    confirmPassword: '', // Separate field for confirm password
+    confirmPassword: "", // Separate field for confirm password
   });
 
-  const [passwordError, setPasswordError] = useState(''); // State for password error message
+  const [passwordError, setPasswordError] = useState(""); // State for password error message
 
   // Handler to update form fields
   const handleInputChange = (e) => {
@@ -34,38 +34,38 @@ const UserEdit = () => {
 
     // Check if passwords match
     if (formData.password !== formData.confirmPassword) {
-      setPasswordError('Passwords do not match!');
+      setPasswordError("Passwords do not match!");
       return; // Prevent form submission
     }
 
     // Clear password error if passwords match
-    setPasswordError('');
+    setPasswordError("");
 
     // Update the user in the users array
     const updatedUsers = users.map((u) =>
-      u.user_id === user.user_id ? { ...u, ...formData } : u
+      u.user_id === user.user_id ? { ...u, ...formData } : u,
     );
 
     // Update the global users state
     setUsers(updatedUsers);
 
     // Redirect back to the users list after updating
-    navigate('/admin/users');
+    navigate("/admin/users");
   };
 
   return (
-    <div className="p-6 bg-[#1E293B] text-white min-h-screen">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div className="min-h-screen bg-[#1E293B] p-6 text-white">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
         {/* Left Profile Picture Section */}
-        <div className="col-span-1 bg-[#2E3A47] p-6 rounded-lg shadow-lg flex flex-col items-center">
+        <div className="col-span-1 flex flex-col items-center rounded-lg bg-[#2E3A47] p-6 shadow-lg">
           <img
             src={formData.avatar_image}
             alt="User Avatar"
-            className="w-32 h-32 rounded-full mb-4"
+            className="mb-4 h-32 w-32 rounded-full"
           />
           <input
             type="file"
-            className="mb-4 bg-gray-700 text-sm text-white px-4 py-2 rounded"
+            className="mb-4 rounded bg-gray-700 px-4 py-2 text-sm text-white"
             id="avatarUpload"
             name="avatar"
             accept="image/*"
@@ -74,42 +74,42 @@ const UserEdit = () => {
         </div>
 
         {/* Right Form Section */}
-        <div className="col-span-2 bg-[#2E3A47] p-6 rounded-lg shadow-lg">
-          <h2 className="text-2xl font-bold mb-6">Edit Profile</h2>
+        <div className="col-span-2 rounded-lg bg-[#2E3A47] p-6 shadow-lg">
+          <h2 className="mb-6 text-2xl font-bold">Edit Profile</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Username Field */}
             <div>
-              <label className="block mb-1">Username</label>
+              <label className="mb-1 block">Username</label>
               <input
                 type="text"
                 name="username"
                 value={formData.username}
                 onChange={handleInputChange}
-                className="w-full p-2 bg-[#334155] rounded-md text-white"
+                className="w-full rounded-md bg-[#334155] p-2 text-white"
               />
             </div>
 
             {/* Password and Confirm Password Fields */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block mb-1">Password</label>
+                <label className="mb-1 block">Password</label>
                 <input
                   type="password"
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
-                  className="w-full p-2 bg-[#334155] rounded-md text-white"
+                  className="w-full rounded-md bg-[#334155] p-2 text-white"
                 />
               </div>
               <div>
-                <label className="block mb-1">Confirm Password</label>
+                <label className="mb-1 block">Confirm Password</label>
                 <input
                   type="password"
                   name="confirmPassword"
                   value={formData.confirmPassword}
                   onChange={handleInputChange}
-                  className="w-full p-2 bg-[#334155] rounded-md text-white"
+                  className="w-full rounded-md bg-[#334155] p-2 text-white"
                 />
               </div>
             </div>
@@ -119,24 +119,24 @@ const UserEdit = () => {
 
             {/* Email Field */}
             <div>
-              <label className="block mb-1">Email</label>
+              <label className="mb-1 block">Email</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full p-2 bg-[#334155] rounded-md text-white"
+                className="w-full rounded-md bg-[#334155] p-2 text-white"
               />
             </div>
 
             {/* Year Selection */}
             <div>
-              <label className="block mb-1">Year</label>
+              <label className="mb-1 block">Year</label>
               <select
                 name="year"
                 value={formData.year}
                 onChange={handleInputChange}
-                className="w-full p-2 bg-[#334155] rounded-md text-white"
+                className="w-full rounded-md bg-[#334155] p-2 text-white"
               >
                 <option value="Freshman">Freshman</option>
                 <option value="Sophomore">Sophomore</option>
@@ -148,12 +148,12 @@ const UserEdit = () => {
 
             {/* Status Field */}
             <div>
-              <label className="block mb-1">Status</label>
+              <label className="mb-1 block">Status</label>
               <select
                 name="status"
                 value={formData.status}
                 onChange={handleInputChange}
-                className="w-full p-2 bg-[#334155] rounded-md text-white"
+                className="w-full rounded-md bg-[#334155] p-2 text-white"
               >
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
@@ -163,44 +163,44 @@ const UserEdit = () => {
             {/* Level and Points Fields */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block mb-1">Level</label>
+                <label className="mb-1 block">Level</label>
                 <input
                   type="number"
                   name="level"
                   value={formData.level}
                   onChange={handleInputChange}
-                  className="w-full p-2 bg-[#334155] rounded-md text-white"
+                  className="w-full rounded-md bg-[#334155] p-2 text-white"
                 />
               </div>
               <div>
-                <label className="block mb-1">Points</label>
+                <label className="mb-1 block">Points</label>
                 <input
                   type="number"
                   name="points"
                   value={formData.points}
                   onChange={handleInputChange}
-                  className="w-full p-2 bg-[#334155] rounded-md text-white"
+                  className="w-full rounded-md bg-[#334155] p-2 text-white"
                 />
               </div>
             </div>
 
             {/* Total Study Time Field */}
             <div>
-              <label className="block mb-1">Total Study Time (hours)</label>
+              <label className="mb-1 block">Total Study Time (hours)</label>
               <input
                 type="number"
                 name="total_studytime"
                 value={formData.total_studytime}
                 onChange={handleInputChange}
-                className="w-full p-2 bg-[#334155] rounded-md text-white"
+                className="w-full rounded-md bg-[#334155] p-2 text-white"
               />
             </div>
 
             {/* Submit Button */}
-            <div className="flex justify-end mt-6">
+            <div className="mt-6 flex justify-end">
               <button
                 type="submit"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md"
+                className="rounded-md bg-blue-600 px-4 py-2 font-bold text-white hover:bg-blue-700"
               >
                 Update Info
               </button>
