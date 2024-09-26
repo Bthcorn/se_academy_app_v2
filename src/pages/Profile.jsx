@@ -140,21 +140,21 @@ function Profile() {
             <div className="inline-flex items-center gap-2">
               <Star size={20} />
               <span>points:</span>
-              <span className="flex items-center justify-center rounded-md px-2 py-1 bg-primary/20 text-primary">
+              <span className="flex items-center justify-center rounded-md bg-primary/20 px-2 py-1 text-primary">
                 100
               </span>
             </div>
             <div className="inline-flex items-center gap-2">
               <Sprout size={20} />
               <span>level:</span>
-              <span className="flex items-center justify-center rounded-md px-2 py-1 bg-secondary-color5/20 text-secondary-color5">
+              <span className="flex items-center justify-center rounded-md bg-secondary-color5/20 px-2 py-1 text-secondary-color5">
                 3
               </span>
             </div>
             <div className="inline-flex items-center gap-2">
               <History size={20} />
               <span className="">studytime: </span>
-              <span className="flex items-center justify-center rounded-md px-2 py-1 bg-secondary-color3/20 text-secondary-color3">
+              <span className="flex items-center justify-center rounded-md bg-secondary-color3/20 px-2 py-1 text-secondary-color3">
                 3
               </span>
               <span>hrs</span>
@@ -170,7 +170,7 @@ function Profile() {
                 <span className="text-sm text-foreground">
                   Completed React Course
                 </span>
-                <span className="flex items-center justify-center rounded-md px-2 py-1 bg-primary/20 text-primary">
+                <span className="flex items-center justify-center rounded-md bg-primary/20 px-2 py-1 text-primary">
                   +100
                 </span>
               </li>
@@ -178,7 +178,7 @@ function Profile() {
                 <span className="text-sm text-foreground">
                   Completed React Course
                 </span>
-                <span className="flex items-center justify-center rounded-md px-2 py-1 bg-primary/20 text-primary">
+                <span className="flex items-center justify-center rounded-md bg-primary/20 px-2 py-1 text-primary">
                   +100
                 </span>
               </li>
@@ -197,7 +197,7 @@ function Profile() {
                   className="h-8 w-8 rounded-full"
                 />
                 <span className="text-sm text-foreground">1. John Doe</span>
-                <span className="flex items-center justify-center rounded-md px-2 py-1 bg-secondary-color2/20 text-secondary-color2">
+                <span className="flex items-center justify-center rounded-md bg-secondary-color2/20 px-2 py-1 text-secondary-color2">
                   100
                 </span>
               </div>
@@ -208,7 +208,7 @@ function Profile() {
                   className="h-8 w-8 rounded-full"
                 />
                 <span className="text-sm text-foreground">2. John Doe</span>
-                <span className="flex items-center justify-center rounded-md px-2 py-1 bg-secondary-color2/20 text-secondary-color2">
+                <span className="flex items-center justify-center rounded-md bg-secondary-color2/20 px-2 py-1 text-secondary-color2">
                   100
                 </span>
               </div>
@@ -219,7 +219,7 @@ function Profile() {
                   className="h-8 w-8 rounded-full"
                 />
                 <span className="text-sm text-foreground">3. John Doe</span>
-                <span className="flex items-center justify-center rounded-md px-2 py-1 bg-secondary-color2/20 text-secondary-color2">
+                <span className="flex items-center justify-center rounded-md bg-secondary-color2/20 px-2 py-1 text-secondary-color2">
                   100
                 </span>
               </div>

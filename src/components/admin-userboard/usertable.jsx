@@ -138,7 +138,7 @@ const UserTable = ({ users }) => {
                 </td>
 
                 {/* User column with avatar and name */}
-                <td className="flex items-center py-4">
+                <td className="inline-flex items-center py-4">
                   <img
                     className="mr-4 h-10 w-10 rounded-full"
                     src={user.avatar_image}
