@@ -3,6 +3,8 @@ import React, { useState } from "react";
 const CourseComponent = ({ courses, onAddCourse }) => {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [showQuiz, setShowQuiz] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState("All"); // For filtering courses
 
   // Function to open the modal with the selected course
   const viewCourseDetails = (course) => {
@@ -20,9 +22,41 @@ const CourseComponent = ({ courses, onAddCourse }) => {
     setShowQuiz(true);
   };
 
+  const filteredCourses = courses
+    .filter((course) =>
+      course.course_title.toLowerCase().includes(searchTerm.toLowerCase()),
+    )
+    .filter((course) => {
+      if (filterStatus === "All") return true;
+      return course.course_status === filterStatus;
+    });
+
   return (
     <div className="w-full rounded-lg bg-[#1E293B] p-6 text-white shadow-lg">
       <h2 className="mb-6 text-2xl font-bold">Courses</h2>
+
+      {/* Search Input */}
+      <input
+        type="text"
+        placeholder="Search by course title..."
+        className="mb-4 w-full rounded-lg p-2 text-black"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
+
+      {/* Filter Dropdown */}
+      <div className="mb-6">
+        <label className="mr-4">Filter by status:</label>
+        <select
+          className="rounded-lg p-2 text-black"
+          value={filterStatus}
+          onChange={(e) => setFilterStatus(e.target.value)}
+        >
+          <option value="All">All</option>
+          <option value="Available">Available</option>
+          <option value="Not Available">Not Available</option>
+        </select>
+      </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* Add Course Button with Dotted Border */}
@@ -48,7 +82,7 @@ const CourseComponent = ({ courses, onAddCourse }) => {
         </button>
 
         {/* Render existing courses */}
-        {courses.map((course) => (
+        {filteredCourses.map((course) => (
           <div
             key={course.course_id}
             className="rounded-lg bg-[#2E3A47] p-4 shadow-lg transition-shadow duration-200 hover:shadow-xl"
