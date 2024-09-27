@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 
-const CourseComponent = ({ courses, onAddCourse, onAddQuiz }) => {
+const CourseComponent = ({ courses, onAddCourse }) => {
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [showQuiz, setShowQuiz] = useState(false);
 
   // Function to open the modal with the selected course
   const viewCourseDetails = (course) => {
@@ -11,33 +12,20 @@ const CourseComponent = ({ courses, onAddCourse, onAddQuiz }) => {
   // Function to close the modal
   const closeModal = () => {
     setSelectedCourse(null);
+    setShowQuiz(false);
+  };
+
+  // Function to display the quiz modal
+  const openQuiz = () => {
+    setShowQuiz(true);
   };
 
   return (
     <div className="w-full rounded-lg bg-[#1E293B] p-6 text-white shadow-lg">
       <h2 className="mb-6 text-2xl font-bold">Courses</h2>
 
-      {/* Search Input */}
-      <input
-        type="text"
-        placeholder="Search by course title..."
-        className="mb-4 w-full rounded-lg p-2 text-black"
-        // value={searchTerm}
-        // onChange={(e) => setSearchTerm(e.target.value)}
-      />
-
-      {/* Filter Dropdown */}
-      <div className="mb-6">
-        <label className="mr-4">Filter by status:</label>
-        <select className="rounded-lg p-2 text-black">
-          <option value="All">All</option>
-          <option value="Available">Available</option>
-          <option value="Not Available">Not Available</option>
-        </select>
-      </div>
-
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {/* Add Course Button with Dotted Border (Moved to the front) */}
+        {/* Add Course Button with Dotted Border */}
         <button
           onClick={onAddCourse}
           className="h-81 flex flex-col items-center justify-center rounded-lg border-2 border-dotted border-gray-400 p-4 shadow-lg transition-shadow duration-200 hover:shadow-xl"
@@ -148,9 +136,6 @@ const CourseComponent = ({ courses, onAddCourse, onAddQuiz }) => {
               <strong>Category ID:</strong> {selectedCourse.category_id}
             </p>
             <p>
-              <strong>Created At:</strong> {selectedCourse.created_at}
-            </p>
-            <p>
               <strong>Status:</strong> {selectedCourse.course_status}
             </p>
             <p className="mt-4">
@@ -159,7 +144,7 @@ const CourseComponent = ({ courses, onAddCourse, onAddQuiz }) => {
 
             {/* Add Quiz Button */}
             <button
-              onClick={() => onAddQuiz(selectedCourse)}
+              onClick={openQuiz}
               className="mt-4 w-full rounded-md bg-green-600 px-4 py-2 font-bold text-white hover:bg-green-700"
             >
               Add Quiz
@@ -171,6 +156,80 @@ const CourseComponent = ({ courses, onAddCourse, onAddQuiz }) => {
               className="mt-4 w-full rounded-md bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
             >
               Close
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for quiz */}
+      {showQuiz && selectedCourse && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="w-full max-w-lg rounded-lg bg-[#1E293B] p-8 text-white shadow-lg">
+            <h2 className="mb-6 text-2xl font-bold">
+              Quiz for {selectedCourse.course_title}
+            </h2>
+
+            {selectedCourse.quiz.map((quizItem, index) => (
+              <div key={quizItem.id} className="mb-6">
+                {/* Question with Index */}
+                <p className="mb-2 font-bold">
+                  {index + 1}. {quizItem.question}
+                </p>
+
+                {/* Options */}
+                <div className="flex flex-col space-y-2">
+                  {quizItem.options.map((option) => (
+                    <div
+                      key={option.id}
+                      className={`rounded-md p-2 ${
+                        selectedCourse.correctAnswers.some(
+                          (correct) =>
+                            correct.id === quizItem.id &&
+                            correct.answer === option.id,
+                        )
+                          ? "bg-green-500"
+                          : "bg-[#2E3A47]"
+                      }`}
+                    >
+                      {option.text}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+
+            {/* Add Question Button */}
+            <button
+              className="h-81 mt-4 flex w-full flex-col items-center justify-center rounded-lg border-2 border-dotted border-gray-400 p-4 shadow-lg transition-shadow duration-200 hover:shadow-xl"
+              onClick={() => {
+                // Function to add a question
+              }}
+            >
+              <div className="flex items-center justify-center text-xl text-yellow-400">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="mb-2 h-12 w-12 text-gray-300"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </div>
+              <span className="text-lg font-bold text-gray-300">
+                Add Question
+              </span>
+            </button>
+
+            {/* Close Quiz Button */}
+            <button
+              onClick={() => setShowQuiz(false)}
+              className="mt-4 w-full rounded-md bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
+            >
+              Close Quiz
             </button>
           </div>
         </div>
