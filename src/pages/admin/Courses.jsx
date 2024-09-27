@@ -1,107 +1,91 @@
-import React from 'react'
-import CourseComponent from '../../components/admin-courses/course_component';
+import React from "react";
+import CourseComponent from "../../components/admin-courses/course_component";
 
 export default function Courses() {
-  const samplecourses = [
+  const sampleCourses = [
     {
-      course_id: 'C101',
-      course_title: 'React Basics',
-      subjectID: 'WEB101',
-      year: '2024',
-      course_image: 'https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&q=80',
+      course_id: "C101",
+      course_title: "React Basics",
+      subjectID: "WEB101",
+      year: "2024",
+      course_image:
+        "https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&q=80",
       rating: 4.5,
       duration: 20,
-      course_status: 'Available', // New field for course status
-      description: 'Learn the fundamentals of React, including components, state, and props.',
+      course_status: "Available",
+      description:
+        "Learn the fundamentals of React, including components, state, and props.",
       capacity: 100,
       video_quantity: 15,
-      lecturer: 'John Doe',
-      category_id: 'DEV101',
-      created_at: '2023-01-01',
+      lecturer: "John Doe",
+      category_id: "DEV101",
+      created_at: "2023-01-01",
+      quiz: [
+        {
+          id: 1,
+          question: "What is JSX?",
+          options: [
+            { id: 1, text: "A JavaScript syntax extension" },
+            { id: 2, text: "A CSS framework" },
+            { id: 3, text: "A database language" },
+            { id: 4, text: "A React component" },
+          ],
+        },
+        {
+          id: 2,
+          question:
+            "Which method is used to update state in a React component?",
+          options: [
+            { id: 1, text: "setState" },
+            { id: 2, text: "updateState" },
+            { id: 3, text: "renderState" },
+            { id: 4, text: "changeState" },
+          ],
+        },
+      ],
+      correctAnswers: [
+        { id: 1, text: "A JavaScript syntax extension", answer: 1 },
+        { id: 2, text: "setState", answer: 1 },
+      ],
     },
     {
-      course_id: 'C102',
-      course_title: 'Advanced JavaScript',
-      subjectID: 'JS202',
-      year: '2024',
-      course_image: 'https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&q=80',
-      rating: 4.8,
-      duration: 25,
-      course_status: 'Not Available', // New field for course status
-      description: 'Master advanced JavaScript concepts, including closures, promises, and async/await.',
-      capacity: 50,
-      video_quantity: 20,
-      lecturer: 'Jane Smith',
-      category_id: 'DEV102',
-      created_at: '2023-02-15',
-    },
-    {
-      course_id: 'C103',
-      course_title: 'CSS Flexbox and Grid',
-      subjectID: 'CSS303',
-      year: '2023',
-      course_image: 'https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&q=80',
-      rating: 4.7,
-      duration: 15,
-      course_status: 'Available', // New field for course status
-      description: 'Learn modern CSS layout techniques with Flexbox and Grid.',
-      capacity: 80,
-      video_quantity: 10,
-      lecturer: 'Emily Clark',
-      category_id: 'WEB103',
-      created_at: '2023-03-10',
-    },
-    {
-      course_id: 'C104',
-      course_title: 'Node.js for Backend Development',
-      subjectID: 'NODE104',
-      year: '2024',
-      course_image: 'https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&q=80',
-      rating: 4.6,
-      duration: 30,
-      course_status: 'Available',
-      description: 'Explore backend development using Node.js, Express, and MongoDB.',
-      capacity: 60,
-      video_quantity: 25,
-      lecturer: 'Mike Taylor',
-      category_id: 'DEV201',
-      created_at: '2023-04-05',
-    },
-    {
-      course_id: 'C105',
-      course_title: 'Python for Data Science',
-      subjectID: 'PYDS105',
-      year: '2024',
-      course_image: 'https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&q=80',
+      course_id: "C103",
+      course_title: "Advanced JavaScript",
+      subjectID: "JS301",
+      year: "2022",
+      course_image:
+        "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&q=80",
       rating: 4.9,
-      duration: 40,
-      course_status: 'Available',
-      description: 'Learn Python for data analysis, visualization, and machine learning.',
-      capacity: 120,
-      video_quantity: 30,
-      lecturer: 'Sarah Johnson',
-      category_id: 'DS101',
-      created_at: '2023-05-01',
-    },
-    {
-      course_id: 'C106',
-      course_title: 'Intro to Machine Learning',
-      subjectID: 'ML106',
-      year: '2023',
-      course_image: 'https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&q=80',
-      rating: 4.3,
-      duration: 35,
-      course_status: 'Not Available',
-      description: 'Understand the basics of machine learning with Python and scikit-learn.',
-      capacity: 70,
+      duration: 30,
+      course_status: "Not Available",
+      description:
+        "Master JavaScript with advanced concepts like closures, promises, and async/await.",
+      capacity: 80,
       video_quantity: 20,
-      lecturer: 'David Harris',
-      category_id: 'AI102',
-      created_at: '2023-06-12',
+      lecturer: "Alice Johnson",
+      category_id: "DEV301",
+      created_at: "2022-05-10",
+      quiz: [
+        {
+          id: 1,
+          question: "What is a closure in JavaScript?",
+          options: [
+            { id: 1, text: "A block of code" },
+            { id: 2, text: "A function combined with its lexical environment" },
+            { id: 3, text: "A way to write asynchronous code" },
+            { id: 4, text: "A data structure" },
+          ],
+        },
+      ],
+      correctAnswers: [
+        {
+          id: 1,
+          text: "A function combined with its lexical environment",
+          answer: 2,
+        },
+      ],
     },
-    
   ];
-  return (
-    <CourseComponent courses={samplecourses} />
-  )
+
+  return <CourseComponent courses={sampleCourses} />;
 }
