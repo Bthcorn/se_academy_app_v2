@@ -1,7 +1,6 @@
 import {
+  BrowserRouter,
   createBrowserRouter,
-  createRoutesFromElements,
-  Route,
   RouterProvider,
 } from "react-router-dom";
 import UserLayout from "./components/UserLayout";
@@ -27,46 +26,119 @@ import CourseIdPage from "./pages/CourseIdPage.jsx";
 import ChapterIdPage from "./pages/ChapterIdPage.jsx";
 import Signup from "./pages/Signup.jsx";
 import Quiz from "./pages/Quiz.jsx";
+import AuthProvider from "./hooks/AuthContext.jsx";
+import RouteGuard from "./hooks/RouteGuard.jsx";
 
-// const isAuthenticated = () => {
-//   return localStorage.getItem("token") ? true : false;
-// };
-
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route errorElement={<ErrorBoundary />}>
-      <Route path="/" element={<UserLayout />}>
-        <Route index element={<Home />} />
-        <Route path="course" element={<Course />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="my-courses" element={<MyCourses />} />
-        <Route path="course/:courseId" element={<CourseIdPage />}>
-          <Route path="chapter/:chapterId" element={<ChapterIdPage />} />
-          <Route path="quiz/:quizId" element={<Quiz />} />
-        </Route>
-        <Route path="about" element={<About />} />
-        <Route path="contact" element={<Contact />} />
-        <Route path="category/:categoryId" element={<Category />} />
-      </Route>
-      ,
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="users" element={<Users />} />
-        <Route path="users/edit" element={<UserEdit />} /> 
-        <Route path="feedback" element={<Feedback />} />
-        <Route path="leaderboard" element={<Leaderboard />} />
-        <Route path="settings" element={<Settings />} />
-        <Route path="themes" element={<Themes />} />
-        <Route path="courses" element={<Courses />} />
-      </Route>
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-    </Route>,
-  ),
-);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <UserLayout />,
+    errorElement: <ErrorBoundary />,
+    children: [
+      {
+        index: true,
+        element: <Home />,
+      },
+      {
+        path: "course",
+        element: <Course />,
+      },
+      {
+        path: "profile",
+        element: <Profile />,
+      },
+      {
+        path: "my-courses",
+        element: (
+          <RouteGuard>
+            <MyCourses />
+          </RouteGuard>
+        ),
+      },
+      {
+        path: "course/:courseId",
+        element: <CourseIdPage />,
+        children: [
+          {
+            path: "chapter/:chapterId",
+            element: <ChapterIdPage />,
+          },
+          {
+            path: "quiz/:quizId",
+            element: <Quiz />,
+          },
+        ],
+      },
+      {
+        path: "about",
+        element: <About />,
+      },
+      {
+        path: "contact",
+        element: <Contact />,
+      },
+      {
+        path: "category/:categoryId",
+        element: <Category />,
+      },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "users",
+        element: <Users />,
+        children: [
+          {
+            path: "edit",
+            element: <UserEdit />,
+          },
+        ],
+      },
+      {
+        path: "feedback",
+        element: <Feedback />,
+      },
+      {
+        path: "leaderboard",
+        element: <Leaderboard />,
+      },
+      {
+        path: "settings",
+        element: <Settings />,
+      },
+      {
+        path: "themes",
+        element: <Themes />,
+      },
+      {
+        path: "courses",
+        element: <Courses />,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/signup",
+    element: <Signup />,
+  },
+]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App;

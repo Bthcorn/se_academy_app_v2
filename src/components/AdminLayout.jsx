@@ -10,6 +10,8 @@ const AdminLayout = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  // define function to protect routes based on user role
+
   return (
     <div className="grid h-screen w-full md:grid-cols-[256px_1fr] lg:grid-cols-[256px_1fr]">
       {/* Sidebar that is always visible */}
