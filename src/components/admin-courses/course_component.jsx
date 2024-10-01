@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import AddQuizModal from "./QuizModal";
 import CourseDetailsModal from "./CourseDetailsModal";
+import AddCourseModal from "./AddCourseModal";
 
 const CourseComponent = ({ courses, onAddCourse }) => {
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [showAddCourseModal, setShowAddCourseModal] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("All"); // For filtering courses
@@ -63,7 +65,7 @@ const CourseComponent = ({ courses, onAddCourse }) => {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* Add Course Button with Dotted Border */}
         <button
-          onClick={onAddCourse}
+          onClick={() => setShowAddCourseModal(true)}
           className="h-81 flex flex-col items-center justify-center rounded-lg border-2 border-dotted border-gray-400 p-4 shadow-lg transition-shadow duration-200 hover:shadow-xl"
         >
           <div className="flex items-center justify-center text-xl text-yellow-400">
@@ -136,6 +138,12 @@ const CourseComponent = ({ courses, onAddCourse }) => {
           </div>
         ))}
       </div>
+
+      {/* Modal for adding a new course */}
+      <AddCourseModal
+        isOpen={showAddCourseModal}
+        onClose={() => setShowAddCourseModal(false)}
+      />
 
       {/* Modal for course details */}
       {selectedCourse && (
