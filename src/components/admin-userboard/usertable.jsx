@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Pencil } from "lucide-react"; // Importing the Pencil icon for the edit button
+import { useNavigate } from "react-router-dom";
 
 const UserTable = ({ users }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -9,6 +10,7 @@ const UserTable = ({ users }) => {
   const [expandedUserId, setExpandedUserId] = useState(null); // To track which user row is expanded
   const [isEditMode, setIsEditMode] = useState(false); // Track if edit mode is active
   const usersPerPage = 10;
+  const navigate = useNavigate();
 
   // Function to filter and search users
   const filteredUsers = users
@@ -54,6 +56,11 @@ const UserTable = ({ users }) => {
   const handleYearFilterChange = (event) => {
     setFilterYear(event.target.value);
     setCurrentPage(1); // Reset to page 1 when filtering
+  };
+
+  // Function to handle the "Edit" button click, navigating to the edit page with the user data
+  const handleEdit = (user) => {
+    navigate("edit", { state: { user } }); // Pass the user data to the edit page
   };
 
   // Toggle user details when "View Details" button is clicked
@@ -179,7 +186,10 @@ const UserTable = ({ users }) => {
                   </button>
 
                   {isEditMode && (
-                    <button className="text-yellow-400 hover:text-yellow-500">
+                    <button
+                      className="text-yellow-400 hover:text-yellow-500"
+                      onClick={() => handleEdit(user)} // Navigate to edit page on click
+                    >
                       <Pencil size={20} />
                     </button>
                   )}
@@ -195,7 +205,6 @@ const UserTable = ({ users }) => {
                     <p>Level: {user.level}</p>
                     <p>Points: {user.points}</p>
                     <p>Total Study Time: {user.total_studytime} hours</p>
-                    <p>Password: {user.password}</p>
                   </td>
                 </tr>
               )}

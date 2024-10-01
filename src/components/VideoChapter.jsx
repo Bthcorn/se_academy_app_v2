@@ -18,7 +18,10 @@ const VideoChapter = ({ chapter }) => {
           metadataVideoId="1234"
           metadataVideoTitle="My Video Title"
           metadataViewerUserId="1234"
-          onTimeUpdate={onTimeUpdate}
+          // onTimeUpdate={onTimeUpdate}
+          startTime={60}
+          onProgress={(e) => console.log("progress", e.target.currentTime)}
+          onPause={() => console.log("paused")}
           onPlaying={() => console.log("playing")}
           src={`https://stream.mux.com/EcHgOK9coz5K4rjSwOkoE7Y7O01201YMIC200RI6lNxnhs.m3u8`}
           className="w-full max-w-[800px] object-fill"

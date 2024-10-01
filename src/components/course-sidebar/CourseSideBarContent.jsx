@@ -28,6 +28,11 @@ const content = [
     label: "Chapter 5",
     chapterId: "5",
   },
+  {
+    enrolled: true,
+    label: "Quiz",
+    quizId: "quiz",
+  },
 ];
 
 const CourseSideBarContent = ({ courseId }) => {
@@ -38,7 +43,7 @@ const CourseSideBarContent = ({ courseId }) => {
         <CourseSideBarItem
           key={item.label}
           {...item}
-          href={`chapter/${item.chapterId}`}
+          href={`${item.quizId ? `quiz/${item.quizId}` : `chapter/${item.chapterId}`}`}
         />
       ))}
     </>
