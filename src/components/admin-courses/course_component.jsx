@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import AddQuizModal from "./QuizModal";
+import CourseDetailsModal from "./CourseDetailsModal";
 
 const CourseComponent = ({ courses, onAddCourse }) => {
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -137,137 +139,26 @@ const CourseComponent = ({ courses, onAddCourse }) => {
 
       {/* Modal for course details */}
       {selectedCourse && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 leading-loose">
-          <div className="w-full max-w-md rounded-lg bg-[#1E293B] p-8 text-white shadow-lg">
-            <h2 className="mb-4 text-2xl font-bold">
-              {selectedCourse.course_title}
-            </h2>
-            <p>
-              <strong>Subject ID:</strong> {selectedCourse.subjectID}
-            </p>
-            <p>
-              <strong>Course ID:</strong> {selectedCourse.course_id}
-            </p>
-            <p>
-              <strong>Year:</strong> {selectedCourse.year}
-            </p>
-            <p>
-              <strong>Lecturer:</strong> {selectedCourse.lecturer}
-            </p>
-            <p>
-              <strong>Duration:</strong> {selectedCourse.duration} hours
-            </p>
-            <p>
-              <strong>Rating:</strong> {selectedCourse.rating} ★
-            </p>
-            <p>
-              <strong>Capacity:</strong> {selectedCourse.capacity}
-            </p>
-            <p>
-              <strong>Video Quantity:</strong> {selectedCourse.video_quantity}
-            </p>
-            <p>
-              <strong>Category ID:</strong> {selectedCourse.category_id}
-            </p>
-            <p>
-              <strong>Status:</strong> {selectedCourse.course_status}
-            </p>
-            <p className="mt-4">
-              <strong>Description:</strong> {selectedCourse.description}
-            </p>
-
-            {/* Add Quiz Button */}
-            <button
-              onClick={openQuiz}
-              className="mt-4 w-full rounded-md bg-green-600 px-4 py-2 font-bold text-white hover:bg-green-700"
-            >
-              Add Quiz
-            </button>
-
-            {/* Close button */}
-            <button
-              onClick={closeModal}
-              className="mt-4 w-full rounded-md bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        <CourseDetailsModal
+          selectedCourse={selectedCourse}
+          close={closeModal}
+          openQuiz={openQuiz}
+        />
       )}
 
       {/* Modal for quiz */}
-      {showQuiz && selectedCourse && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="w-full max-w-lg rounded-lg bg-[#1E293B] p-8 text-white shadow-lg">
-            <h2 className="mb-6 text-2xl font-bold">
-              Quiz for {selectedCourse.course_title}
-            </h2>
-
-            {selectedCourse.quiz.map((quizItem, index) => (
-              <div key={quizItem.id} className="mb-6">
-                {/* Question with Index */}
-                <p className="mb-2 font-bold">
-                  {index + 1}. {quizItem.question}
-                </p>
-
-                {/* Options */}
-                <div className="flex flex-col space-y-2">
-                  {quizItem.options.map((option) => (
-                    <div
-                      key={option.id}
-                      className={`rounded-md p-2 ${
-                        selectedCourse.correctAnswers.some(
-                          (correct) =>
-                            correct.id === quizItem.id &&
-                            correct.answer === option.id,
-                        )
-                          ? "bg-green-500"
-                          : "bg-[#2E3A47]"
-                      }`}
-                    >
-                      {option.text}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            {/* Add Question Button */}
-            <button
-              className="h-81 mt-4 flex w-full flex-col items-center justify-center rounded-lg border-2 border-dotted border-gray-400 p-4 shadow-lg transition-shadow duration-200 hover:shadow-xl"
-              onClick={() => {
-                // Function to add a question
-              }}
-            >
-              <div className="flex items-center justify-center text-xl text-yellow-400">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="mb-2 h-12 w-12 text-gray-300"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </div>
-              <span className="text-lg font-bold text-gray-300">
-                Add Question
-              </span>
-            </button>
-
-            {/* Close Quiz Button */}
-            <button
-              onClick={() => setShowQuiz(false)}
-              className="mt-4 w-full rounded-md bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
-            >
-              Close Quiz
-            </button>
-          </div>
-        </div>
+      <div className="w-full rounded-lg bg-[#1E293B] p-6 text-white shadow-lg">
+      {/* Course content and modals */}
+      {selectedCourse && (
+        <AddQuizModal
+          isOpen={showQuiz}
+          close={() => setShowQuiz(false)}
+          quizzes={selectedCourse.quiz}
+          correctAnswers={selectedCourse.correctAnswers}
+          // onAddQuestion={addQuestion}
+        />
       )}
+    </div>
     </div>
   );
 };
