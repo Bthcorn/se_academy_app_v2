@@ -85,6 +85,26 @@ export default function Courses() {
         },
       ],
     },
+    {
+      course_id: "",
+      course_title: "Example Course Template (After Add Course)",
+      subjectID: "",
+      year: "",
+      course_image:
+        "",
+      rating: 0,
+      duration: 0,
+      course_status: "",
+      description:
+        "",
+      capacity: 0,
+      video_quantity: 0,
+      lecturer: "",
+      category_id: "",
+      created_at: "",
+      quiz: [],
+      correctAnswers: [],
+    },
   ];
 
   return <CourseComponent courses={sampleCourses} />;
