@@ -1,12 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Check, Trash2 } from "lucide-react";
 
-const AddQuizModal = ({ isOpen, onClose }) => {
+const AddQuizModal = ({ isOpen, quiz, onClose, onSave, correctAnswer }) => {
   const [question, setQuestion] = useState("");
   const [choices, setChoices] = useState([{ id: Date.now(), text: "" }]);
-  const [correctAnswer, setCorrectAnswer] = useState(null);
-  const [correctAnswerMode, setCorrectAnswerMode] = useState(false);
+  var [localcorrectAnswer, setlocalCorrectAnswer] = useState(null);
+  const [localcorrectAnswerMode, setlocalCorrectAnswerMode] = useState(false);
   const [removeChoiceMode, setRemoveChoiceMode] = useState(false);
+
+  // Effect to load quiz data for editing
+  useEffect(() => {
+    if (quiz) {
+      setQuestion(quiz.question);
+      setChoices(quiz.options);
+      setlocalCorrectAnswer(correctAnswer);
+    }
+  }, [quiz, correctAnswer]);
 
   if (!isOpen) return null;
 
@@ -22,8 +31,8 @@ const AddQuizModal = ({ isOpen, onClose }) => {
     setChoices(updatedChoices);
   };
 
-  const handleSetCorrectAnswer = (id) => {
-    setCorrectAnswer(id);
+  const handleSetlocalCorrectAnswer = (id) => {
+    setlocalCorrectAnswer(id);
   };
 
   const handleRemoveChoice = (id) => {
@@ -32,19 +41,19 @@ const AddQuizModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const toggleCorrectAnswerMode = () => {
-    setCorrectAnswerMode(!correctAnswerMode);
+  const togglelocalCorrectAnswerMode = () => {
+    setlocalCorrectAnswerMode(!localcorrectAnswerMode);
     if (removeChoiceMode) setRemoveChoiceMode(false); // Exit remove mode if active
   };
 
   const toggleRemoveChoiceMode = () => {
     setRemoveChoiceMode(!removeChoiceMode);
-    if (correctAnswerMode) setCorrectAnswerMode(false); // Exit correct answer mode if active
+    if (localcorrectAnswerMode) setlocalCorrectAnswerMode(false); // Exit correct answer mode if active
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ question, choices, correctAnswer }); // Now includes the correct answer
+    onSave(question, choices, localcorrectAnswer);
     onClose(); // Close modal after submission
   };
 
@@ -72,7 +81,7 @@ const AddQuizModal = ({ isOpen, onClose }) => {
               <div key={choice.id} className="mt-2 flex items-center">
                 <input
                   type="text"
-                  className={`w-full rounded-md p-2 text-black ${choice.id === correctAnswer ? "bg-green-500" : ""} ${correctAnswerMode ? "border-2 border-green-500" : ""} ${removeChoiceMode ? "border-2 border-red-500" : ""}`}
+                  className={`w-full rounded-md p-2 text-black ${choice.id === localcorrectAnswer ? "border-2 border-green-500 bg-green-500" : ""} ${localcorrectAnswerMode ? "border-2 border-green-500" : ""} ${removeChoiceMode ? "border-2 border-red-500" : ""}`}
                   value={choice.text}
                   onChange={(e) =>
                     handleChoiceChange(choice.id, e.target.value)
@@ -82,12 +91,12 @@ const AddQuizModal = ({ isOpen, onClose }) => {
                 <button
                   type="button"
                   className="ml-2 text-yellow-500"
-                  onClick={() => handleSetCorrectAnswer(choice.id)}
-                  style={{ display: correctAnswerMode ? "block" : "none" }}
+                  onClick={() => handleSetlocalCorrectAnswer(choice.id)}
+                  style={{ display: localcorrectAnswerMode ? "block" : "none" }}
                 >
                   <Check
                     size={24}
-                    className={`${choice.id === correctAnswer ? "text-green-500" : "text-gray-300"}`}
+                    className={`${choice.id === localcorrectAnswer ? "text-green-500" : "text-gray-300"}`}
                   />
                 </button>
                 <button
@@ -126,9 +135,9 @@ const AddQuizModal = ({ isOpen, onClose }) => {
             <button
               type="button"
               className="rounded-md bg-green-500 px-4 py-2 font-bold text-white hover:bg-green-600"
-              onClick={toggleCorrectAnswerMode}
+              onClick={togglelocalCorrectAnswerMode}
             >
-              {correctAnswerMode ? "Save" : "Choose Answer"}
+              {localcorrectAnswerMode ? "Save" : "Choose Answer"}
             </button>
             <button
               type="button"
