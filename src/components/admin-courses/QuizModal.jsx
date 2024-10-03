@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import AddQuizModal from "./AddQuizModel";
+import AddQuizModal from "./AddQuizModal";
 
 const QuizModal = ({ isOpen, close, quizzes, correctAnswers, onAddQuestion }) => {
   const [showAddQuiz, setShowAddQuiz] = useState(false);  // State to control the AddQuizModal
