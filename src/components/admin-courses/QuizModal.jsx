@@ -15,6 +15,7 @@ const QuizModal = ({ isOpen, close, quizzes, correctAnswers, onAddQuestion }) =>
         <h2 className="mb-6 text-2xl font-bold">Add Quiz</h2>
 
         {/* Display existing quizzes */}
+        <div className="overflow-auto max-h-[600px] mb-4">
         {quizzes.map((quiz, index) => (
           <div key={quiz.id} className="mb-6">
             <p className="mb-2 font-bold">{index + 1}. {quiz.question}</p>
@@ -29,6 +30,7 @@ const QuizModal = ({ isOpen, close, quizzes, correctAnswers, onAddQuestion }) =>
             </div>
           </div>
         ))}
+        </div>
 
         {/* Button to trigger new question addition */}
         <button
