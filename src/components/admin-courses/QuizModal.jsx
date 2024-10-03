@@ -1,12 +1,23 @@
-import React from "react";
+import React, {useState} from "react";
+import AddQuizModal from "./AddQuizModel";
 
 const QuizModal = ({ isOpen, close, quizzes, correctAnswers, onAddQuestion }) => {
+  const [showAddQuiz, setShowAddQuiz] = useState(false);  // State to control the AddQuizModal
+
   if (!isOpen) return null;
 
   // Function to find the correct answer ID for a given question
   const getCorrectAnswer = (questionId) => {
     const answer = correctAnswers.find((answer) => answer.id === questionId);
     return answer ? answer.answer : null;
+  };
+
+  const handleAddQuiz = () => {
+    setShowAddQuiz(true);  // Open the AddQuizModal
+  };
+
+  const handleAddQuizClose = () => {
+    setShowAddQuiz(false);  // Close the AddQuizModal
   };
 
   return (
@@ -35,7 +46,7 @@ const QuizModal = ({ isOpen, close, quizzes, correctAnswers, onAddQuestion }) =>
         {/* Button to trigger new question addition */}
         <button
           className="mt-4 w-full flex flex-col items-center justify-center rounded-lg border-2 border-dotted border-gray-400 p-4 shadow-lg transition-shadow duration-200 hover:shadow-xl"
-          onClick={onAddQuestion}
+          onClick={handleAddQuiz}
         >
           <div className="flex items-center justify-center text-xl text-yellow-400">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 text-gray-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -53,6 +64,12 @@ const QuizModal = ({ isOpen, close, quizzes, correctAnswers, onAddQuestion }) =>
           Close
         </button>
       </div>
+      {showAddQuiz && (
+        <AddQuizModal
+          isOpen={showAddQuiz}
+          onClose={handleAddQuizClose}
+        />
+      )}
     </div>
   );
 };
