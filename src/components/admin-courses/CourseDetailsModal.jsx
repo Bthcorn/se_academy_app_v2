@@ -59,7 +59,7 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
           onClick={openQuiz}
           className="mt-4 w-full rounded-md bg-green-600 px-4 py-2 font-bold text-white hover:bg-green-700"
         >
-          Add Quiz
+          View Quiz
         </button>
         <button
           onClick={close}

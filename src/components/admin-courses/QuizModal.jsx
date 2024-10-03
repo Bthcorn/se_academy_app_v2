@@ -23,7 +23,7 @@ const QuizModal = ({ isOpen, close, quizzes, correctAnswers, onAddQuestion }) =>
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="w-full max-w-lg rounded-lg bg-[#1E293B] p-8 text-white shadow-lg">
-        <h2 className="mb-6 text-2xl font-bold">Add Quiz</h2>
+        <h2 className="mb-6 text-2xl font-bold">Quiz</h2>
 
         {/* Display existing quizzes */}
         <div className="overflow-auto max-h-[600px] mb-4">
