@@ -105,6 +105,132 @@ export default function Courses() {
       quiz: [],
       correctAnswers: [],
     },
+    {
+    course_id: "",
+    course_title: "Many question test",
+    subjectID: "",
+    year: "",
+    course_image:
+      "",
+    rating: 0,
+    duration: 0,
+    course_status: "",
+    description:
+      "",
+    capacity: 0,
+    video_quantity: 0,
+    lecturer: "",
+    category_id: "",
+    created_at: "",
+    quiz: [
+      {
+        id: 1,
+        question: "What is JSX?",
+        options: [
+          { id: 1, text: "A JavaScript syntax extension" },
+          { id: 2, text: "A CSS framework" },
+          { id: 3, text: "A database language" },
+          { id: 4, text: "A React component" },
+        ],
+      },
+      {
+        id: 2,
+        question:
+          "Which method is used to update state in a React component?",
+        options: [
+          { id: 1, text: "setState" },
+          { id: 2, text: "updateState" },
+          { id: 3, text: "renderState" },
+          { id: 4, text: "changeState" },
+        ],
+      },
+      {
+        id: 1,
+        question: "What is JSX?",
+        options: [
+          { id: 1, text: "A JavaScript syntax extension" },
+          { id: 2, text: "A CSS framework" },
+          { id: 3, text: "A database language" },
+          { id: 4, text: "A React component" },
+        ],
+      },
+      {
+        id: 2,
+        question:
+          "Which method is used to update state in a React component?",
+        options: [
+          { id: 1, text: "setState" },
+          { id: 2, text: "updateState" },
+          { id: 3, text: "renderState" },
+          { id: 4, text: "changeState" },
+        ],
+      },
+      {
+        id: 1,
+        question: "What is JSX?",
+        options: [
+          { id: 1, text: "A JavaScript syntax extension" },
+          { id: 2, text: "A CSS framework" },
+          { id: 3, text: "A database language" },
+          { id: 4, text: "A React component" },
+        ],
+      },
+      {
+        id: 2,
+        question:
+          "Which method is used to update state in a React component?",
+        options: [
+          { id: 1, text: "setState" },
+          { id: 2, text: "updateState" },
+          { id: 3, text: "renderState" },
+          { id: 4, text: "changeState" },
+        ],
+      },
+      {
+        id: 1,
+        question: "What is JSX?",
+        options: [
+          { id: 1, text: "A JavaScript syntax extension" },
+          { id: 2, text: "A CSS framework" },
+          { id: 3, text: "A database language" },
+          { id: 4, text: "A React component" },
+        ],
+      },
+      {
+        id: 2,
+        question:
+          "Which method is used to update state in a React component?",
+        options: [
+          { id: 1, text: "setState" },
+          { id: 2, text: "updateState" },
+          { id: 3, text: "renderState" },
+          { id: 4, text: "changeState" },
+        ],
+      },
+      {
+        id: 1,
+        question: "What is JSX?",
+        options: [
+          { id: 1, text: "A JavaScript syntax extension" },
+          { id: 2, text: "A CSS framework" },
+          { id: 3, text: "A database language" },
+          { id: 4, text: "A React component" },
+        ],
+      },
+      {
+        id: 2,
+        question:
+          "Which method is used to update state in a React component?",
+        options: [
+          { id: 1, text: "setState" },
+          { id: 2, text: "updateState" },
+          { id: 3, text: "renderState" },
+          { id: 4, text: "changeState" },
+        ],
+      },
+    ],
+    correctAnswers: [],
+  },
   ];
 
   return <CourseComponent courses={sampleCourses} />;
