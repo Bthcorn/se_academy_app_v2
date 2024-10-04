@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import { AuthContext } from "./AuthContext";
+import { AuthContext, useAuth } from "./AuthContext";
 import { Navigate, Outlet } from "react-router-dom";
 
-function RouteGuard({ children }) {
-  const { isLoggedIn } = useContext(AuthContext);
+function RouteGuard({ children, roles }) {
+  const { isLoggedIn } = useAuth();
 
-  return isLoggedIn ? children : <Navigate to="/login" />;
+  return isLoggedIn ? children : <Navigate to="/login" replace />;
 }
 
 export default RouteGuard;

@@ -1,4 +1,5 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
@@ -23,6 +24,11 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
+    // return <Navigate to="/login" />;
+  };
+
+  const getUserId = () => {
+    return localStorage.getItem("userId");
   };
 
   const value = {
@@ -31,9 +37,11 @@ const AuthProvider = ({ children }) => {
     logout,
     token,
     isAdmin,
+    getUserId,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export default AuthProvider;
+export const useAuth = () => useContext(AuthContext);
