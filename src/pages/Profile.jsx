@@ -49,6 +49,23 @@ function Profile() {
     }
   };
 
+  const fetchUserImg = async (id) => {
+    try {
+      const result = await axios.get(Config.API_URL + "/user/avatar/" + id, {
+        headers: {
+          Authorization: Config.AUTH_TOKEN(),
+        },
+      });
+
+      if (result.status === 200) {
+
+        console.log(result.data);
+        setImg(`data:image/jpeg;base64,${result.data}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleSaveImage = async (id) => {
     try {
       const form = new FormData();
@@ -101,6 +118,7 @@ function Profile() {
   useEffect(() => {
     // console.log(user);
     fetchUser(userId);
+    fetchUserImg(userId);
   }, [userId]);
 
   return (
