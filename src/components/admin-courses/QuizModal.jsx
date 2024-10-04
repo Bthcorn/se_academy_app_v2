@@ -88,7 +88,7 @@ const QuizModal = ({
           onClick={toggleEditMode}
           className="mt-10 w-full mb-4 rounded bg-yellow-600 px-4 py-2 font-bold text-white hover:bg-yellow-700"
         >
-          {editMode ? "Finish Editing" : "Edit Quiz"}
+          {editMode ? "Stop Editing" : "Edit Quiz"}
         </button>
   
         <button
