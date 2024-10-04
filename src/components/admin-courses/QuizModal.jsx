@@ -32,10 +32,10 @@ const QuizModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="w-full max-w-lg rounded-lg bg-[#1E293B] p-8 text-white shadow-lg">
+      <div className="w-full max-w-lg rounded-lg bg-[#1E293B] p-8 text-white shadow-lg" style={{ maxHeight: '95vh' }}>
         <h2 className="mb-6 text-2xl font-bold">Quiz</h2>
-
-        <div className="mb-4 max-h-[600px] overflow-auto">
+  
+        <div className="mb-4 overflow-auto bg-[#16202A] rounded-lg p-4" style={{ maxHeight: '40vh' }}>
           {quizzes.map((quiz, index) => (
             <div
               key={quiz.id}
@@ -52,7 +52,7 @@ const QuizModal = ({
                     className={`rounded-md p-2 ${
                       option.id === getCorrectAnswer(quiz.id)
                         ? "bg-green-500"
-                        : "bg-[#2E3A47]"
+                        : "bg-[#404956]"
                     }`}
                   >
                     {option.text}
@@ -62,7 +62,7 @@ const QuizModal = ({
             </div>
           ))}
         </div>
-
+  
         <button
           className="mt-4 flex w-full flex-col items-center justify-center rounded-lg border-2 border-dotted border-gray-400 p-4 shadow-lg transition-shadow duration-200 hover:shadow-xl"
           onClick={() => setShowAddQuiz(true)}
@@ -83,14 +83,14 @@ const QuizModal = ({
           </div>
           <span className="text-lg font-bold text-gray-300">Add Question</span>
         </button>
-
+  
         <button
           onClick={toggleEditMode}
           className="mt-10 w-full mb-4 rounded bg-yellow-600 px-4 py-2 font-bold text-white hover:bg-yellow-700"
         >
-          {editMode ? "Stop Editing" : "Edit Quiz"}
+          {editMode ? "Finish Editing" : "Edit Quiz"}
         </button>
-
+  
         <button
           onClick={close}
           className="w-full rounded-md bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
@@ -98,7 +98,7 @@ const QuizModal = ({
           Close
         </button>
       </div>
-
+  
       {showAddQuiz && (
         <AddQuizModal
           isOpen={showAddQuiz}
@@ -113,6 +113,7 @@ const QuizModal = ({
       )}
     </div>
   );
+  
 };
 
 export default QuizModal;
