@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/AuthContext";
 
 const LoginBox = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { setUserId } = useAuth();
 
   const validateForm = () => {
     return username && password;
@@ -31,6 +33,7 @@ const LoginBox = () => {
         if (data["success"] == true) {
           alert("Login successful");
           localStorage.setItem("token", response.headers.get("Authorization"));
+          localStorage.setItem("userId", data["id"]);
           navigate("/");
         } else {
           alert("Error: " + data["error_msg"]);

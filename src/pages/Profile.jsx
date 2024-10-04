@@ -1,33 +1,107 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "../components/Button";
 // import MuxPlayer from "@mux/mux-player-react";
 import { Award, Crown, History, Sparkle, Sprout, Star } from "lucide-react";
+import { Config } from "../components/config";
+import axios from "axios";
+import { useAuth } from "../hooks/AuthContext";
 
 function Profile() {
   const [edit, setEdit] = React.useState(false);
-  const [img, setImg] = React.useState({});
+  const [img, setImg] = React.useState(null);
   const imgRef = React.useRef(null);
+  const [user, setUser] = React.useState({});
+  const { getUserId } = useAuth();
+  const [userId, setUserId] = React.useState(getUserId());
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [year, setYear] = React.useState(0);
+  const [score, setScore] = React.useState(0);
+  const [level, setLevel] = React.useState(0);
+  const [studyHours, setStudyHours] = React.useState(0);
 
   const handleEdit = () => {
     setEdit(!edit);
   };
 
-  const handleSaveImage = async (params) => {
-    const form = new FormData();
-    form.append("email", "");
-    const result = await fetch("https://api.iran.liara.run/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      body: form,
-    });
+  const fetchUser = async (id) => {
+    try {
+      const result = await axios.get(Config.API_URL + "/user/" + id, {
+        headers: {
+          Authorization: Config.AUTH_TOKEN(),
+        },
+      });
 
-    if (result.status === 200) {
-      const data = await result.json();
-      localStorage.setItem("token", data.token);
+      if (result.status === 200) {
+        setUser(result.data);
+        setFirstName(result.data.firstname);
+        setLastName(result.data.lastname);
+        setEmail(result.data.email);
+        setYear(result.data.year);
+        setScore(result.data.score);
+        setLevel(result.data.level);
+        setStudyHours(result.data.study_hours);
+        setImg(Config.API_URL + "/" + result.data.avatar);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
+
+  const handleSaveImage = async (id) => {
+    try {
+      const form = new FormData();
+      form.append("avatar", imgRef.current.files[0]);
+      const result = await axios.put(
+        Config.API_URL + "/user/update_avatar/" + id,
+        form,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      );
+
+      if (result.status === 200) {
+        fetchUser(id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleUpdateUser = async (id) => {
+    try {
+      const form = new FormData();
+      form.append("firstname", firstName);
+      form.append("lastname", lastName);
+      form.append("email", email);
+      form.append("year", parseInt(year));
+
+      const result = await axios.put(
+        Config.API_URL + "/user/update_user/" + id,
+        form,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (result.status === 200) {
+        fetchUser(id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    // console.log(user);
+    fetchUser(userId);
+  }, [userId]);
 
   return (
     <section className="relative flex h-full w-full flex-col justify-center gap-2 px-4 py-8 md:flex-row md:py-12 md:pb-8 lg:pb-10">
@@ -35,20 +109,20 @@ function Profile() {
         <div className="flex rounded-md px-4 py-8">
           <div className="mr-4">
             <img
-              src="https://avatar.iran.liara.run/public/42"
+              src={img || "https://avatar.iran.liara.run/public/42"}
               alt="Avatar"
-              className="h-24 w-24 transform rounded-full border-2 border-primary transition-transform hover:scale-110 hover:border-4"
+              className="h-24 w-24 transform rounded-full border-primary transition-transform hover:scale-110"
             />
           </div>
           <div className="flex flex-col gap-2">
             <h2 className="text-2xl font-semibold text-foreground md:text-3xl">
-              John Doe
+              {user.firstname} {user.lastname}
             </h2>
             <p className="text-sm font-light text-accent-foreground md:text-base">
               Software Engineer
             </p>
             <span className="rounded-md bg-secondary-color4 p-2 text-xs text-accent-foreground">
-              id: 42
+              id: {user.id}
             </span>
           </div>
         </div>
@@ -63,7 +137,9 @@ function Profile() {
               <input
                 type="text"
                 className="rounded-md bg-secondary-color4/50 p-2 text-sm text-foreground"
-                value={"John"}
+                value={firstName}
+                // defaultValue={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
               />
             </div>
             <div className="flex flex-col">
@@ -71,8 +147,8 @@ function Profile() {
               <input
                 type="text"
                 className="rounded-md bg-secondary-color4/50 p-2 text-sm text-foreground"
-                value={"Doe"}
-                onChange={(e) => console.log(e.target.value)}
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
               />
             </div>
             <div className="flex flex-col">
@@ -80,8 +156,8 @@ function Profile() {
               <input
                 type="text"
                 className="rounded-md bg-secondary-color4/50 p-2 text-sm text-foreground"
-                value={"myemail@mail.com"}
-                onChange={(e) => console.log(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div className="flex flex-col">
@@ -89,8 +165,13 @@ function Profile() {
               <input
                 type="text"
                 className="rounded-md bg-secondary-color4/50 p-2 text-sm text-foreground"
-                value={"2021"}
-                onChange={(e) => console.log(e.target.value)}
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+              />
+              <Button
+                label="Update Profile"
+                variant="gradient"
+                onClick={() => handleUpdateUser(userId)}
               />
             </div>
             <div className="flex flex-col">
@@ -99,13 +180,13 @@ function Profile() {
                 type="file"
                 className="rounded-md bg-secondary-color4/50 p-2 text-sm text-foreground"
                 accept="image/*"
+                ref={imgRef}
+                onChange={(e) => setImg(e.target.files[0])}
               />
-            </div>
-            <div>
               <Button
-                label="Update Profile"
+                label="Save Image"
                 variant="gradient"
-                onClick={handleEdit}
+                onClick={() => handleSaveImage(userId)}
               />
             </div>
           </div>
@@ -139,23 +220,23 @@ function Profile() {
           <div className="flex h-auto w-full flex-wrap gap-2 rounded-md bg-secondary/60 px-2 py-3">
             <div className="inline-flex items-center gap-2">
               <Star size={20} />
-              <span>points:</span>
+              <span>score:</span>
               <span className="flex items-center justify-center rounded-md bg-primary/20 px-2 py-1 text-primary">
-                100
+                {score}
               </span>
             </div>
             <div className="inline-flex items-center gap-2">
               <Sprout size={20} />
               <span>level:</span>
               <span className="flex items-center justify-center rounded-md bg-secondary-color5/20 px-2 py-1 text-secondary-color5">
-                3
+                {level}
               </span>
             </div>
             <div className="inline-flex items-center gap-2">
               <History size={20} />
               <span className="">studytime: </span>
               <span className="flex items-center justify-center rounded-md bg-secondary-color3/20 px-2 py-1 text-secondary-color3">
-                3
+                {studyHours}
               </span>
               <span>hrs</span>
             </div>
@@ -214,7 +295,7 @@ function Profile() {
               </div>
               <div className="flex items-center gap-2">
                 <img
-                  src="https://avatar.iran.liara.run/public/42"
+                  src={"https://avatar.iran.liara.run/public/42"}
                   alt="Avatar"
                   className="h-8 w-8 rounded-full"
                 />
