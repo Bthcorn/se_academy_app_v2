@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import AddQuizModal from "./QuizModal";
 import CourseDetailsModal from "./CourseDetailsModal";
 import AddCourseModal from "./AddCourseModal";
+import { Config } from "../config";
 
 const CourseComponent = ({ courses, onAddCourse }) => {
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -26,14 +27,14 @@ const CourseComponent = ({ courses, onAddCourse }) => {
     setShowQuiz(true);
   };
 
-  const filteredCourses = courses
-    .filter((course) =>
-      course.course_title.toLowerCase().includes(searchTerm.toLowerCase()),
-    )
-    .filter((course) => {
-      if (filterStatus === "All") return true;
-      return course.course_status === filterStatus;
-    });
+  // const filteredCourses = courses
+  //   .filter((course) =>
+  //     course.course_title.toLowerCase().includes(searchTerm.toLowerCase()),
+  //   )
+  //   .filter((course) => {
+  //     if (filterStatus === "All") return true;
+  //     return course.course_status === filterStatus;
+  //   });
 
   return (
     <div className="w-full rounded-lg bg-[#1E293B] p-6 text-white shadow-lg">
@@ -49,7 +50,7 @@ const CourseComponent = ({ courses, onAddCourse }) => {
       />
 
       {/* Filter Dropdown */}
-      <div className="mb-6">
+      {/* <div className="mb-6">
         <label className="mr-4">Filter by status:</label>
         <select
           className="rounded-lg p-2 text-black"
@@ -60,13 +61,13 @@ const CourseComponent = ({ courses, onAddCourse }) => {
           <option value="Available">Available</option>
           <option value="Not Available">Not Available</option>
         </select>
-      </div>
+      </div> */}
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* Add Course Button with Dotted Border */}
         <button
           onClick={() => setShowAddCourseModal(true)}
-          className="h-81 flex flex-col items-center justify-center rounded-lg border-2 border-dotted border-gray-400 p-4 shadow-lg transition-shadow duration-200 hover:shadow-xl"
+          className="flex h-auto flex-col items-center justify-center rounded-lg border-2 border-dotted border-gray-400 p-4 shadow-lg transition-shadow duration-200 hover:shadow-xl"
         >
           <div className="flex items-center justify-center text-xl text-yellow-400">
             <svg
@@ -86,14 +87,14 @@ const CourseComponent = ({ courses, onAddCourse }) => {
         </button>
 
         {/* Render existing courses */}
-        {filteredCourses.map((course) => (
+        {courses.map((course) => (
           <div
-            key={course.course_id}
-            className="rounded-lg bg-[#2E3A47] p-4 shadow-lg transition-shadow duration-200 hover:shadow-xl"
+            key={course.id}
+            className="flex h-full min-h-96 flex-col rounded-lg bg-[#2E3A47] p-4 shadow-lg transition-shadow duration-200 hover:shadow-xl"
           >
             {/* Course Image */}
             <img
-              src={course.course_image}
+              src={Config.API_URL + "/" + course.course_image}
               alt={course.course_title}
               className="mb-4 h-40 w-full rounded-lg object-cover"
             />
@@ -101,20 +102,20 @@ const CourseComponent = ({ courses, onAddCourse }) => {
             {/* Course Info (Title and Status on the same line) */}
             <div className="mb-4 flex items-center justify-between">
               <h3 className="text-xl font-bold text-yellow-400">
-                {course.course_title}
+                {course.title}
               </h3>
               <span
                 className={`rounded-lg px-2 py-1 text-xs font-semibold ${
-                  course.course_status === "Available"
+                  course.status === "active"
                     ? "bg-green-600 text-white"
                     : "bg-red-600 text-white"
                 }`}
               >
-                {course.course_status}
+                {course.status}
               </span>
             </div>
 
-            <p className="text-sm text-gray-400">{course.subjectID}</p>
+            <p className="text-sm text-gray-400">{course.subjectid}</p>
 
             {/* Year and Duration */}
             <div className="mb-4 mt-4 flex items-center justify-between text-sm text-gray-300">
@@ -129,12 +130,14 @@ const CourseComponent = ({ courses, onAddCourse }) => {
             </div>
 
             {/* View Details Button */}
-            <button
-              onClick={() => viewCourseDetails(course)}
-              className="w-full rounded-md bg-blue-600 px-4 py-2 font-bold text-white hover:bg-blue-700"
-            >
-              View Course Details
-            </button>
+            <div className="mt-auto">
+              <button
+                onClick={() => viewCourseDetails(course)}
+                className="w-full rounded-md bg-blue-600 px-4 py-2 font-bold text-white hover:bg-blue-700"
+              >
+                View Course Details
+              </button>
+            </div>
           </div>
         ))}
       </div>
@@ -143,6 +146,7 @@ const CourseComponent = ({ courses, onAddCourse }) => {
       <AddCourseModal
         isOpen={showAddCourseModal}
         onClose={() => setShowAddCourseModal(false)}
+        onAddCourse={onAddCourse}
       />
 
       {/* Modal for course details */}
@@ -156,17 +160,17 @@ const CourseComponent = ({ courses, onAddCourse }) => {
 
       {/* Modal for quiz */}
       <div className="w-full rounded-lg bg-[#1E293B] p-6 text-white shadow-lg">
-      {/* Course content and modals */}
-      {selectedCourse && (
-        <AddQuizModal
-          isOpen={showQuiz}
-          close={() => setShowQuiz(false)}
-          quizzes={selectedCourse.quiz}
-          correctAnswers={selectedCourse.correctAnswers}
-          // onAddQuestion={addQuestion}
-        />
-      )}
-    </div>
+        {/* Course content and modals */}
+        {selectedCourse && (
+          <AddQuizModal
+            isOpen={showQuiz}
+            close={() => setShowQuiz(false)}
+            quizzes={selectedCourse.quiz}
+            correctAnswers={selectedCourse.correctAnswers}
+            // onAddQuestion={addQuestion}
+          />
+        )}
+      </div>
     </div>
   );
 };
