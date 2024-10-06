@@ -58,7 +58,6 @@ function Profile() {
       });
 
       if (result.status === 200) {
-
         console.log(result.data);
         setImg(`data:image/jpeg;base64,${result.data}`);
       }
