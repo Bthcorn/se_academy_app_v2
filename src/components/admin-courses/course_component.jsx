@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddQuizModal from "./QuizModal";
 import CourseDetailsModal from "./CourseDetailsModal";
 import AddCourseModal from "./AddCourseModal";
 import { Config } from "../config";
+import axios from "axios";
 
 const CourseComponent = ({ courses, onAddCourse }) => {
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -10,6 +11,7 @@ const CourseComponent = ({ courses, onAddCourse }) => {
   const [showQuiz, setShowQuiz] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("All"); // For filtering courses
+  const [img, setImg] = useState({});
 
   // Function to open the modal with the selected course
   const viewCourseDetails = (course) => {
@@ -27,6 +29,37 @@ const CourseComponent = ({ courses, onAddCourse }) => {
     setShowQuiz(true);
   };
 
+  // fetch images for all courses
+  const fetchImages = async () => {
+    const images = {};
+    for (const course of courses) {
+      try {
+        const response = await axios.get(`${Config.API_URL}/course/get_course_img/${course.id}`, {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        });
+        images[course.id] = `data:image/jpeg;base64,${response.data}`; // Save base64 string
+      } catch (error) {
+        console.error("Error fetching image for course:", course.id, error);
+      }
+    }
+    setImg(images); // Set all image data once fetched
+  };
+
+  useEffect(() => {
+    fetchImages();
+  }, [courses]);
+
+  const fetchImg = async (id) => { 
+    const response = await axios.get(Config.API_URL + "/course/get_course_img/"+id, {
+      headers: {
+        Authorization: Config.AUTH_TOKEN(),
+      }
+    });
+    
+    return `data:image/jpeg;base64,${response.data}`;
+  }
   // const filteredCourses = courses
   //   .filter((course) =>
   //     course.course_title.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -94,7 +127,7 @@ const CourseComponent = ({ courses, onAddCourse }) => {
           >
             {/* Course Image */}
             <img
-              src={Config.API_URL + "/" + course.course_image}
+              src={img[course.id]} 
               alt={course.course_title}
               className="mb-4 h-40 w-full rounded-lg object-cover"
             />
