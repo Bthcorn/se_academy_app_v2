@@ -42,7 +42,6 @@ function Profile() {
         setScore(result.data.score);
         setLevel(result.data.level);
         setStudyHours(result.data.study_hours);
-        setImg(Config.API_URL + "/" + result.data.avatar);
       }
     } catch (error) {
       console.log(error);
