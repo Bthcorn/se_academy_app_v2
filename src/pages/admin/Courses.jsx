@@ -236,7 +236,7 @@ export default function Courses() {
 
       if (response.status === 200) {
         setCourses(response.data);
-        console.log(courses);
+        console.log("fetchCourses", courses);
       }
     } catch (error) {
       console.error(error);
@@ -258,9 +258,56 @@ export default function Courses() {
 
       if (response.status === 200) {
         setCourses([...courses, response.data]);
-        console.log(courses);
+        console.log("onAddCourse", courses);
         fetchCourses();
         console.log("Course added successfully!");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const filterByStatus = async (status) => {
+    try {
+      const response = await axios.get(
+        Config.API_URL + "/course/filter_courses_by_status",
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+          params: {
+            status: status,
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        setCourses(response.data);
+        console.log("filterByStatus", courses);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const search = async (searchTerm, status = "all") => {
+    try {
+      const response = await axios.get(
+        Config.API_URL + "/course/search_courses",
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+          params: {
+            course_name: searchTerm,
+            status: status,
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        setCourses(response.data);
+        console.log("search", courses);
       }
     } catch (error) {
       console.error(error);
@@ -271,5 +318,12 @@ export default function Courses() {
     fetchCourses();
   }, []);
 
-  return <CourseComponent courses={courses} onAddCourse={onAddCourse} />;
+  return (
+    <CourseComponent
+      courses={courses}
+      onAddCourse={onAddCourse}
+      filter={filterByStatus}
+      search={search}
+    />
+  );
 }
