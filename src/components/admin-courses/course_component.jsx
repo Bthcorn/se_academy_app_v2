@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AddQuizModal from "./QuizModal";
 import CourseDetailsModal from "./CourseDetailsModal";
 import AddCourseModal from "./AddCourseModal";
 import { Config } from "../config";
 import axios from "axios";
 
-const CourseComponent = ({ courses, onAddCourse }) => {
+const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [showAddCourseModal, setShowAddCourseModal] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [filterStatus, setFilterStatus] = useState("All"); // For filtering courses
+  const [filterStatus, setFilterStatus] = useState("all"); // For filtering courses
   const [img, setImg] = useState({});
 
   // Function to open the modal with the selected course
@@ -22,6 +22,7 @@ const CourseComponent = ({ courses, onAddCourse }) => {
   const closeModal = () => {
     setSelectedCourse(null);
     setShowQuiz(false);
+    window.location.reload();
   };
 
   // Function to display the quiz modal
@@ -34,11 +35,14 @@ const CourseComponent = ({ courses, onAddCourse }) => {
     const images = {};
     for (const course of courses) {
       try {
-        const response = await axios.get(`${Config.API_URL}/course/get_course_img/${course.id}`, {
-          headers: {
-            Authorization: Config.AUTH_TOKEN(),
+        const response = await axios.get(
+          `${Config.API_URL}/course/get_course_img/${course.id}`,
+          {
+            headers: {
+              Authorization: Config.AUTH_TOKEN(),
+            },
           },
-        });
+        );
         images[course.id] = `data:image/jpeg;base64,${response.data}`; // Save base64 string
       } catch (error) {
         console.error("Error fetching image for course:", course.id, error);
@@ -47,27 +51,23 @@ const CourseComponent = ({ courses, onAddCourse }) => {
     setImg(images); // Set all image data once fetched
   };
 
+  // handle debouncing for search
+  function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        func(...args);
+      }, wait);
+    };
+  }
+
+  // debounced search function
+  const debouncedSearch = useCallback(debounce(search, 500), []);
+
   useEffect(() => {
     fetchImages();
   }, [courses]);
-
-  const fetchImg = async (id) => { 
-    const response = await axios.get(Config.API_URL + "/course/get_course_img/"+id, {
-      headers: {
-        Authorization: Config.AUTH_TOKEN(),
-      }
-    });
-    
-    return `data:image/jpeg;base64,${response.data}`;
-  }
-  // const filteredCourses = courses
-  //   .filter((course) =>
-  //     course.course_title.toLowerCase().includes(searchTerm.toLowerCase()),
-  //   )
-  //   .filter((course) => {
-  //     if (filterStatus === "All") return true;
-  //     return course.course_status === filterStatus;
-  //   });
 
   return (
     <div className="w-full rounded-lg bg-[#1E293B] p-6 text-white shadow-lg">
@@ -79,22 +79,29 @@ const CourseComponent = ({ courses, onAddCourse }) => {
         placeholder="Search by course title..."
         className="mb-4 w-full rounded-lg p-2 text-black"
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+          debouncedSearch(e.target.value, filterStatus);
+        }}
       />
 
       {/* Filter Dropdown */}
-      {/* <div className="mb-6">
+      <div className="mb-6">
         <label className="mr-4">Filter by status:</label>
         <select
           className="rounded-lg p-2 text-black"
           value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
+          onChange={(e) => {
+            setFilterStatus(e.target.value);
+            filter(e.target.value);
+          }}
         >
-          <option value="All">All</option>
-          <option value="Available">Available</option>
-          <option value="Not Available">Not Available</option>
+          <option value="all">All</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+          <option value="suspended">Suspended</option>
         </select>
-      </div> */}
+      </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {/* Add Course Button with Dotted Border */}
@@ -127,7 +134,7 @@ const CourseComponent = ({ courses, onAddCourse }) => {
           >
             {/* Course Image */}
             <img
-              src={img[course.id]} 
+              src={img[course.id]}
               alt={course.course_title}
               className="mb-4 h-40 w-full rounded-lg object-cover"
             />

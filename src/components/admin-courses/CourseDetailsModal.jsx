@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import EditFieldModal from "./EditFieldModal";
 import axios from "axios";
 import { Config } from "../config";
@@ -11,6 +11,7 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
   const [editField, setEditField] = useState(null);
   const imgRef = useRef(null);
   const [imgFile, setImgFile] = useState(null);
+  const [img, setImg] = useState({});
 
   const openEditModal = (field) => {
     setEditField({ name: field, value: selectedCourse[field] });
@@ -46,7 +47,10 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
           },
         },
       );
-      console.log(response);
+
+      if (response.status === 200) {
+        closeEditModal();
+      }
     } catch (error) {
       console.error(error);
     }
@@ -71,6 +75,28 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
       console.error(error);
     }
   };
+
+  const fetchImg = async (id) => {
+    try {
+      const response = await axios.get(
+        Config.API_URL + "/course/get_course_img/" + id,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+      if (response.data) {
+        setImg(`data:image/jpeg;base64,${response.data}`);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchImg(selectedCourse.id);
+  }, [selectedCourse]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 leading-tight">
@@ -193,7 +219,7 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
               key={"total_video"}
               className={`cursor-pointer p-2 ${editMode ? "rounded-lg border-2 border-yellow-400 shadow-sm transition-all duration-300 ease-in-out" : "border border-transparent"}`}
               onClick={
-                editMode ? () => openEditModal("video_quantity") : undefined
+                editMode ? () => openEditModal("total_video") : undefined
               }
             >
               <p className="text-sm">
@@ -231,12 +257,13 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
                     accept="image/*"
                     onChange={(e) => {
                       setImgFile(e.target.files[0]);
+                      console.log(imgFile);
                       console.log(e.target.files[0]);
                     }}
                     ref={imgRef}
                   />
                   <img
-                    src={imgFile ? URL.createObjectURL(imgFile) : ""}
+                    src={imgFile ? URL.createObjectURL(imgFile) : img}
                     alt="course_image"
                     className="h-40 w-full rounded-lg object-cover"
                   />
@@ -249,7 +276,7 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
                 </div>
               ) : (
                 <img
-                  src={Config.API_URL + "/" + selectedCourse.course_image}
+                  src={img}
                   alt={selectedCourse.title}
                   className="h-40 w-full rounded-lg object-cover"
                 />
