@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import EditFieldModal from "./EditFieldModal";
 import axios from "axios";
 import { Config } from "../config";
+import { Link, useNavigate } from "react-router-dom";
 
 const parseIntField = ["enrolled", "total_video", "year"];
 const parseFloatField = ["rating", "total_duration"];
@@ -12,6 +13,7 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
   const imgRef = useRef(null);
   const [imgFile, setImgFile] = useState(null);
   const [img, setImg] = useState({});
+  const navigate = useNavigate();
 
   const openEditModal = (field) => {
     setEditField({ name: field, value: selectedCourse[field] });
@@ -101,8 +103,8 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 leading-tight">
       <div
-        className="w-full max-w-xl rounded-lg bg-[#1E293B] p-8 text-white shadow-lg"
-        style={{ maxHeight: "90vh" }}
+        className="max-h-dvh w-full max-w-xl rounded-lg bg-[#1E293B] p-8 text-white shadow-lg"
+        // style={{ maxHeight: "100vh" }}
       >
         <h2 className="mb-4 text-xl font-bold">{selectedCourse.title}</h2>
         {/* Scrollable content container with distinct background shade */}
@@ -185,7 +187,7 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
               </p>
             </div>
 
-            {/* <div
+            <div
               key={"rating"}
               className={`cursor-pointer p-2 ${editMode ? "rounded-lg border-2 border-yellow-400 shadow-sm transition-all duration-300 ease-in-out" : "border border-transparent"}`}
               onClick={editMode ? () => openEditModal("rating") : undefined}
@@ -193,7 +195,7 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
               <p className="text-sm">
                 <strong>rating:</strong> {selectedCourse.rating}
               </p>
-            </div> */}
+            </div>
 
             <div
               key={"status"}
@@ -304,6 +306,12 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
           >
             View Quiz
           </button>
+          <Link
+            to={`/admin/course/${selectedCourse.id}/videos`}
+            className="w-full rounded-md bg-blue-600 px-4 py-2 text-center font-bold text-white hover:bg-blue-700"
+          >
+            View Videos
+          </Link>
           <button
             onClick={close}
             className="w-full rounded-md bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
