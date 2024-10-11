@@ -28,6 +28,7 @@ import Signup from "./pages/Signup.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import AuthProvider from "./hooks/AuthContext.jsx";
 import RouteGuard from "./hooks/RouteGuard.jsx";
+import CourseVideos from "./pages/admin/CourseVideos.jsx";
 
 const router = createBrowserRouter([
   {
@@ -121,6 +122,10 @@ const router = createBrowserRouter([
       {
         path: "courses",
         element: <Courses />,
+      },
+      {
+        path: "course/:courseId/videos",
+        element: <CourseVideos />,
       },
     ],
   },
