@@ -3,6 +3,7 @@ import EditFieldModal from "./EditFieldModal";
 import axios from "axios";
 import { Config } from "../config";
 import { Link, useNavigate } from "react-router-dom";
+import { X } from "lucide-react";
 
 const parseIntField = ["enrolled", "total_video", "year"];
 const parseFloatField = ["rating", "total_duration"];
@@ -14,6 +15,9 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
   const [imgFile, setImgFile] = useState(null);
   const [img, setImg] = useState({});
   const navigate = useNavigate();
+  const [categoryList, setCategoryList] = useState([]);
+  const [categoryData, setCategoryData] = useState([]);
+  const [addCategory, setAddCategory] = useState("");
 
   const openEditModal = (field) => {
     setEditField({ name: field, value: selectedCourse[field] });
@@ -96,8 +100,68 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
     }
   };
 
+  const fetchCategoryData = async () => {
+    try {
+      const response = await axios.get(
+        Config.API_URL + "/course/get_categories",
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (response.data) {
+        setCategoryData(response.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // const handleCategoryChange = (e) => {
+  //   setCategoryList(e.target.value);
+  // };
+
+  const handleAddCategory = async (category) => {
+    setCategoryList([...categoryList, category]);
+    console.log(categoryList);
+  };
+
+  const handleRemoveCategory = async (category) => {
+    setCategoryList(categoryList.filter((cat) => cat !== category));
+  };
+
+  const handlClearCategories = async () => {
+    setCategoryList([]);
+  };
+
+  const handleCategorySave = async (id, categoryList) => {
+    try {
+      const response = await axios.patch(
+        Config.API_URL + "/course/update_course/" + id,
+        {
+          category_list: categoryList,
+        },
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        console.log("Category list updated successfully.");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchImg(selectedCourse.id);
+    fetchCategoryData();
+    setCategoryList(selectedCourse.category_list);
   }, [selectedCourse]);
 
   return (
@@ -232,14 +296,74 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
             <div
               key={"category_list"}
               className={`cursor-pointer p-2 ${editMode ? "rounded-lg border-2 border-yellow-400 shadow-sm transition-all duration-300 ease-in-out" : "border border-transparent"}`}
-              onClick={
-                editMode ? () => openEditModal("category_list") : undefined
-              }
+              // onClick={
+              //   editMode ? () => openEditModal("category_list") : undefined
+              // }
             >
               <p className="text-sm">
-                <strong>category list:</strong>{" "}
-                {selectedCourse.category_list.join(", ")}
+                <strong>category list:</strong> {categoryList.join(", ")}
               </p>
+
+              {editMode ? (
+                <div className="flex flex-col gap-2">
+                  <input
+                    type="text"
+                    value={addCategory}
+                    onChange={(e) => setAddCategory(e.target.value)}
+                    className="rounded-lg border border-gray-400 p-2 text-black"
+                  />
+                  <div className="flex flex-wrap gap-2">
+                    {categoryList.map((category) => (
+                      <div
+                        key={category}
+                        className="inline-flex rounded-lg bg-blue-600 px-4 py-2 font-bold text-white hover:bg-blue-700"
+                      >
+                        <span>{category}</span>
+                        <button
+                          onClick={() => handleRemoveCategory(category)}
+                          className="ml-2"
+                        >
+                          <X size={16} />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={handlClearCategories}
+                      className="rounded-md bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
+                    >
+                      Clear
+                    </button>
+                    <button
+                      onClick={() => handleAddCategory(addCategory)}
+                      className="rounded-md bg-green-600 px-4 py-2 font-bold text-white hover:bg-green-700"
+                    >
+                      Add Category
+                    </button>
+                    <select
+                      onChange={(e) => handleAddCategory(e.target.value)}
+                      className="rounded-lg border border-gray-400 p-2 text-black"
+                    >
+                      <option value="">Select Category</option>
+                      {categoryData.map((category) => (
+                        <option key={category} value={category}>
+                          {category}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <button
+                    onClick={() =>
+                      handleCategorySave(selectedCourse.id, categoryList)
+                    }
+                    className="rounded-md bg-green-600 px-4 py-2 font-bold text-white hover:bg-green-700"
+                  >
+                    {" "}
+                    Save Categories{" "}
+                  </button>
+                </div>
+              ) : null}
             </div>
 
             <div
