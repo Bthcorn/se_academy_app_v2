@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AuthContext, useAuth } from "./AuthContext";
+import { useAuth } from "./useAuth";
 import { Navigate, Outlet } from "react-router-dom";
 
 function RouteGuard({ children, roles }) {
