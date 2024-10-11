@@ -4,7 +4,8 @@ import Button from "../components/Button";
 import { Award, Crown, History, Sparkle, Sprout, Star } from "lucide-react";
 import { Config } from "../components/config";
 import axios from "axios";
-import { useAuth } from "../hooks/AuthContext";
+import { useAuth } from "../hooks/useAuth";
+// import { useAuth } from "../hooks/useAuth";
 
 function Profile() {
   const [edit, setEdit] = React.useState(false);
