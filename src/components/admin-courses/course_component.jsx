@@ -30,6 +30,8 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
     setShowQuiz(true);
   };
 
+  // const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
   // fetch images for all courses
   const fetchImages = async () => {
     const images = {};
@@ -47,6 +49,7 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
       } catch (error) {
         console.error("Error fetching image for course:", course.id, error);
       }
+      // await delay(1000); // Delay to prevent rate limiting
     }
     setImg(images); // Set all image data once fetched
   };
@@ -135,7 +138,7 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
             {/* Course Image */}
             <img
               src={img[course.id]}
-              alt={course.course_title}
+              alt={course.title}
               className="mb-4 h-40 w-full rounded-lg object-cover"
             />
 
