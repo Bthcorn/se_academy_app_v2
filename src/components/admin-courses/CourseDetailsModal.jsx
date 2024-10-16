@@ -13,9 +13,9 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
   const [editField, setEditField] = useState(null);
   const imgRef = useRef(null);
   const [imgFile, setImgFile] = useState(null);
+  const [categor
   const [img, setImg] = useState({});
-  const navigate = useNavigate();
-  const [categoryList, setCategoryList] = useState([]);
+  const navigate = useNavigate();yList, setCategoryList] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [addCategory, setAddCategory] = useState("");
 

@@ -29,6 +29,7 @@ import Quiz from "./pages/Quiz.jsx";
 import AuthProvider from "./hooks/AuthContext.jsx";
 import RouteGuard from "./hooks/RouteGuard.jsx";
 import CourseVideos from "./pages/admin/CourseVideos.jsx";
+import AdminGuard from "./hooks/AdminGuard.jsx";
 
 const router = createBrowserRouter([
   {
@@ -91,7 +92,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "dashboard",
-        element: <Dashboard />,
+        element: (
+          <AdminGuard>
+            <Dashboard />
+          </AdminGuard>
+        ),
       },
       {
         path: "users",
@@ -121,7 +126,11 @@ const router = createBrowserRouter([
       },
       {
         path: "courses",
-        element: <Courses />,
+        element: (
+          <AdminGuard>
+            <Courses />
+          </AdminGuard>
+        ),
       },
       {
         path: "course/:courseId/videos",

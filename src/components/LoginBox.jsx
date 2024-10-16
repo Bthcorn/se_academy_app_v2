@@ -6,7 +6,7 @@ const LoginBox = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, setIsAdmin } = useAuth();
 
   const validateForm = () => {
     return username && password;
@@ -32,8 +32,15 @@ const LoginBox = () => {
         const data = await response.json();
         if (data["success"] == true) {
           alert("Login successful");
+
           localStorage.setItem("token", response.headers.get("Authorization"));
+          // login with AuthContext ensuring user is logged in
           login(response.headers.get("Authorization"), data["id"]);
+          // check if user is admin
+          if (data["role"] == "admin") {
+            setIsAdmin(true);
+            navigate("/admin/dashboard");
+          }
           navigate("/");
         } else {
           alert("Error: " + data["error_msg"]);
