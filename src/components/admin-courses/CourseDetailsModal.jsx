@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import EditFieldModal from "./EditFieldModal";
 import axios from "axios";
 import { Config } from "../config";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { X } from "lucide-react";
 
 const parseIntField = ["enrolled", "total_video", "year"];
@@ -13,9 +13,8 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
   const [editField, setEditField] = useState(null);
   const imgRef = useRef(null);
   const [imgFile, setImgFile] = useState(null);
-  const [categor
+  const [categoryList, setCategoryList] = useState([]);
   const [img, setImg] = useState({});
-  const navigate = useNavigate();yList, setCategoryList] = useState([]);
   const [categoryData, setCategoryData] = useState([]);
   const [addCategory, setAddCategory] = useState("");
 

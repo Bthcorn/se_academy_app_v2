@@ -143,7 +143,7 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
             />
 
             {/* Course Info (Title and Status on the same line) */}
-            <div className="mb-4 flex items-center justify-between">
+            <div className="mb-4 flex items-start justify-between">
               <h3 className="text-xl font-bold text-yellow-400">
                 {course.title}
               </h3>
@@ -162,13 +162,17 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
 
             {/* Year and Duration */}
             <div className="mb-4 mt-4 flex items-center justify-between text-sm text-gray-300">
-              <span>{course.year}</span>
-              <span>{course.duration} hours</span>
+              <span>Year {course.year}</span>
+              <span>
+                {Math.floor(course.total_duration / 3600).toFixed(2)} hours
+              </span>
             </div>
 
             {/* Rating */}
             <div className="mb-4 flex items-center">
-              <div className="mr-2 text-yellow-400">{course.rating}</div>
+              <div className="mr-2 text-yellow-400">
+                {(course.rating || 5.0).toFixed(1)}
+              </div>
               <div className="text-gray-400">★</div>
             </div>
 

@@ -69,7 +69,9 @@ const VideoDetailsModal = ({ isOpen, onClose, id }) => {
             onTimeUpdate={() => console.log("Video playing...")}
           />
         ) : (
-          <div>Loading video...</div>
+          <div className="flex items-center justify-center">
+            Loading video...
+          </div>
         )}
         <button
           onClick={onClose}
