@@ -8,11 +8,11 @@ function ChapterIdPage() {
 
   useEffect(() => {
     console.log(pathname);
-  });
+  }, []);
 
   return (
     <div className="flex h-full w-full">
-      <VideoChapter chapter={chapterId} />
+      <VideoChapter chapterId={chapterId} />
     </div>
   );
 }

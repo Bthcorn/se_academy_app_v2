@@ -1,8 +1,63 @@
 import React from "react";
 import Button from "../components/Button";
 import CourseCard from "../components/CourseCard.jsx";
+import { useAuth } from "../hooks/useAuth.js";
+import axios from "axios";
+import { Config } from "../components/config.js";
 
 function MyCourses() {
+  const { userId } = useAuth();
+  const [courses, setCourses] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  const fetchEnrolledCourses = async (id) => {
+    try {
+      const response = await axios.get(
+        Config.API_URL + "/enrolled_course/get_enrolled_course/" + id,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+      const enrolledCourses = [];
+      if (response.data) {
+        console.log("Enrolled courses:", response.data);
+        for (const course of response.data) {
+          const courseResponse = await axios.get(
+            Config.API_URL + "/course/get_course/" + course.course_id,
+            {
+              headers: {
+                Authorization: Config.AUTH_TOKEN(),
+              },
+            },
+          );
+
+          if (courseResponse.data) {
+            enrolledCourses.push(courseResponse.data);
+          }
+        }
+        setCourses(enrolledCourses);
+      }
+    } catch (error) {
+      console.error("Error fetching enrolled courses:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchEnrolledCourses(userId);
+  }, [userId]);
+
+  if (loading) {
+    return (
+      <section className="flex h-screen items-center justify-center">
+        <p>Loading...</p>
+      </section>
+    );
+  }
+
   return (
     <section className="relative flex w-full flex-col items-start justify-start gap-2 rounded-md px-4 py-8 sm:items-center md:py-12 md:pb-8 lg:py-12 lg:pb-10">
       <h1 className="text-3xl font-semibold leading-relaxed text-foreground md:text-5xl">
@@ -33,8 +88,14 @@ function MyCourses() {
         id="display-courses"
         className="flex w-full max-w-5xl flex-wrap items-center justify-center gap-4 py-8 md:py-12 md:pb-8 lg:pb-10"
       >
-        <CourseCard progress={true} />
-        <CourseCard progress={true} />
+        {courses.map((course) => (
+          <CourseCard
+            key={course.id}
+            props={course}
+            progress={true}
+            link={"/course/" + course.id}
+          />
+        ))}
       </div>
       <div className="flex items-center justify-center gap-4">
         <Button label="Previous" variant="link" size={"sm"} />
