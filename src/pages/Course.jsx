@@ -1,9 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "../components/Button";
 import CourseCard from "../components/CourseCard.jsx";
 import CategoryCard from "../components/CategoryCard";
+import axios from "axios";
+import { Config } from "../components/config.js";
 
 function Course() {
+  const [courses, setCourses] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  const fetchCourses = async () => {
+    try {
+      const response = await axios.get(Config.API_URL + "/course/get_courses", {
+        headers: {
+          Authorization: Config.AUTH_TOKEN(),
+        },
+      });
+
+      if (response.data) {
+        setCourses(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="flex h-96 items-center justify-center">
+        <p className="text-lg font-light text-accent-foreground">Loading...</p>
+      </section>
+    );
+  }
+
   return (
     <section className="relative flex w-full flex-col items-start justify-start gap-2 rounded-md px-4 py-8 sm:items-center md:py-12 md:pb-8 lg:py-12 lg:pb-10">
       <h1 className="text-3xl font-semibold leading-relaxed text-foreground md:text-5xl">
@@ -35,8 +70,9 @@ function Course() {
         id="display-courses"
         className="flex w-full max-w-5xl flex-wrap items-center justify-center gap-4 py-8 md:py-12 md:pb-8 lg:pb-10"
       >
-        <CourseCard progress={null} />
-        <CourseCard progress={null} />
+        {courses.map((course) => (
+          <CourseCard key={course.id} props={course} progress={null} />
+        ))}
       </div>
       <div className="flex items-center justify-center gap-4">
         <Button label="Previous" variant="link" size={"sm"} />
