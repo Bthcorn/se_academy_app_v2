@@ -64,7 +64,7 @@ function MyCourses() {
         MY ENROLLED COURSES
       </h1>
       <p className="text-sm font-light text-accent-foreground md:text-base">
-        You have enrolled in 4 courses
+        You have enrolled in {courses.length || 0} courses
       </p>
       <div className="mt-8 inline-flex lg:mt-10">
         <input
