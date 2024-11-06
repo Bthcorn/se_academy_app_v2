@@ -7,6 +7,7 @@ import { Config } from "../components/config.js";
 
 function Course() {
   const [courses, setCourses] = React.useState([]);
+  const [categories, setCategories] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
   const fetchCourses = async () => {
@@ -19,6 +20,20 @@ function Course() {
 
       if (response.data) {
         setCourses(response.data);
+      }
+
+      const responseCategories = await axios.get(
+        Config.API_URL + "/course/get_categories",
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (responseCategories.data) {
+        console.log(responseCategories.data);
+        setCategories(responseCategories.data);
       }
     } catch (error) {
       console.error("Error fetching courses:", error);
@@ -85,16 +100,9 @@ function Course() {
           Categories
         </h2>
         <div className="flex max-w-5xl flex-wrap items-center justify-center gap-4">
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
+          {categories.map((category, index) => (
+            <CategoryCard key={index} title={category} />
+          ))}
         </div>
       </div>
     </section>

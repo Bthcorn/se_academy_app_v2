@@ -4,16 +4,100 @@ import Button from "../components/Button";
 import {
   ArrowRightCircleIcon,
   ArrowRightSquareIcon,
+  Book,
+  Crown,
+  Hand,
+  LogIn,
+  PackagePlus,
   SquareArrowOutUpRight,
+  Star,
+  ThumbsUp,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import CategoryCard from "../components/CategoryCard.jsx";
+import UserCard from "../components/UserCard.jsx";
+import axios from "axios";
+import { Config } from "../components/config.js";
+
+const steps = [
+  {
+    icon: <LogIn size={48} className="text-accent-foreground" />,
+    title: "Sign Up",
+    description: "Create an account to get started",
+  },
+  {
+    icon: <PackagePlus size={48} className="text-accent-foreground" />,
+    title: "Enroll in Courses",
+    description: "Choose from a wide range of courses",
+  },
+  {
+    icon: <Book size={48} className="text-accent-foreground" />,
+    title: "Study and Learn",
+    description: "Study and learn at your own pace",
+  },
+  {
+    icon: <Crown size={48} className="text-accent-foreground" />,
+    title: "Take Quizzes",
+    description: "Test your knowledge with quizzes",
+  },
+  {
+    icon: <Star size={48} className="text-accent-foreground" />,
+    title: "Earn Points",
+    description: "Earn points and level up",
+  },
+];
+
+const cores = [
+  {
+    title: "Quality Content",
+    description: "Our courses are designed by experts in the field",
+    icon: <ThumbsUp size={48} className="text-accent-foreground" />,
+  },
+  {
+    title: "Interactive Quizzes",
+    description: "Test your knowledge with interactive quizzes",
+    icon: <Hand size={48} className="text-accent-foreground" />,
+  },
+  {
+    title: "Study Materials",
+    description: "Get access to curated study materials",
+    icon: <Book size={48} className="text-accent-foreground" />,
+  },
+];
 
 function Home() {
+  const [categories, setCategories] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(
+        Config.API_URL + "/course/get_categories",
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (response.data) {
+        setCategories(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchCategories();
+  }, []);
+
   return (
     <section className="relative flex h-full w-full flex-col gap-2 px-4 py-8 md:py-12 md:pb-8 lg:pb-10">
       <div className="flex w-auto flex-col items-center pb-8 sm:flex-row lg:pb-12">
-        <div className="w-auto sm:w-1/2">
+        <div className="flex w-auto justify-center sm:w-1/2">
           <div className="flex flex-col gap-4 md:max-w-lg">
             <p className="text-xs text-accent-foreground md:text-sm">
               WELCOME TO SE ACADEMY
@@ -43,89 +127,129 @@ function Home() {
           <img
             src="/images/online-learning.svg"
             alt="SE Academy"
-            className="min-h-60 object-fill"
+            className="h-80 min-h-60 object-fill"
           ></img>
         </div>
       </div>
-      <div className="mb-8 min-h-dvh items-center rounded-md bg-secondary/50 px-4 py-8 backdrop:blur supports-[backdrop-filter]:bg-secondary/20 lg:mb-12">
-        <h2 className="mb-4 text-2xl font-semibold text-foreground md:text-3xl">
+      <div className="flex w-full flex-col items-center justify-center gap-2 md:pb-8 lg:pb-10">
+        <h2 className="text-2xl font-semibold leading-relaxed text-foreground md:text-3xl">
+          WHY CHOOSE US?
+        </h2>
+        <p className="text-sm font-light text-accent-foreground md:text-base">
+          We offer a wide range of courses to help you excel in your software
+          engineering career.
+        </p>
+      </div>
+      <div className="mb-8 flex w-full flex-col items-center justify-center gap-4 px-4 py-8 sm:flex-row">
+        {cores.map((core, index) => (
+          <div
+            key={index}
+            className="flex h-auto w-full flex-col items-center justify-center gap-2 rounded-md bg-secondary p-4 sm:h-full sm:w-1/4 md:w-1/5"
+          >
+            {core.icon}
+            <h3 className="text-center text-base font-semibold text-foreground md:text-lg">
+              {core.title}
+            </h3>
+            <p className="text-xs font-light text-accent-foreground">
+              {core.description}
+            </p>
+          </div>
+        ))}
+      </div>
+      <div className="flex w-full flex-col items-center justify-center gap-2 md:pb-8 lg:pb-10">
+        <h2 className="text-2xl font-semibold leading-relaxed text-foreground md:text-3xl">
+          HOW IT WORKS
+        </h2>
+        <p className="text-sm font-light text-accent-foreground md:text-base">
+          Get started in 5 easy steps
+        </p>
+      </div>
+      <div className="mb-8 flex w-full flex-col items-center justify-center gap-4 px-4 py-8 sm:flex-row">
+        {steps.map((step, index) => (
+          <div
+            key={index}
+            className="flex h-full w-full flex-col items-center justify-center gap-2 rounded-md bg-secondary p-4 sm:w-1/4 md:w-1/5"
+          >
+            {step.icon}
+            <h3 className="text-center text-base font-semibold text-foreground md:text-lg">
+              {step.title}
+            </h3>
+            <p className="text-xs font-light text-accent-foreground">
+              {step.description}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex w-full flex-col items-center justify-center gap-2 md:pb-8 lg:pb-10">
+        <h2 className="items-center text-center text-2xl font-semibold text-foreground md:text-3xl">
           POPULAR COURSES
         </h2>
-        <div className="flex flex-wrap items-center justify-start gap-4 lg:justify-evenly">
-          {/* <CourseCard progress={null} />
+        <p className="text-sm font-light text-accent-foreground md:text-base">
+          Our most popular courses
+        </p>
+      </div>
+      <div className="mb-8 items-center rounded-md px-4 py-8 lg:mb-12">
+        <div className="flex flex-wrap items-center justify-start gap-4 lg:justify-center">
+          {/* fetch three courses those have the most number of enrollment */}
           <CourseCard progress={null} />
-          <CourseCard progress={null} /> */}
+          <CourseCard progress={null} />
+          <CourseCard progress={null} />
         </div>
       </div>
-      <div className="mb-8 items-center rounded-md bg-secondary/50 px-4 py-8 backdrop-blur supports-[backdrop-filter]:bg-secondary/20 lg:mb-12">
-        <h2 className="mb-4 text-2xl font-semibold text-foreground md:text-3xl">
+      <div className="flex w-full flex-col items-center justify-center gap-2 md:pb-8 lg:pb-10">
+        <h2 className="items-center text-center text-2xl font-semibold text-foreground md:text-3xl">
           LEADER BOARD
         </h2>
-        <div className="flex flex-wrap items-center justify-start gap-4">
-          <div className="rounded-md border p-2 duration-200 hover:scale-105">
-            <img
-              src="https://avatar.iran.liara.run/public/42"
-              alt="Avatar"
-              className="h-16 w-16 rounded-full"
-            ></img>
-            <div className="flex flex-col items-start gap-2">
-              <h3 className="text-lg font-semibold text-foreground">
-                John Doe
-              </h3>
-              <ul className="list-inside list-disc">
-                <li className="text-xs font-bold text-primary">Rank: 1</li>
-                <li className="text-xs text-accent-foreground">Points: 100</li>
-                <li className="text-xs text-accent-foreground">Courses: 5</li>
-                <li className="text-xs text-accent-foreground">Badges: 3</li>
-                <li className="text-xs text-accent-foreground">Level: 5</li>
-                <li className="text-xs text-accent-foreground">Quizzes: 100</li>
-              </ul>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button label="view" variant="link" size="sm" />
-              <Button label="Message" variant="link" size="sm" />
-            </div>
-          </div>
-          <div className="rounded-md border p-2 duration-200 hover:scale-105">
-            <img
-              src="https://avatar.iran.liara.run/public/42"
-              alt="Avatar"
-              className="h-16 w-16 rounded-full"
-            ></img>
-            <div className="flex flex-col items-start gap-2">
-              <h3 className="text-lg font-semibold text-foreground">
-                John Doe
-              </h3>
-              <ul className="list-inside list-disc">
-                <li className="text-xs font-bold text-primary">Rank: 1</li>
-                <li className="text-xs text-accent-foreground">Points: 100</li>
-                <li className="text-xs text-accent-foreground">Courses: 5</li>
-                <li className="text-xs text-accent-foreground">Badges: 3</li>
-                <li className="text-xs text-accent-foreground">Level: 5</li>
-                <li className="text-xs text-accent-foreground">Quizzes: 100</li>
-              </ul>
-            </div>
-            <div className="flex items-center gap-2">
-              <Button label="view" variant="link" size="sm" />
-              <Button label="Message" variant="link" size="sm" />
-            </div>
-          </div>
-          {/* <div className="flex items-center gap-2">
-              <Info size={24} />
-              <h3 className="text-lg font-semibold text-foreground">
-                No data available
-              </h3>
-            </div> */}
+        <p className="text-sm font-light text-accent-foreground md:text-base">
+          Top students on SE Academy
+        </p>
+      </div>
+      <div className="mb-8 items-center rounded-md px-4 py-8 lg:mb-12">
+        <div className="flex flex-wrap items-center justify-start gap-4 lg:justify-center">
+          {/* Ordered by points from backend */}
+          <UserCard
+            prop={{
+              firstname: "John",
+              lastname: "Doe",
+              score: 100,
+              level: "Beginner",
+              study_hours: 10,
+            }}
+          />
+          <UserCard
+            prop={{
+              firstname: "Jane",
+              lastname: "Doe",
+              score: 200,
+              level: "Intermediate",
+              study_hours: 20,
+            }}
+          />
+          <UserCard
+            prop={{
+              firstname: "Alice",
+              lastname: "Doe",
+              score: 300,
+              level: "Advanced",
+              study_hours: 30,
+            }}
+          />
         </div>
       </div>
-      <div className="mb-8 items-center rounded-md bg-secondary/50 px-4 py-8 backdrop:blur supports-[backdrop-filter]:bg-secondary/20 lg:mb-12">
-        <h2 className="mb-4 text-2xl font-semibold text-foreground md:text-3xl">
-          BROWSE ONLINE COURSES
+      <div className="flex w-full flex-col items-center justify-center gap-2 md:pb-8 lg:pb-10">
+        <h2 className="items-center text-center text-2xl font-semibold text-foreground md:text-3xl">
+          BROWSE BY CATEGORY
         </h2>
+        <p className="text-sm font-light text-accent-foreground md:text-base">
+          Explore courses by category
+        </p>
+      </div>
+      <div className="mb-8 items-center rounded-md px-4 py-8 lg:mb-12">
         <div className="flex flex-wrap items-center justify-center gap-4">
-          <CategoryCard />
-          <CategoryCard />
-          <CategoryCard />
+          {categories.map((category, index) => (
+            <CategoryCard key={index} title={category} />
+          ))}
         </div>
         <div className="mt-4 flex justify-center">
           <Link to={"/courses"}>
