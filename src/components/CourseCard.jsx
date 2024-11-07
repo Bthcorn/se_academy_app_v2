@@ -59,7 +59,25 @@ const CourseCard = ({ props, progress, link }) => {
         </div>
       </div>
       {progress !== null ? (
-        <div className="flex w-full items-center">Complete %</div>
+        <div>
+          <div className="flex w-full items-center">Complete %</div>
+          <div className="flex w-full flex-col items-center justify-center gap-2">
+            <div className="h-2 w-full rounded-full bg-secondary-color4">
+              <div
+                className="h-full rounded-full bg-primary"
+                style={{ width: `${progress}%` }}
+              ></div>
+            </div>
+            <div className="flex w-full items-center">
+              <Link
+                to={link}
+                className="inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-sm bg-secondary px-4 py-2 text-sm font-medium transition-colors hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary"
+              >
+                Continue
+              </Link>
+            </div>
+          </div>
+        </div>
       ) : (
         <div className="flex w-full items-center justify-end">
           <Link

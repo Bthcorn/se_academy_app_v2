@@ -3,12 +3,14 @@ import { Navigate, Outlet, useParams } from "react-router-dom";
 import CourseSideBar from "../components/course-sidebar/CourseSideBar";
 import axios from "axios";
 import { Config } from "../components/config";
+import { useAuth } from "../hooks/useAuth";
 
 function CourseIdPage({ title }) {
   const { courseId } = useParams();
   const [course, setCourse] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [enrolled, setEnrolled] = React.useState(false);
+  const { userId } = useAuth();
 
   const fetchCourse = async (id) => {
     try {
@@ -21,7 +23,7 @@ function CourseIdPage({ title }) {
         },
       );
 
-      await fetchEnrolledCourses(id);
+      await fetchEnrolledCourses(userId, id);
 
       if (response.data) {
         setCourse(response.data);
@@ -34,10 +36,14 @@ function CourseIdPage({ title }) {
   };
 
   // check if user is enrolled in the course
-  const fetchEnrolledCourses = async (id) => {
+  const fetchEnrolledCourses = async (userId, courseId) => {
     try {
       const response = await axios.get(
-        Config.API_URL + "/user/" + id + "/courses",
+        Config.API_URL +
+          "/enrolled_course/check_enrolled/" +
+          userId +
+          "/" +
+          courseId,
         {
           headers: {
             Authorization: Config.AUTH_TOKEN(),
@@ -45,7 +51,7 @@ function CourseIdPage({ title }) {
         },
       );
 
-      if (response.data) {
+      if (response.data.success === true) {
         setEnrolled(true);
       }
     } catch (error) {
@@ -54,7 +60,6 @@ function CourseIdPage({ title }) {
   };
 
   useEffect(() => {
-    console.log(courseId);
     fetchCourse(courseId);
   }, []);
 
@@ -71,7 +76,7 @@ function CourseIdPage({ title }) {
       <CourseSideBar
         title={course.title}
         courseId={courseId}
-        isEnrolled={false}
+        isEnrolled={enrolled}
       />
       <div>
         <Outlet />

@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useAuth } from "./useAuth";
-import { Navigate, Outlet } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 function RouteGuard({ children }) {
   const { isLoggedIn } = useAuth();
