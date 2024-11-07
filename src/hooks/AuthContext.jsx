@@ -80,14 +80,14 @@ const AuthProvider = ({ children }) => {
 
   const value = {
     isLoggedIn,
+    isAdmin,
+    token,
+    user,
+    userId,
     login,
     logout,
-    token,
-    isAdmin,
-    user,
     setIsAdmin,
     getUserId,
-    userId,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
