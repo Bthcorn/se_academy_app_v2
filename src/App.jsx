@@ -136,6 +136,15 @@ const router = createBrowserRouter([
         path: "course/:courseId/videos",
         element: <CourseVideos />,
       },
+      {
+        path: "category",
+        children: [
+          {
+            path: ":categoryId",
+            element: <Category />,
+          },
+        ],
+      },
     ],
   },
   {
