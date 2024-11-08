@@ -67,18 +67,17 @@ const cores = [
 
 function Home() {
   const [categories, setCategories] = React.useState([]);
+  const [courses, setCourses] = React.useState([]);
+  const [leaderboard, setLeaderboard] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(
-        Config.API_URL + "/course/get_categories",
-        {
-          headers: {
-            Authorization: Config.AUTH_TOKEN(),
-          },
+      const response = await axios.get(Config.API_URL + "/course/category", {
+        headers: {
+          Authorization: Config.AUTH_TOKEN(),
         },
-      );
+      });
 
       if (response.data) {
         setCategories(response.data);
@@ -90,8 +89,49 @@ function Home() {
     }
   };
 
+  const fetchPopularCourse = async () => {
+    try {
+      const response = await axios.get(Config.API_URL + "/course/top_courses", {
+        headers: {
+          Authorization: Config.AUTH_TOKEN(),
+        },
+      });
+
+      if (response.data) {
+        setCourses(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching popular courses:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchLeaderboard = async () => {
+    try {
+      const response = await axios.get(
+        Config.API_URL + "/user/top/get_leaderboard",
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (response.data) {
+        setLeaderboard(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching leaderboard:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   React.useEffect(() => {
     fetchCategories();
+    fetchPopularCourse();
+    fetchLeaderboard();
   }, []);
 
   return (
@@ -192,9 +232,9 @@ function Home() {
       <div className="mb-8 items-center rounded-md px-4 py-8 lg:mb-12">
         <div className="flex flex-wrap items-center justify-start gap-4 lg:justify-center">
           {/* fetch three courses those have the most number of enrollment */}
-          <CourseCard progress={null} />
-          <CourseCard progress={null} />
-          <CourseCard progress={null} />
+          {courses.map((course, index) => (
+            <CourseCard key={index} props={course} progress={null} />
+          ))}
         </div>
       </div>
       <div className="flex w-full flex-col items-center justify-center gap-2 md:pb-8 lg:pb-10">
@@ -208,33 +248,9 @@ function Home() {
       <div className="mb-8 items-center rounded-md px-4 py-8 lg:mb-12">
         <div className="flex flex-wrap items-center justify-start gap-4 lg:justify-center">
           {/* Ordered by points from backend */}
-          <UserCard
-            prop={{
-              firstname: "John",
-              lastname: "Doe",
-              score: 100,
-              level: "Beginner",
-              study_hours: 10,
-            }}
-          />
-          <UserCard
-            prop={{
-              firstname: "Jane",
-              lastname: "Doe",
-              score: 200,
-              level: "Intermediate",
-              study_hours: 20,
-            }}
-          />
-          <UserCard
-            prop={{
-              firstname: "Alice",
-              lastname: "Doe",
-              score: 300,
-              level: "Advanced",
-              study_hours: 30,
-            }}
-          />
+          {leaderboard.map((user, index) => (
+            <UserCard key={index} prop={user} />
+          ))}
         </div>
       </div>
       <div className="flex w-full flex-col items-center justify-center gap-2 md:pb-8 lg:pb-10">
@@ -248,7 +264,9 @@ function Home() {
       <div className="mb-8 items-center rounded-md px-4 py-8 lg:mb-12">
         <div className="flex flex-wrap items-center justify-center gap-4">
           {categories.map((category, index) => (
-            <CategoryCard key={index} title={category} />
+            <Link to={`/category/${category.id}`} key={index}>
+              <CategoryCard key={index} title={category.name} />
+            </Link>
           ))}
         </div>
         <div className="mt-4 flex justify-center">
