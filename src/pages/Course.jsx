@@ -4,6 +4,7 @@ import CourseCard from "../components/CourseCard.jsx";
 import CategoryCard from "../components/CategoryCard";
 import axios from "axios";
 import { Config } from "../components/config.js";
+import { Link } from "react-router-dom";
 
 function Course() {
   const [courses, setCourses] = React.useState([]);
@@ -23,7 +24,7 @@ function Course() {
       }
 
       const responseCategories = await axios.get(
-        Config.API_URL + "/course/get_categories",
+        Config.API_URL + "/course/category",
         {
           headers: {
             Authorization: Config.AUTH_TOKEN(),
@@ -101,7 +102,9 @@ function Course() {
         </h2>
         <div className="flex max-w-5xl flex-wrap items-center justify-center gap-4">
           {categories.map((category, index) => (
-            <CategoryCard key={index} title={category} />
+            <Link to={`/category/${category.id}`} key={index}>
+              <CategoryCard key={index} title={category.name} />
+            </Link>
           ))}
         </div>
       </div>
