@@ -66,7 +66,7 @@ const router = createBrowserRouter([
             element: <ChapterIdPage />,
           },
           {
-            path: "quiz/:quizId",
+            path: "quiz",
             element: <Quiz />,
           },
         ],

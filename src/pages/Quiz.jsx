@@ -7,88 +7,40 @@ const quizData = [
   {
     id: 1,
     question: "What is the capital of France?",
-    options: [
-      {
-        id: 1,
-        text: "Paris",
-      },
-      {
-        id: 2,
-        text: "London",
-      },
-      {
-        id: 3,
-        text: "Berlin",
-      },
-      {
-        id: 4,
-        text: "Madrid",
-      },
-    ],
+    options: ["Paris", "London", "Berlin", "Madrid"],
+    correctAnswers: 0,
   },
   {
     id: 2,
     question: "What is the largest planet in our solar system?",
-    options: [
-      {
-        id: 1,
-        text: "Jupiter",
-      },
-      {
-        id: 2,
-        text: "Saturn",
-      },
-      {
-        id: 3,
-        text: "Neptune",
-      },
-      {
-        id: 4,
-        text: "Uranus",
-      },
-    ],
+    options: ["Jupiter", "Saturn", "Mars", "Earth"],
+    correctAnswers: 2,
   },
   {
     id: 3,
     question: "What is the largest mammal?",
-    options: [
-      {
-        id: 1,
-        text: "Blue Whale",
-      },
-      {
-        id: 2,
-        text: "Elephant",
-      },
-      {
-        id: 3,
-        text: "Giraffe",
-      },
-      {
-        id: 4,
-        text: "Kangaroo",
-      },
-    ],
+    options: ["Blue Whale", "Elephant", "Giraffe", "Hippopotamus"],
+    correctAnswers: 0,
   },
 ];
 
-const correctAnswers = [
-  {
-    id: 1,
-    text: "Paris",
-    answer: 1,
-  },
-  {
-    id: 2,
-    text: "Jupiter",
-    answer: 1,
-  },
-  {
-    id: 3,
-    text: "Blue Whale",
-    answer: 1,
-  },
-];
+// const correctAnswers = [
+//   {
+//     id: 1,
+//     text: "Paris",
+//     answer: 1,
+//   },
+//   {
+//     id: 2,
+//     text: "Jupiter",
+//     answer: 1,
+//   },
+//   {
+//     id: 3,
+//     text: "Blue Whale",
+//     answer: 1,
+//   },
+// ];
 
 function Quiz() {
   const { quizId, courseId } = useParams();
@@ -104,8 +56,11 @@ function Quiz() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setShowAnswer(true);
-    //fetch request to submit answers
-    //fetch get the correct answers
+    console.log(answers);
+    // fetch request to submit answers
+    // fetch get the correct answers or compare the answers
+    // result the score and show the correct answers
+    // store the submission in the database
   };
 
   const handleReset = () => {
@@ -120,14 +75,19 @@ function Quiz() {
         <Link
           to={{
             pathname: `/course/${courseId}`,
-            state: state,
           }}
         >
-          <Button label={"Back"}></Button>
+          <Button variant={"link"} label={"Back"}></Button>
         </Link>
-        <h1>Quiz</h1>
       </div>
-      <div className="flex flex-col gap-4">
+      <div className="hidden w-full justify-between md:flex">
+        <h1 className="text-2xl font-semibold">Quiz</h1>
+        <p className="text-secondary-color5">
+          Total Questions: {quizData.length}
+        </p>
+        <p className="text-secondary-color5">Recent score: 0/3</p>
+      </div>
+      <div className="mb-4 mt-4 flex flex-col gap-4">
         {quizData.map((quiz) => (
           <div key={quiz.id} className="w-full">
             <h1>{quiz.question}</h1>
@@ -139,42 +99,41 @@ function Quiz() {
               onChange={(e) => {
                 setAnswers({
                   ...answers,
-                  [quiz.id]: e.target.value,
+                  [quiz.id]: parseInt(e.target.value),
                 });
               }}
             >
               <option value="">Select an answer</option>
-              {quiz.options.map((option) => (
-                <option key={option.id} value={option.id}>
-                  {option.text}
+              {quiz.options.map((option, index) => (
+                <option key={index} value={index}>
+                  {option}
                 </option>
               ))}
             </select>
             {showAnswer && (
               <div>
                 <p className="text-secondary-color5">
-                  Correct Answer: {correctAnswers[quiz.id - 1].text}
+                  Your Answer: {quiz.options[answers[quiz.id]]}
+                </p>
+                <p className="text-secondary-color5">
+                  Correct Answer: {quiz.options[quiz.correctAnswers]}
                 </p>
               </div>
             )}
           </div>
         ))}
-        {/* {showAnswer ? (
-          <div>
-            {correctAnswers.map((answer) => (
-              <div key={answer.id}>
-                <p>{answer.answer}</p>
-                <h1>{answer.text}</h1>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div></div>
-        )} */}
       </div>
-      <div className="flex w-full justify-end">
-        <Button label={"submit"} onClick={handleSubmit}></Button>
-        <Button label={"reset"} onClick={handleReset}></Button>
+      <div className="flex w-full justify-end gap-4">
+        <Button
+          label={"submit"}
+          variant={"gradient"}
+          onClick={handleSubmit}
+        ></Button>
+        <Button
+          label={"reset"}
+          variant={"outline"}
+          onClick={handleReset}
+        ></Button>
       </div>
     </div>
   );
