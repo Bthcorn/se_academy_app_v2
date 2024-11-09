@@ -82,7 +82,11 @@ const CourseSideBarContent = ({ courseId, isEnrolled }) => {
           href={`chapter/${item.id}`}
         />
       ))}
-      <CourseSideBarItem label="Quiz" href="quiz" enrolled={isEnrolled} />
+      <CourseSideBarItem
+        label="Quiz"
+        href={`/course/${courseId}/quiz`}
+        enrolled={isEnrolled}
+      />
     </>
   );
 };
