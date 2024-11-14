@@ -1,9 +1,31 @@
 import React, { useCallback, useEffect, useState } from "react";
-import AddQuizModal from "./QuizModal";
+import AddQuizModal from "./quiz/QuizModal";
 import CourseDetailsModal from "./CourseDetailsModal";
 import AddCourseModal from "./AddCourseModal";
 import { Config } from "../config";
 import axios from "axios";
+import { Star, Timer } from "lucide-react";
+
+const quiz = [
+  {
+    id: 1,
+    question: "What is the capital of France?",
+    choice: ["Paris", "London", "Berlin", "Madrid"],
+    correct_answer: 0,
+  },
+  {
+    id: 2,
+    question: "What is the capital of Germany?",
+    choice: ["Paris", "London", "Berlin", "Madrid"],
+    correct_answers: 2,
+  },
+  {
+    id: 3,
+    question: "What is the capital of Spain?",
+    choice: ["Paris", "London", "Berlin", "Madrid"],
+    correct_answers: 3,
+  },
+];
 
 const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -157,19 +179,24 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
                 {course.status}
               </span>
             </div>
-
-            <p className="text-sm text-gray-400">{course.subjectid}</p>
+            <p className="text-sm text-gray-400">ID: {course.subjectid}</p>
+            <p className="text-sm text-gray-400">Lecturer: {course.lecturer}</p>
+            <p className="text-sm text-gray-400">
+              Detail: {course.description}
+            </p>
 
             {/* Year and Duration */}
-            <div className="mb-4 mt-4 flex items-center justify-between text-sm text-gray-300">
-              <span>{course.year}</span>
-              <span>{course.duration} hours</span>
+            <div className="mb-4 mt-4 flex flex-col items-start justify-start text-sm text-gray-300">
+              <p>Year: {course.year}</p>
+              <p className="inline-flex">
+                Duration: {course.duration || 0} hours
+              </p>
+              <p>Category: {course.category_list}</p>
             </div>
 
             {/* Rating */}
-            <div className="mb-4 flex items-center">
-              <div className="mr-2 text-yellow-400">{course.rating}</div>
-              <div className="text-gray-400">★</div>
+            <div className="mb-4 flex flex-wrap items-center">
+              <p className="text-yellow-400">Rating: {course.rating || 5.0}</p>
             </div>
 
             {/* View Details Button */}
@@ -208,7 +235,7 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
           <AddQuizModal
             isOpen={showQuiz}
             close={() => setShowQuiz(false)}
-            quizzes={selectedCourse.quiz}
+            quizzes={quiz}
             correctAnswers={selectedCourse.correctAnswers}
             // onAddQuestion={addQuestion}
           />
