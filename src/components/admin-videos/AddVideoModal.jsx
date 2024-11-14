@@ -28,6 +28,10 @@ const AddVideoModal = ({ isOpen, onClose, OnAddVideo, courseId }) => {
             "Content-Type": "multipart/form-data",
             Authorization: Config.AUTH_TOKEN(),
           },
+          onUploadProgress: (progressEvent) => {
+            const progress = (progressEvent.loaded / progressEvent.total) * 100;
+            document.getElementById("videoProgress").value = progress;
+          },
         },
       );
 
@@ -104,6 +108,12 @@ const AddVideoModal = ({ isOpen, onClose, OnAddVideo, courseId }) => {
           className="mb-4 w-full rounded-lg p-2"
           ref={VideoRef}
         />
+        <progress
+          id="videoProgress"
+          value="0"
+          max="100"
+          className="mb-4 w-full"
+        ></progress>
         <div className="inline-flex gap-2">
           <button
             onClick={handleUploadVideo}
