@@ -1,6 +1,27 @@
 import React, { useState } from "react";
 import AddQuizModal from "./AddQuizModal";
 
+const quiz = [
+  {
+    id: 1,
+    question: "What is the capital of France?",
+    choice: ["Paris", "London", "Berlin", "Madrid"],
+    correct_answer: 0,
+  },
+  {
+    id: 2,
+    question: "What is the capital of Germany?",
+    choice: ["Paris", "London", "Berlin", "Madrid"],
+    correct_answers: 2,
+  },
+  {
+    id: 3,
+    question: "What is the capital of Spain?",
+    choice: ["Paris", "London", "Berlin", "Madrid"],
+    correct_answers: 3,
+  },
+];
+
 const QuizModal = ({
   isOpen,
   close,
@@ -32,37 +53,43 @@ const QuizModal = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="w-full max-w-lg rounded-lg bg-[#1E293B] p-8 text-white shadow-lg" style={{ maxHeight: '95vh' }}>
+      <div
+        className="w-full max-w-lg rounded-lg bg-[#1E293B] p-8 text-white shadow-lg"
+        style={{ maxHeight: "95vh" }}
+      >
         <h2 className="mb-6 text-2xl font-bold">Quiz</h2>
-  
-        <div className="mb-4 overflow-auto bg-[#16202A] rounded-lg p-4" style={{ maxHeight: '40vh' }}>
-          {quizzes.map((quiz, index) => (
+
+        <div
+          className="mb-4 overflow-auto rounded-lg bg-[#16202A] p-4"
+          style={{ maxHeight: "40vh" }}
+        >
+          {quiz.map((quiz, index) => (
             <div
               key={quiz.id}
-              className={`mb-6 p-4 cursor-pointer ${editMode ? "border-4 border-yellow-400 rounded-xl shadow-md transition-all duration-300 ease-in-out" : "border border-transparent"}`}
+              className={`mb-6 cursor-pointer p-4 ${editMode ? "rounded-xl border-4 border-yellow-400 shadow-md transition-all duration-300 ease-in-out" : "border border-transparent"}`}
               onClick={editMode ? () => openEditQuiz(quiz) : null}
             >
               <p className="font-bold">
                 {index + 1}. {quiz.question}
               </p>
               <div className="flex flex-col space-y-2">
-                {quiz.options.map((option) => (
+                {quiz.choice.map((option, index) => (
                   <div
-                    key={option.id}
+                    key={index}
                     className={`rounded-md p-2 ${
-                      option.id === getCorrectAnswer(quiz.id)
+                      index === quiz.correct_answer
                         ? "bg-green-500"
                         : "bg-[#404956]"
                     }`}
                   >
-                    {option.text}
+                    {option}
                   </div>
                 ))}
               </div>
             </div>
           ))}
         </div>
-  
+
         <button
           className="mt-4 flex w-full flex-col items-center justify-center rounded-lg border-2 border-dotted border-gray-400 p-4 shadow-lg transition-shadow duration-200 hover:shadow-xl"
           onClick={() => setShowAddQuiz(true)}
@@ -83,14 +110,14 @@ const QuizModal = ({
           </div>
           <span className="text-lg font-bold text-gray-300">Add Question</span>
         </button>
-  
+
         <button
           onClick={toggleEditMode}
-          className="mt-10 w-full mb-4 rounded bg-yellow-600 px-4 py-2 font-bold text-white hover:bg-yellow-700"
+          className="mb-4 mt-10 w-full rounded bg-yellow-600 px-4 py-2 font-bold text-white hover:bg-yellow-700"
         >
           {editMode ? "Stop Editing" : "Edit Quiz"}
         </button>
-  
+
         <button
           onClick={close}
           className="w-full rounded-md bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"
@@ -98,11 +125,11 @@ const QuizModal = ({
           Close
         </button>
       </div>
-  
+
       {showAddQuiz && (
         <AddQuizModal
           isOpen={showAddQuiz}
-          quiz={editQuiz} 
+          quiz={editQuiz}
           correctAnswer={editQuiz ? getCorrectAnswer(editQuiz.id) : null}
           onClose={() => {
             setShowAddQuiz(false);
@@ -113,7 +140,6 @@ const QuizModal = ({
       )}
     </div>
   );
-  
 };
 
 export default QuizModal;
