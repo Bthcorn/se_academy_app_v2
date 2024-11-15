@@ -29,8 +29,8 @@ const CourseCard = ({ props, progress, link }) => {
         <div className="line-clamp-1 w-full font-medium transition group-hover:text-primary sm:min-w-16 md:text-base">
           {props.title}
         </div>
-        <p className="text-xs text-muted-foreground">
-          Category: {props.category_list.join(", ") || "Category"}
+        <p className="line-clamp-1 text-xs text-muted-foreground">
+          Category: {props.category_list.join(", ")}
         </p>
         {/* rate */}
         <div className="flex items-center gap-x-1 text-xs text-card-foreground">
@@ -52,15 +52,14 @@ const CourseCard = ({ props, progress, link }) => {
           Lecturer: {props.lecturer || "Lecturer Name"}
         </p>
       </div>
-      <div className="my-3 flex items-center gap-x-2 text-sm md:text-xs">
+      <div className="mb-3 flex items-center gap-x-2 text-sm md:text-xs">
         <div className="flex items-center gap-x-1 text-card-foreground">
           <BookOpen size={16} />
           <span>{props.total_video || 0}</span>
         </div>
       </div>
       {progress !== null ? (
-        <div>
-          <div className="flex w-full items-center">Complete %</div>
+        <div className="mt-auto">
           <div className="flex w-full flex-col items-center justify-center gap-2">
             <div className="h-2 w-full rounded-full bg-secondary-color4">
               <div
@@ -79,7 +78,7 @@ const CourseCard = ({ props, progress, link }) => {
           </div>
         </div>
       ) : (
-        <div className="flex w-full items-center justify-end">
+        <div className="mt-auto flex w-full items-center justify-end">
           <Link
             to={`/course/${props.id}`}
             className="inline-flex h-10 w-full items-center justify-center whitespace-nowrap rounded-sm bg-secondary px-4 py-2 text-sm font-medium transition-colors hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary"
