@@ -4,7 +4,6 @@ import CourseCard from "../components/CourseCard.jsx";
 import CategoryCard from "../components/CategoryCard";
 import axios from "axios";
 import { Config } from "../components/config.js";
-import { Link } from "react-router-dom";
 
 function Course() {
   const [courses, setCourses] = React.useState([]);
@@ -102,9 +101,11 @@ function Course() {
         </h2>
         <div className="flex max-w-5xl flex-wrap items-center justify-center gap-4">
           {categories.map((category, index) => (
-            <Link to={`/category/${category.id}`} key={index}>
-              <CategoryCard key={index} title={category.name} />
-            </Link>
+            <CategoryCard
+              key={index}
+              title={category.name}
+              link={`/category/${category.id}`}
+            />
           ))}
         </div>
       </div>

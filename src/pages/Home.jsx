@@ -264,9 +264,11 @@ function Home() {
       <div className="mb-8 items-center rounded-md px-4 py-8 lg:mb-12">
         <div className="flex flex-wrap items-center justify-center gap-4">
           {categories.map((category, index) => (
-            <Link to={`/category/${category.id}`} key={index}>
-              <CategoryCard key={index} title={category.name} />
-            </Link>
+            <CategoryCard
+              key={index}
+              title={category.name}
+              link={`/category/${category.id}`}
+            />
           ))}
         </div>
         <div className="mt-4 flex justify-center">
