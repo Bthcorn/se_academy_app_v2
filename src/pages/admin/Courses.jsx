@@ -6,7 +6,7 @@ import { Config } from "../../components/config";
 const sampleCourses = [
   {
     id: "C101",
-    title: "React Basics",
+    title: "React Basics (With Achievement)",
     subjectid: "WEB101",
     year: "2024",
     image:
@@ -47,7 +47,27 @@ const sampleCourses = [
       { id: 1, text: "A JavaScript syntax extension", answer: 1 },
       { id: 2, text: "setState", answer: 1 },
     ],
+    achievements: [
+      {
+        id: "A001",
+        course_id: "C101",
+        title: "React Beginner Badge",
+        description:
+          "Awarded for completing the React Basics course with a score above 80%.",
+        badge:
+          "https://png.pngtree.com/element_our/20200702/ourmid/pngtree-golden-red-ribbon-badge-illustration-image_2286597.jpg",
+      },
+      {
+        id: "A002",
+        course_id: "C101",
+        title: "React Quiz Master",
+        description: "Achieved by scoring full marks in all course quizzes.",
+        badge:
+          "https://png.pngtree.com/element_our/20200702/ourmid/pngtree-golden-red-ribbon-badge-illustration-image_2286597.jpg",
+      },
+    ],
   },
+  
   {
     id: "C103",
     title: "Advanced JavaScript",
