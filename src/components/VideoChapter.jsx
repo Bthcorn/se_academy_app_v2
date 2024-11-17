@@ -67,7 +67,7 @@ const VideoChapter = ({ chapterId }) => {
     try {
       const response = await axios.get(
         Config.API_URL +
-          "/enrolled_course/get_enrolled_course_video/" +
+          "/enrolled_course/get_enrolled_course_video_detail/" +
           userId +
           "/" +
           chapterId,
