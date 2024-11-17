@@ -67,7 +67,7 @@ const sampleCourses = [
       },
     ],
   },
-  
+
   {
     id: "C103",
     title: "Advanced JavaScript",
@@ -256,7 +256,6 @@ export default function Courses() {
 
       if (response.status === 200) {
         setCourses(response.data);
-        console.log("fetchCourses", courses);
       }
     } catch (error) {
       console.error(error);
