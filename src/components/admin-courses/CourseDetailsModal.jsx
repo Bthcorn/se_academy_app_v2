@@ -409,6 +409,61 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
               )}
             </div>
 
+            <div
+              key={"achievement"}
+              className={`cursor-pointer p-2 ${
+                editMode
+                  ? "rounded-lg border-2 border-yellow-400 shadow-sm transition-all duration-300 ease-in-out"
+                  : "border border-transparent"
+              }`}
+              onClick={
+                editMode
+                  ? () =>
+                      openEditModal("achievements", selectedCourse.achievements)
+                  : undefined
+              }
+            >
+              {editMode ? (
+                <div>
+                  <strong>Achievements:</strong>
+                  <ul className="list-disc pl-4">
+                    {selectedCourse.achievements?.map((achievement) => (
+                      <li
+                        key={achievement.id}
+                        className="flex items-center gap-4"
+                      >
+                        <span>{achievement.title}</span>
+                        <img
+                          src={achievement.badge}
+                          alt={`${achievement.title} Badge`}
+                          className="h-8 w-8 rounded-full object-cover"
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <div>
+                  <strong>Achievements:</strong>
+                  <ul className="list-disc pl-4">
+                    {selectedCourse.achievements?.map((achievement) => (
+                      <li
+                        key={achievement.id}
+                        className="flex items-center gap-4"
+                      >
+                        <span>{achievement.title}</span>
+                        <img
+                          src={achievement.badge}
+                          alt={`${achievement.title} Badge`}
+                          className="h-8 w-8 rounded-full object-cover"
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
             <div className="cursor-pointer p-2">
               <p className="text-sm">
                 <strong>created At: </strong>
