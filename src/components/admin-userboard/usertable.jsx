@@ -6,7 +6,7 @@ const UserTable = ({ users }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
-  const [filterYear, setFilterYear] = useState("");
+  const [filterRole, setFilterRole] = useState("");
   const [expandedUserId, setExpandedUserId] = useState(null); // To track which user row is expanded
   const [isEditMode, setIsEditMode] = useState(false); // Track if edit mode is active
   const usersPerPage = 10;
@@ -23,7 +23,7 @@ const UserTable = ({ users }) => {
         : true,
     )
     .filter((user) =>
-      filterYear ? user.year.toLowerCase() === filterYear.toLowerCase() : true,
+      filterRole ? user.role.toLowerCase() === filterRole.toLowerCase() : true,
     );
 
   // Calculate the total number of pages
@@ -52,9 +52,9 @@ const UserTable = ({ users }) => {
     setCurrentPage(1); // Reset to page 1 when filtering
   };
 
-  // Handler for filtering by year
-  const handleYearFilterChange = (event) => {
-    setFilterYear(event.target.value);
+  // Handler for filtering by role
+  const handleRoleFilterChange = (event) => {
+    setFilterRole(event.target.value);
     setCurrentPage(1); // Reset to page 1 when filtering
   };
 
@@ -96,16 +96,16 @@ const UserTable = ({ users }) => {
         </select>
 
         <select
-          value={filterYear}
-          onChange={handleYearFilterChange}
+          value={filterRole}
+          onChange={handleRoleFilterChange}
           className="rounded-md bg-[#2E3A47] px-4 py-2 text-white"
         >
-          <option value="">Filter by year</option>
+          <option value="">Filter by role</option>
           <option value="Freshman">Freshman</option>
           <option value="Sophomore">Sophomore</option>
           <option value="Junior">Junior</option>
           <option value="Senior">Senior</option>
-          <option value="Post-Grad">Post-Grad</option>
+          <option value="Graduated">Graduated</option>
         </select>
 
         {/* Edit Button */}
@@ -122,7 +122,7 @@ const UserTable = ({ users }) => {
           <tr className="text-left text-gray-400">
             <th className="py-2">#</th> {/* Index */}
             <th className="py-2">User</th>
-            <th className="py-2">Year</th>
+            <th className="py-2">Role</th>
             <th className="py-2">Status</th>
             <th className="py-2">Email</th>
             <th className="py-2 text-center">Actions</th>
@@ -130,7 +130,7 @@ const UserTable = ({ users }) => {
         </thead>
         <tbody>
           {currentUsers.map((user, index) => (
-            <React.Fragment key={user.user_id}>
+            <React.Fragment key={user.id}>
               <tr className="border-b border-gray-600">
                 {/* Index column */}
                 <td className="py-4">
@@ -149,18 +149,18 @@ const UserTable = ({ users }) => {
                   </div>
                 </td>
 
-                {/* Year column */}
+                {/* Role column */}
                 <td className="py-4">
-                  <p>{user.year}</p>
+                  <p>{user.role}</p>
                 </td>
 
                 {/* Status column */}
                 <td className="py-4">
                   <span
                     className={`rounded-full px-2 py-1 text-sm ${
-                      user.status === "Active"
+                      user.status.toLowerCase() === "active"
                         ? "bg-green-500"
-                        : user.status === "Inactive"
+                        : user.status.toLowerCase() === "inactive"
                           ? "bg-gray-500"
                           : "bg-red-500"
                     }`}
@@ -178,9 +178,9 @@ const UserTable = ({ users }) => {
                 <td className="flex items-center justify-center space-x-4 py-4 text-center">
                   <button
                     className="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-                    onClick={() => toggleDetails(user.user_id)}
+                    onClick={() => toggleDetails(user.id)}
                   >
-                    {expandedUserId === user.user_id
+                    {expandedUserId === user.id
                       ? "Hide Details"
                       : "View Details"}
                   </button>
@@ -197,11 +197,11 @@ const UserTable = ({ users }) => {
               </tr>
 
               {/* Conditionally render the expanded details row */}
-              {expandedUserId === user.user_id && (
+              {expandedUserId === user.id && (
                 <tr>
                   <td colSpan="6" className="bg-[#2E3A47] p-4 text-gray-200">
                     {/* Additional user details */}
-                    <p>User ID: {user.user_id}</p>
+                    <p>User ID: {user.id}</p>
                     <p>Level: {user.level}</p>
                     <p>Points: {user.points}</p>
                     <p>Total Study Time: {user.total_studytime} hours</p>
