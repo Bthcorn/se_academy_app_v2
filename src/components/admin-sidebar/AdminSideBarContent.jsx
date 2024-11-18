@@ -1,16 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   LayoutGrid,
   User,
-  MessageSquare,
   BookOpen,
   BarChart,
-  Sliders,
-  Brush,
+  Sun,
+  Moon,
 } from "lucide-react";
 import SideBarItem from "./AdminSideBarItem";
 
 const AdminSideBarContent = () => {
+  const [darkMode, setDarkMode] = useState(true); // Default is dark mode
+
+  // Apply theme class to the document body
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark");
+      document.body.classList.remove("light");
+    } else {
+      document.body.classList.add("light");
+      document.body.classList.remove("dark");
+    }
+  }, [darkMode]);
+
   const items = [
     {
       icon: <LayoutGrid size={24} />,
@@ -32,24 +44,6 @@ const AdminSideBarContent = () => {
       label: "Leaderboard",
       href: "/admin/leaderboard",
     },
-    {
-      icon: <MessageSquare size={24} />,
-      label: "Feedback",
-      href: "/admin/feedback",
-    },
-  ];
-
-  const lowerItems = [
-    {
-      icon: <Sliders size={24} />,
-      label: "Settings",
-      href: "/admin/settings",
-    },
-    {
-      icon: <Brush size={24} />,
-      label: "Themes",
-      href: "/admin/themes",
-    },
   ];
 
   return (
@@ -62,10 +56,27 @@ const AdminSideBarContent = () => {
       {/* Divider */}
       <hr className="my-4 border-t border-gray-700" />
 
-      {/* Lower section with a divider */}
-      {lowerItems.map((item) => (
-        <SideBarItem key={item.label} {...item} />
-      ))}
+      {/* Theme Toggle Section */}
+      <div className="flex items-center justify-center">
+        <label className="relative inline-block w-16 h-8">
+          <input
+            type="checkbox"
+            checked={!darkMode}
+            onChange={() => setDarkMode(!darkMode)}
+            className="peer sr-only"
+          />
+          {/* Background */}
+          <span className="absolute inset-0 rounded-full bg-purple-600 peer-checked:bg-yellow-600 transition-all"></span>
+          {/* Toggle Circle */}
+          <span className="absolute left-1 top-1 h-6 w-6 rounded-full bg-white flex items-center justify-center transition-all peer-checked:left-9">
+            {darkMode ? (
+              <Moon size={16} className="text-purple-600" />
+            ) : (
+              <Sun size={16} className="text-yellow-400" />
+            )}
+          </span>
+        </label>
+      </div>
     </div>
   );
 };
