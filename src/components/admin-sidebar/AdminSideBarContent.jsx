@@ -1,27 +1,10 @@
-import React, { useState, useEffect } from "react";
-import {
-  LayoutGrid,
-  User,
-  BookOpen,
-  BarChart,
-  Sun,
-  Moon,
-} from "lucide-react";
+import React from "react";
+import { LayoutGrid, User, BookOpen, BarChart, Sun, Moon } from "lucide-react";
 import SideBarItem from "./AdminSideBarItem";
+import { useTheme } from "../ThemeContext";
 
 const AdminSideBarContent = () => {
-  const [darkMode, setDarkMode] = useState(true); // Default is dark mode
-
-  // Apply theme class to the document body
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add("dark");
-      document.body.classList.remove("light");
-    } else {
-      document.body.classList.add("light");
-      document.body.classList.remove("dark");
-    }
-  }, [darkMode]);
+  const { darkMode, setDarkMode } = useTheme(); // Use ThemeContext to manage darkMode
 
   const items = [
     {
@@ -47,14 +30,22 @@ const AdminSideBarContent = () => {
   ];
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div
+      className={`flex flex-col space-y-4 ${
+        darkMode ? "text-secondary-foreground" : "text-light-foreground"
+      }`} // Dynamically change text color
+    >
       {/* Upper section without a divider */}
       {items.map((item) => (
         <SideBarItem key={item.label} {...item} />
       ))}
 
       {/* Divider */}
-      <hr className="my-4 border-t border-gray-700" />
+      <hr
+        className={`my-4 ${
+          darkMode ? "border-secondary-foreground" : "border-light-border"
+        }`} // Change divider color dynamically
+      />
 
       {/* Theme Toggle Section */}
       <div className="flex items-center justify-center">
@@ -62,7 +53,7 @@ const AdminSideBarContent = () => {
           <input
             type="checkbox"
             checked={!darkMode}
-            onChange={() => setDarkMode(!darkMode)}
+            onChange={() => setDarkMode(!darkMode)} // Toggle theme using context
             className="peer sr-only"
           />
           {/* Background */}

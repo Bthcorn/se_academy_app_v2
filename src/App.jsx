@@ -27,6 +27,7 @@ import AuthProvider from "./hooks/AuthContext.jsx";
 import RouteGuard from "./hooks/RouteGuard.jsx";
 import CourseVideos from "./pages/admin/CourseVideos.jsx";
 import AdminGuard from "./hooks/AdminGuard.jsx";
+import { ThemeProvider } from "./components/ThemeContext.jsx";
 
 const router = createBrowserRouter([
   {
@@ -84,7 +85,11 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminLayout />,
+    element: (
+      <ThemeProvider>
+        <AdminLayout />
+      </ThemeProvider>
+    ),
     errorElement: <ErrorBoundary />,
     children: [
       {
