@@ -36,8 +36,51 @@ export default function Dashboard() {
     }
   };
 
+  const fetch_courses = async () => {
+    try {
+      const response = await axios.get(Config.API_URL + `/course/get_courses`, {
+        headers: {
+          Authorization: Config.AUTH_TOKEN(),
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
+  };
+
+  const fetch_achievements = async () => {
+    try {
+      const response = await axios.get(Config.API_URL + `/achievement/get_all`, {
+        headers: {
+          Authorization: Config.AUTH_TOKEN(),
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching achievements:", error);
+    }
+  };
+
+  const fetch_quizzes = async () => {
+    try {
+      const response = await axios.get(Config.API_URL + `/quiz/get_all`, {
+        headers: {
+          Authorization: Config.AUTH_TOKEN(),
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching quizzes:", error);
+    }
+  };
+
+
   const [users, setUsers] = useState([]);
   const [enrollments, setEnrollments] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [achievements, setAchievements] = useState([]);
+  const [quizzes, setQuizzes] = useState([]);
 
   useEffect(() => {
     const fetchAndSetUsers = async () => {
@@ -48,15 +91,30 @@ export default function Dashboard() {
       const data = await fetch_enrollments();
       setEnrollments(data); // Store the fetched data in state
     };
+    const fetchAndSetCourses = async () => {
+      const data = await fetch_courses();
+      setCourses(data); // Store the fetched data in state
+    };
+    const fetchAndSetAchievements = async () => {
+      const data = await fetch_achievements();
+      setAchievements(data); // Store the fetched data in state
+    };
+    const fetchAndSetQuizzes = async () => {
+      const data = await fetch_quizzes();
+      setQuizzes(data); // Store the fetched data in state
+    };
 
     fetchAndSetUsers(); // Call the async function
     fetchAndSetEnrollments(); // Call the async function
+    fetchAndSetCourses(); // Call the async function
+    fetchAndSetAchievements(); // Call the async function
+    fetchAndSetQuizzes(); // Call the async function
   }, []);
   
-  var first_field_data = 451;
-  var second_field_data = 10;
-  var third_field_data = 200;
-  var forth_field_data = 1000;
+  var first_field_data = users.length;
+  var second_field_data = courses.length;
+  var third_field_data = achievements.length;
+  var forth_field_data = quizzes.length;
 
   // Data for Doughnut chart
   const students_per_year_data = {
@@ -96,28 +154,28 @@ export default function Dashboard() {
         {/* First row - 4 fields */}
         <div className="col-span-4 flex justify-between">
           <TopPageCard
-            title="First Field"
+            title="Users"
             count={first_field_data}
             percentage=" xx.x %"
             icon={<Eye size={20} className="text-gray-400" />}
             isIncrease={true}
           />
           <TopPageCard
-            title="Second Field"
+            title="Courses"
             count={second_field_data}
             percentage="xx.x %"
             icon={<User size={20} className="text-gray-400" />}
             isIncrease={false}
           />
           <TopPageCard
-            title="Third Field"
+            title="Achievements"
             count={third_field_data}
             percentage="xx.x%"
             icon={<UserPlus size={20} className="text-gray-400" />}
             isIncrease={true}
           />
           <TopPageCard
-            title="Forth Field"
+            title="Quizzes"
             count={forth_field_data}
             percentage="xx.x%"
             icon={<Star size={20} className="text-gray-400" />}
