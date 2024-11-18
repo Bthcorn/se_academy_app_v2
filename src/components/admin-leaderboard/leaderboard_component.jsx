@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ArrowUpRight, ArrowDownRight } from 'lucide-react'; // Icons for the arrows
 
 const LeaderboardComponent = ({ users }) => {
-  const [activeTab, setActiveTab] = useState('points'); // Default sorting by points
+  const [activeTab, setActiveTab] = useState('score'); // Default sorting by score
 
   
   //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -12,11 +12,11 @@ const LeaderboardComponent = ({ users }) => {
 
 
 
-  // Sort users based on active tab (level, points, total_studytime)
+  // Sort users based on active tab (level, score, study_hours)
   const sortedUsers = [...users].sort((a, b) => {
     if (activeTab === 'level') return b.level - a.level;
-    if (activeTab === 'studytime') return b.total_studytime - a.total_studytime;
-    return b.points - a.points; // Default is points
+    if (activeTab === 'study_hours') return b.study_hours - a.study_hours;
+    return b.score - a.score; // Default is score
   });
 
   // The user with the highest score is the first in sortedUsers
@@ -31,7 +31,7 @@ const LeaderboardComponent = ({ users }) => {
     <div className="p-6 text-white bg-[#1E293B] rounded-lg shadow-lg w-full">
       {/* Tab Navigation */}
       <div className="flex justify-center mb-8">
-        {['points', 'level', 'studytime'].map((tab) => (
+        {['score', 'level', 'study_hours'].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -39,7 +39,7 @@ const LeaderboardComponent = ({ users }) => {
               activeTab === tab ? 'bg-blue-600 text-white' : 'bg-[#2E3A47] text-gray-400'
             }`}
           >
-            {tab === 'points' ? 'Points' : tab === 'level' ? 'Level' : 'Study Time'}
+            {tab === 'score' ? 'Score' : tab === 'level' ? 'Level' : 'Study Time'}
           </button>
         ))}
       </div>
@@ -49,16 +49,16 @@ const LeaderboardComponent = ({ users }) => {
         {/* Second place on the left */}
         <div className="flex flex-col items-center bg-[#2E3A47] p-4 rounded-lg shadow-lg w-32 h-48 text-center">
           <img
-            src={secondPlace.avatar_image}
+            src={secondPlace.avatar}
             alt={secondPlace.username}
             className="w-16 h-16 rounded-full mb-4"
           />
           <p className="text-xl font-bold text-blue-300">
-            {activeTab === 'points'
-              ? secondPlace.points
+            {activeTab === 'score'
+              ? secondPlace.score
               : activeTab === 'level'
               ? secondPlace.level
-              : secondPlace.total_studytime}
+              : secondPlace.study_hours}
           </p>
           <p className="text-sm text-gray-300">{secondPlace.username}</p>
           {getRandomArrow()}
@@ -74,16 +74,16 @@ const LeaderboardComponent = ({ users }) => {
             />
           </div>
           <img
-            src={firstPlace.avatar_image}
+            src={firstPlace.avatar}
             alt={firstPlace.username}
             className="w-24 h-24 rounded-full mb-4 border-4 border-yellow-400"
           />
           <p className="text-2xl font-bold text-yellow-400">
-            {activeTab === 'points'
-              ? firstPlace.points
+            {activeTab === 'score'
+              ? firstPlace.score
               : activeTab === 'level'
               ? firstPlace.level
-              : firstPlace.total_studytime}
+              : firstPlace.study_hours}
           </p>
           <p className="text-sm text-gray-300">{firstPlace.username}</p>
           {getRandomArrow()}
@@ -92,16 +92,16 @@ const LeaderboardComponent = ({ users }) => {
         {/* Third place on the right */}
         <div className="flex flex-col items-center bg-[#2E3A47] p-4 rounded-lg shadow-lg w-32 h-48 text-center">
           <img
-            src={thirdPlace.avatar_image}
+            src={thirdPlace.avatar}
             alt={thirdPlace.username}
             className="w-16 h-16 rounded-full mb-4"
           />
           <p className="text-xl font-bold text-green-300">
-            {activeTab === 'points'
-              ? thirdPlace.points
+            {activeTab === 'score'
+              ? thirdPlace.score
               : activeTab === 'level'
               ? thirdPlace.level
-              : thirdPlace.total_studytime}
+              : thirdPlace.study_hours}
           </p>
           <p className="text-sm text-gray-300">{thirdPlace.username}</p>
           {getRandomArrow()}
@@ -118,7 +118,7 @@ const LeaderboardComponent = ({ users }) => {
             {/* Avatar and Username */}
             <div className="flex items-center">
               <img
-                src={user.avatar_image}
+                src={user.avatar}
                 alt={user.username}
                 className="w-12 h-12 rounded-full mr-4"
               />
@@ -126,14 +126,14 @@ const LeaderboardComponent = ({ users }) => {
                 <p className="text-lg font-semibold">{user.username}</p>
               </div>
             </div>
-            {/* Points/Level/Study Time */}
+            {/* score/Level/Study Time */}
             <div className="flex items-center">
               <p className="text-lg font-semibold mr-2">
-                {activeTab === 'points'
-                  ? user.points
+                {activeTab === 'score'
+                  ? user.score
                   : activeTab === 'level'
                   ? user.level
-                  : user.total_studytime}
+                  : user.study_hours}
               </p>
               {/* Random Arrow */}
               {getRandomArrow()}
