@@ -1,4 +1,6 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import axios from "axios";
+import { Config } from "../../components/config";
 import { Eye, User, UserPlus, Star } from "lucide-react";
 import RecentEnrolled from "../../components/admin-dashboard/recent_enrolled";
 import TopPageCard from "../../components/admin-dashboard/toppagecard";
@@ -8,6 +10,51 @@ import TotalEnrolledBarChart from "../../components/admin-dashboard/totalenrolle
 import TotalStudiedBarChart from "../../components/admin-dashboard/totalstudied_barchart";
 
 export default function Dashboard() {
+  const fetch_users = async () => {
+    try {
+      const response = await axios.get(Config.API_URL + `/user/get_all`, {
+        headers: {
+          Authorization: Config.AUTH_TOKEN(),
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  const fetch_enrollments = async () => {
+    try {
+      const response = await axios.get(Config.API_URL + `/enrolled_course/get_all`, {
+        headers: {
+          Authorization: Config.AUTH_TOKEN(),
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching enrollments:", error);
+    }
+  };
+
+  const [users, setUsers] = useState([]);
+  const [enrollments, setEnrollments] = useState([]);
+
+  useEffect(() => {
+    const fetchAndSetUsers = async () => {
+      const data = await fetch_users();
+      setUsers(data); // Store the fetched data in state
+    };
+    const fetchAndSetEnrollments = async () => {
+      const data = await fetch_enrollments();
+      setEnrollments(data); // Store the fetched data in state
+    };
+
+    fetchAndSetUsers(); // Call the async function
+    fetchAndSetEnrollments(); // Call the async function
+  }, []);
+  // const users = await fetch_users();
+  console.log(users);
+  
   var recent_enrolled_data = [
     {
       username: "Jane Doe",
@@ -112,14 +159,17 @@ export default function Dashboard() {
   var third_field_data = 200;
   var forth_field_data = 1000;
 
+  // Data for Doughnut chart
   const students_per_year_data = {
-    "first year": 11,
-    "second year": 15,
-    "third year": 20,
-    "fourth year": 10,
-    "post-grad": 5,
+    "first year": users.filter((user) => user.role.toLowerCase() === "freshman").length,
+    "second year": users.filter((user) => user.role.toLowerCase() === "sophomore").length,
+    "third year": users.filter((user) => user.role.toLowerCase() === "junior").length,
+    "fourth year": users.filter((user) => user.role.toLowerCase() === "senior").length,
+    "graduated": users.filter((user) => user.role.toLowerCase() === "graduated").length,
   };
 
+  console.log("Enrollments: ");
+  console.log(enrollments);
   var enrolled_vs_studied_data = {
     labels: [
       "Jan",
