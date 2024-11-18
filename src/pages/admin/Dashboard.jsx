@@ -52,108 +52,7 @@ export default function Dashboard() {
     fetchAndSetUsers(); // Call the async function
     fetchAndSetEnrollments(); // Call the async function
   }, []);
-  // const users = await fetch_users();
-  console.log(users);
   
-  var recent_enrolled_data = [
-    {
-      username: "Jane Doe",
-      enrolled_at: "Sep 10, 2024",
-      course_name: "Calculus 1",
-      course_id: "C101",
-      status: "Approved",
-      course_length: 20,
-    },
-    {
-      username: "Jane Smith",
-      enrolled_at: "Aug 24, 2024",
-      course_name: "Computer Organization",
-      course_id: "C102",
-      status: "Pending",
-      course_length: 25,
-    },
-    {
-      username: "Mike Taylor",
-      enrolled_at: "Sep 13, 2024",
-      course_name: "Digital Circuit",
-      course_id: "C103",
-      status: "Approved",
-      course_length: 18,
-    },
-    {
-      username: "Emily Clark",
-      enrolled_at: "Aug 18, 2024",
-      course_name: "Introduction to Logic",
-      course_id: "C104",
-      status: "Approved",
-      course_length: 30,
-    },
-    {
-      username: "Teemy Subarashi",
-      enrolled_at: "Sep 16, 2024",
-      course_name: "Probability and Statistics",
-      course_id: "C105",
-      status: "Rejected",
-      course_length: 22,
-    },
-    {
-      username: "David Wilson",
-      enrolled_at: "Sep 22, 2024",
-      course_name: "Physics",
-      course_id: "C106",
-      status: "Approved",
-      course_length: 35,
-    },
-    {
-      username: "Laura Martinez",
-      enrolled_at: "Sep 23, 2024",
-      course_name: "Biology",
-      course_id: "C107",
-      status: "Pending",
-      course_length: 28,
-    },
-    {
-      username: "James Brown",
-      enrolled_at: "Sep 24, 2024",
-      course_name: "Chemistry",
-      course_id: "C108",
-      status: "Approved",
-      course_length: 40,
-    },
-    {
-      username: "Sophia Davis",
-      enrolled_at: "Sep 25, 2024",
-      course_name: "English Literature",
-      course_id: "C109",
-      status: "Rejected",
-      course_length: 18,
-    },
-    {
-      username: "Michael Lee",
-      enrolled_at: "Sep 26, 2024",
-      course_name: "Algebra",
-      course_id: "C110",
-      status: "Approved",
-      course_length: 32,
-    },
-    {
-      username: "Olivia Harris",
-      enrolled_at: "Sep 27, 2024",
-      course_name: "Economics",
-      course_id: "C111",
-      status: "Pending",
-      course_length: 24,
-    },
-    {
-      username: "Daniel Evans",
-      enrolled_at: "Sep 28, 2024",
-      course_name: "History",
-      course_id: "C112",
-      status: "Approved",
-      course_length: 45,
-    },
-  ];
-
   var first_field_data = 451;
   var second_field_data = 10;
   var third_field_data = 200;
@@ -247,7 +146,7 @@ export default function Dashboard() {
         </div>
 
         <div className="col-span-2 row-span-1 rounded-lg bg-[#1E293B] p-4 shadow-lg">
-          <RecentEnrolled data={recent_enrolled_data} />
+          <RecentEnrolled data={enrollments} />
         </div>
       </div>
     </>
