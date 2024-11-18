@@ -37,7 +37,8 @@ const VideoChapter = ({ chapterId }) => {
   const fetchVideo = async (id) => {
     try {
       const response = await axios.get(
-        Config.API_URL + `/course/get_video/${id}`,
+        Config.API_URL +
+          `/enrolled_course/get_enrolled_course_video/${userId}/${id}`,
         {
           headers: {
             Authorization: Config.AUTH_TOKEN(),
@@ -172,12 +173,12 @@ const VideoChapter = ({ chapterId }) => {
     <div className="flex w-full flex-col items-center rounded-md border bg-secondary-color4/50 p-4">
       <div className="flex w-full items-center justify-center">
         {videoSrc ? (
-          <MuxPlayer
+          <video
             ref={videoRef}
             src={videoSrc}
             controls
             // autoPlay
-            startTime={videoProgress}
+            // startTime={videoProgress}
             width="100%"
             height="400"
             preload="auto"
