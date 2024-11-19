@@ -138,7 +138,6 @@ export default function Dashboard() {
     enrolled: [5, 10, 15, 7, 12, 9, 14, 20, 18, 22, 17, 25],
     studied: [3, 8, 13, 6, 10, 7, 12, 17, 16, 21, 14, 23],
   };
-
   return (
     <>
       <div className="grid min-h-screen grid-cols-4 gap-6">
