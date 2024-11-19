@@ -1,13 +1,19 @@
-import React, { useState } from 'react';
-import { ArrowUpRight, ArrowDownRight } from 'lucide-react'; // Icons for the arrows
+import React, { useState } from "react";
+import { ArrowUpRight, ArrowDownRight } from "lucide-react"; // Icons for the arrows
+import { data } from "autoprefixer";
 
-const LeaderboardComponent = ({ users }) => {
+const LeaderboardComponent = ({ users, userImages }) => {
   const [activeTab, setActiveTab] = useState('score'); // Default sorting by score
 
   
   //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   // PS. FROM SPOON // This should not be random, this is only for the sake of designing. Normally,it should compare wheather the rank had recently moved up or down, if that user's rank was moved up, the arrow is green otherwise red.
-  const getRandomArrow = () => (Math.random() > 0.5 ? <ArrowUpRight className="text-green-400" /> : <ArrowDownRight className="text-red-400" />);
+  const getRandomArrow = () =>
+    Math.random() > 0.5 ? (
+      <ArrowUpRight className="text-green-400" />
+    ) : (
+      <ArrowDownRight className="text-red-400" />
+    );
   //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -28,15 +34,17 @@ const LeaderboardComponent = ({ users }) => {
   const otherUsers = sortedUsers.slice(3);
 
   return (
-    <div className="p-6 text-white bg-[#1E293B] rounded-lg shadow-lg w-full">
+    <div className="w-full rounded-lg bg-[#1E293B] p-6 text-white shadow-lg">
       {/* Tab Navigation */}
       <div className="flex justify-center mb-8">
         {['score', 'level', 'study_hours'].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-4 py-2 mx-2 rounded-md ${
-              activeTab === tab ? 'bg-blue-600 text-white' : 'bg-[#2E3A47] text-gray-400'
+            className={`mx-2 rounded-md px-4 py-2 ${
+              activeTab === tab
+                ? "bg-blue-600 text-white"
+                : "bg-[#2E3A47] text-gray-400"
             }`}
           >
             {tab === 'score' ? 'Score' : tab === 'level' ? 'Level' : 'Study Time'}
@@ -45,13 +53,13 @@ const LeaderboardComponent = ({ users }) => {
       </div>
 
       {/* Top 3 Users Section */}
-      <div className="flex justify-center items-end space-x-4 mb-8">
+      <div className="mb-8 flex items-end justify-center space-x-4">
         {/* Second place on the left */}
-        <div className="flex flex-col items-center bg-[#2E3A47] p-4 rounded-lg shadow-lg w-32 h-48 text-center">
+        <div className="flex h-48 w-32 flex-col items-center rounded-lg bg-[#2E3A47] p-4 text-center shadow-lg">
           <img
-            src={secondPlace.avatar}
+            src={userImages[secondPlace.id]}
             alt={secondPlace.username}
-            className="w-16 h-16 rounded-full mb-4"
+            className="mb-4 h-16 w-16 rounded-full"
           />
           <p className="text-xl font-bold text-blue-300">
             {activeTab === 'score'
@@ -61,22 +69,22 @@ const LeaderboardComponent = ({ users }) => {
               : secondPlace.study_hours}
           </p>
           <p className="text-sm text-gray-300">{secondPlace.username}</p>
-          {getRandomArrow()}
+          {/* {getRandomArrow()} */}
         </div>
 
         {/* First place in the middle */}
-        <div className="relative flex flex-col items-center bg-[#334155] p-6 rounded-lg shadow-lg w-40 h-64 text-center transform scale-110">
-          <div className="absolute -top-6 flex justify-center items-center">
+        <div className="relative flex h-64 w-40 scale-110 transform flex-col items-center rounded-lg bg-[#334155] p-6 text-center shadow-lg">
+          <div className="absolute -top-6 flex items-center justify-center">
             <img
               src="https://img.icons8.com/emoji/48/000000/crown-emoji.png"
               alt="Crown"
-              className="w-8 h-8"
+              className="h-8 w-8"
             />
           </div>
           <img
-            src={firstPlace.avatar}
+            src={userImages[firstPlace.id]}
             alt={firstPlace.username}
-            className="w-24 h-24 rounded-full mb-4 border-4 border-yellow-400"
+            className="mb-4 h-24 w-24 rounded-full border-4 border-yellow-400"
           />
           <p className="text-2xl font-bold text-yellow-400">
             {activeTab === 'score'
@@ -86,15 +94,15 @@ const LeaderboardComponent = ({ users }) => {
               : firstPlace.study_hours}
           </p>
           <p className="text-sm text-gray-300">{firstPlace.username}</p>
-          {getRandomArrow()}
+          {/* {getRandomArrow()} */}
         </div>
 
         {/* Third place on the right */}
-        <div className="flex flex-col items-center bg-[#2E3A47] p-4 rounded-lg shadow-lg w-32 h-48 text-center">
+        <div className="flex h-48 w-32 flex-col items-center rounded-lg bg-[#2E3A47] p-4 text-center shadow-lg">
           <img
-            src={thirdPlace.avatar}
+            src={userImages[thirdPlace.id]}
             alt={thirdPlace.username}
-            className="w-16 h-16 rounded-full mb-4"
+            className="mb-4 h-16 w-16 rounded-full"
           />
           <p className="text-xl font-bold text-green-300">
             {activeTab === 'score'
@@ -104,26 +112,29 @@ const LeaderboardComponent = ({ users }) => {
               : thirdPlace.study_hours}
           </p>
           <p className="text-sm text-gray-300">{thirdPlace.username}</p>
-          {getRandomArrow()}
+          {/* {getRandomArrow()} */}
         </div>
       </div>
 
       {/* Other Users Section */}
-      <div className="bg-[#2E3A47] p-4 rounded-lg shadow-lg">
+      <div className="rounded-lg bg-[#2E3A47] p-4 shadow-lg">
         {otherUsers.map((user, index) => (
           <div
             key={user.username}
-            className="flex items-center justify-between mb-4 pb-2 border-b border-gray-600"
+            className="mb-4 flex items-center justify-between border-b border-gray-600 pb-2"
           >
             {/* Avatar and Username */}
             <div className="flex items-center">
               <img
-                src={user.avatar}
+                src={userImages[user.id]}
                 alt={user.username}
-                className="w-12 h-12 rounded-full mr-4"
+                className="mr-4 h-12 w-12 rounded-full"
               />
-              <div className="text-center">
-                <p className="text-lg font-semibold">{user.username}</p>
+              <div className="text-start">
+                <h1 className="text-lg font-semibold">{user.username} </h1>
+                <p className="text-lg font-semibold">
+                  {user.firstname} {user.lastname}
+                </p>
               </div>
             </div>
             {/* score/Level/Study Time */}
@@ -136,7 +147,7 @@ const LeaderboardComponent = ({ users }) => {
                   : user.study_hours}
               </p>
               {/* Random Arrow */}
-              {getRandomArrow()}
+              {/* {getRandomArrow()} */}
             </div>
           </div>
         ))}
