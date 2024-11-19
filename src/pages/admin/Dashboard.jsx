@@ -188,6 +188,98 @@ export default function Dashboard() {
     enrolled: enrollments_summary,
     studied: ended_enrollments_summary,
   };
+//   // Sample data for the first field: Total Users
+// const first_field_data_sample = 451;
+
+// // Sample data for enrolled vs studied line graph
+// const enrolled_vs_studied_data_sample = {
+//   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+//   enrolled: [50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300, 325],
+//   studied: [40, 65, 85, 115, 130, 160, 185, 205, 230, 260, 280, 310],
+// };
+
+// // Sample data for users grouped by year
+// const students_per_year_data_sample = {
+//   "first year": 50,
+//   "second year": 75,
+//   "third year": 100,
+//   "fourth year": 125,
+//   "graduated": 150,
+// };
+
+// Sample data for second field: Total Courses
+// const second_field_data_sample = 123;
+
+// // Sample data for third field: Total Achievements
+// const third_field_data_sample = 78;
+
+// // Sample data for fourth field: Total Quizzes
+// const forth_field_data_sample = 36;
+
+// // Adjusted sample data for recent enrollments
+// const enrollments_sample = [
+//   {
+//     username: "Jane Doe",
+//     course_title: "Calculus 1",
+//     course_id: "C101",
+//     enrolled_at: "Sep 10, 2024",
+//   },
+//   {
+//     username: "John Smith",
+//     course_title: "Introduction to Biology",
+//     course_id: "C102",
+//     enrolled_at: "Aug 24, 2024",
+//   },
+//   {
+//     username: "Emily Davis",
+//     course_title: "Physics Fundamentals",
+//     course_id: "C103",
+//     enrolled_at: "Jul 13, 2024",
+//   },
+//   {
+//     username: "Chris Johnson",
+//     course_title: "Modern Literature",
+//     course_id: "C104",
+//     enrolled_at: "Jun 18, 2024",
+//   },
+//   {
+//     username: "Jane Doe",
+//     course_title: "Calculus 1",
+//     course_id: "C101",
+//     enrolled_at: "Sep 10, 2024",
+//   },
+//   {
+//     username: "John Smith",
+//     course_title: "Introduction to Biology",
+//     course_id: "C102",
+//     enrolled_at: "Aug 24, 2024",
+//   },
+//   {
+//     username: "Emily Davis",
+//     course_title: "Physics Fundamentals",
+//     course_id: "C103",
+//     enrolled_at: "Jul 13, 2024",
+//   },
+//   {
+//     username: "Chris Johnson",
+//     course_title: "Modern Literature",
+//     course_id: "C104",
+//     enrolled_at: "Jun 18, 2024",
+//   },
+//   {
+//     username: "Jane Doe",
+//     course_title: "Calculus 1",
+//     course_id: "C101",
+//     enrolled_at: "Sep 10, 2024",
+//   },
+//   {
+//     username: "John Smith",
+//     course_title: "Introduction to Biology",
+//     course_id: "C102",
+//     enrolled_at: "Aug 24, 2024",
+//   },
+// ];
+
   return (
     <>
       <div className="grid min-h-screen grid-cols-4 gap-6">
@@ -226,26 +318,26 @@ export default function Dashboard() {
         </div>
 
         {/* Second row - Large chart on the left, two smaller charts stacked on the right */}
-        <div className="col-span-2 rounded-lg bg-[#1E293B] p-4 shadow-lg">
+        <div className="col-span-2 rounded-lg p-4 shadow-lg">
           <EnrolledVsStudiedLineGraph data={enrolled_vs_studied_data} />
         </div>
 
         <div className="col-span-2 grid grid-rows-2 gap-4">
           {/* Two smaller components stacked vertically */}
-          <div className="rounded-lg bg-[#1E293B] p-4 shadow-lg">
+          <div className="rounded-lg p-4 shadow-lg">
             <TotalEnrolledBarChart data={enrolled_vs_studied_data} />
           </div>
-          <div className="rounded-lg bg-[#1E293B] p-4 shadow-lg">
+          <div className="rounded-lg p-4 shadow-lg">
             <TotalStudiedBarChart data={enrolled_vs_studied_data} />
           </div>
         </div>
 
         {/* Third row - Half doughnut chart (UserByYear) and Recent Enrolled */}
-        <div className="col-span-2 row-span-1 rounded-lg bg-[#1E293B] p-4 shadow-lg">
+        <div className="col-span-2 row-span-1 rounded-lg p-4 shadow-lg">
           <UserByYear data={students_per_year_data} />
         </div>
 
-        <div className="col-span-2 row-span-1 rounded-lg bg-[#1E293B] p-4 shadow-lg">
+        <div className="col-span-2 row-span-1 rounded-lg p-4 shadow-lg">
           <RecentEnrolled data={enrollments} />
         </div>
       </div>
