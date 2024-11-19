@@ -51,8 +51,20 @@ export default function Dashboard() {
       console.error("Error fetching enrollments summary:", error);
     }
   };
-  
 
+  const fetch_ended_enrollments_summary = async () => {
+    try {
+      const response = await axios.get(Config.API_URL + `/enrolled_course/get_ended_enrollment_summary`, {
+        headers: {
+          Authorization: Config.AUTH_TOKEN(),
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching ended enrollments summary:", error);
+    }
+  };
+  
   // Fetch all courses from the api
   const fetch_courses = async () => {
     try {
@@ -99,6 +111,7 @@ export default function Dashboard() {
   const [users, setUsers] = useState([]);
   const [enrollments, setEnrollments] = useState([]);
   const [enrollments_summary, setEnrollmentsSummary] = useState([]);
+  const [ended_enrollments_summary, setEndedEnrollmentsSummary] = useState([]);
   const [courses, setCourses] = useState([]);
   const [achievements, setAchievements] = useState([]);
   const [quizzes, setQuizzes] = useState([]);
@@ -116,6 +129,10 @@ export default function Dashboard() {
       const data = await fetch_enrollments_summary();
       setEnrollmentsSummary(data);
     };
+    const fetchAndSetEndedEnrollmentsSummary = async () => {
+      const data = await fetch_ended_enrollments_summary();
+      setEndedEnrollmentsSummary(data);
+    };
     const fetchAndSetCourses = async () => {
       const data = await fetch_courses();
       setCourses(data);
@@ -132,6 +149,7 @@ export default function Dashboard() {
     fetchAndSetUsers();
     fetchAndSetEnrollments();
     fetchAndSetEnrollmentsSummary();
+    fetchAndSetEndedEnrollmentsSummary();
     fetchAndSetCourses();
     fetchAndSetAchievements();
     fetchAndSetQuizzes();
@@ -168,7 +186,7 @@ export default function Dashboard() {
       "Dec",
     ],
     enrolled: enrollments_summary,
-    studied: [3, 8, 13, 6, 10, 7, 12, 17, 16, 21, 14, 23],
+    studied: ended_enrollments_summary,
   };
 
   return (
