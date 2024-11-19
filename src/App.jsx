@@ -1,8 +1,4 @@
-import {
-  BrowserRouter,
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import UserLayout from "./components/UserLayout";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -27,7 +23,9 @@ import AuthProvider from "./hooks/AuthContext.jsx";
 import RouteGuard from "./hooks/RouteGuard.jsx";
 import CourseVideos from "./pages/admin/CourseVideos.jsx";
 import AdminGuard from "./hooks/AdminGuard.jsx";
+import CourseAchievements from "./pages/admin/CourseAchievements.jsx";
 import { ThemeProvider } from "./components/ThemeContext.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -123,8 +121,17 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "course/:courseId/videos",
-        element: <CourseVideos />,
+        path: "course",
+        children: [
+          {
+            path: ":courseId/videos",
+            element: <CourseVideos />,
+          },
+          {
+            path: ":courseId/achievements",
+            element: <CourseAchievements />,
+          },
+        ],
       },
       {
         path: "category",

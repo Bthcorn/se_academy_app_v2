@@ -21,6 +21,7 @@ function Profile() {
   const [score, setScore] = React.useState(0);
   const [level, setLevel] = React.useState(0);
   const [studyHours, setStudyHours] = React.useState(0);
+  const [progress, setProgress] = React.useState([]);
 
   const handleEdit = () => {
     setEdit(!edit);
@@ -44,6 +45,8 @@ function Profile() {
         setLevel(result.data.level);
         setStudyHours(result.data.study_hours);
       }
+
+      await fetchUserProgress(id);
     } catch (error) {
       console.log(error);
     }
@@ -108,6 +111,23 @@ function Profile() {
 
       if (result.status === 200) {
         fetchUser(id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchUserProgress = async (id) => {
+    try {
+      const result = await axios.get(Config.API_URL + "/user/progress/" + id, {
+        headers: {
+          Authorization: Config.AUTH_TOKEN(),
+        },
+      });
+
+      if (result.status === 200) {
+        setProgress(result.data);
+        console.log(result.data);
       }
     } catch (error) {
       console.log(error);
@@ -214,21 +234,36 @@ function Profile() {
           <h2 className="mb-4 text-2xl font-semibold text-foreground md:text-3xl">
             RECENT ACTIVITIES
           </h2>
-          <div id="display-activity" className="flex flex-col gap-2 space-y-2">
-            <div className="flex flex-wrap gap-2 rounded-md bg-secondary/60 p-2">
-              <span className="text-sm text-foreground">Id: 1234</span>
-              <span className="text-sm text-foreground">Course: React</span>
-              <span className="text-sm text-foreground">Date: 2021-09-20</span>
-              <span className="text-sm text-foreground">Time: 10:00</span>
-              <span className="text-sm text-foreground">Duration: 1:00</span>
-            </div>
-            <div className="flex flex-wrap gap-2 rounded-md bg-secondary/60 p-2">
-              <span className="text-sm text-foreground">Id: 1235</span>
-              <span className="text-sm text-foreground">Course: React</span>
-              <span className="text-sm text-foreground">Date: 2021-09-20</span>
-              <span className="text-sm text-foreground">Time: 10:00</span>
-              <span className="text-sm text-foreground">Duration: 1:00</span>
-            </div>
+          <div
+            id="display-activity"
+            className="flex max-h-80 max-w-lg flex-col gap-2 space-y-2 overflow-y-scroll"
+          >
+            {progress.length > 0 ? (
+              progress.map((item, index) => (
+                <div
+                  key={index}
+                  className="flex flex-wrap gap-2 rounded-md bg-secondary/60 p-2"
+                >
+                  <span className="text-sm text-foreground">
+                    Course: {item.course_name}
+                  </span>
+                  <span className="text-sm text-foreground">
+                    Topic: {item.video_name}
+                  </span>
+                  <span className="text-sm text-foreground">
+                    Started at: {new Date(item.started_at).toLocaleString()}
+                  </span>
+                  <span className="text-sm text-foreground">
+                    Ended at: {new Date(item.ended_at).toLocaleString()}
+                  </span>
+                  <span className="text-sm text-foreground">
+                    Duration: {(item.duration / 3600).toFixed(2)} mins
+                  </span>
+                </div>
+              ))
+            ) : (
+              <p>No recent activities</p>
+            )}
           </div>
         </div>
       </div>

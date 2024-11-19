@@ -4,7 +4,6 @@ import CourseDetailsModal from "./CourseDetailsModal";
 import AddCourseModal from "./AddCourseModal";
 import { Config } from "../config";
 import axios from "axios";
-import { Star, Timer } from "lucide-react";
 
 const quiz = [
   {
@@ -34,6 +33,7 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all"); // For filtering courses
   const [img, setImg] = useState({});
+  console.log(courses);
 
   // Function to open the modal with the selected course
   const viewCourseDetails = (course) => {

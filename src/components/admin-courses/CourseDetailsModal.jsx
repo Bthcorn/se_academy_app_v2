@@ -15,8 +15,8 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
   const [imgFile, setImgFile] = useState(null);
   const [categoryList, setCategoryList] = useState([]);
   const [img, setImg] = useState({});
-  const navigate = useNavigate();
   const [categoryData, setCategoryData] = useState([]);
+  const [achievementData, setAchievementData] = useState([]);
   const [addCategory, setAddCategory] = useState("");
 
   const openEditModal = (field) => {
@@ -119,6 +119,25 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
     }
   };
 
+  const fetchAchievementData = async (id) => {
+    try {
+      const response = await axios.get(
+        Config.API_URL + "/achievement/get_achievements/" + id,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (response.data) {
+        setAchievementData(response.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   // const handleCategoryChange = (e) => {
   //   setCategoryList(e.target.value);
   // };
@@ -161,6 +180,7 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
   useEffect(() => {
     fetchImg(selectedCourse.id);
     fetchCategoryData();
+    fetchAchievementData(selectedCourse.id);
     setCategoryList(selectedCourse.category_list);
   }, [selectedCourse]);
 
@@ -411,23 +431,13 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
 
             <div
               key={"achievement"}
-              className={`cursor-pointer p-2 ${
-                editMode
-                  ? "rounded-lg border-2 border-yellow-400 shadow-sm transition-all duration-300 ease-in-out"
-                  : "border border-transparent"
-              }`}
-              onClick={
-                editMode
-                  ? () =>
-                      openEditModal("achievements", selectedCourse.achievements)
-                  : undefined
-              }
+              className={`cursor-pointer border border-transparent p-2`}
             >
-              {editMode ? (
-                <div>
+              {achievementData.length > 0 ? (
+                <div className="flex">
                   <strong>Achievements:</strong>
                   <ul className="list-disc pl-4">
-                    {selectedCourse.achievements?.map((achievement) => (
+                    {achievementData.map((achievement) => (
                       <li
                         key={achievement.id}
                         className="flex items-center gap-4"
@@ -443,24 +453,7 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
                   </ul>
                 </div>
               ) : (
-                <div>
-                  <strong>Achievements:</strong>
-                  <ul className="list-disc pl-4">
-                    {selectedCourse.achievements?.map((achievement) => (
-                      <li
-                        key={achievement.id}
-                        className="flex items-center gap-4"
-                      >
-                        <span>{achievement.title}</span>
-                        <img
-                          src={achievement.badge}
-                          alt={`${achievement.title} Badge`}
-                          className="h-8 w-8 rounded-full object-cover"
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                <p>No achievements found.</p>
               )}
             </div>
 
@@ -485,12 +478,20 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
           >
             View Quiz
           </button>
-          <Link
-            to={`/admin/course/${selectedCourse.id}/videos`}
-            className="w-full rounded-md bg-blue-600 px-4 py-2 text-center font-bold text-white hover:bg-blue-700"
-          >
-            View Videos
-          </Link>
+          <div className="flex w-full gap-4">
+            <Link
+              to={`/admin/course/${selectedCourse.id}/achievements`}
+              className="w-full rounded-md bg-blue-600 px-4 py-2 text-center font-bold text-white hover:bg-blue-700"
+            >
+              View Achievements
+            </Link>
+            <Link
+              to={`/admin/course/${selectedCourse.id}/videos`}
+              className="w-full rounded-md bg-blue-600 px-4 py-2 text-center font-bold text-white hover:bg-blue-700"
+            >
+              View Videos
+            </Link>
+          </div>
           <button
             onClick={close}
             className="w-full rounded-md bg-red-600 px-4 py-2 font-bold text-white hover:bg-red-700"

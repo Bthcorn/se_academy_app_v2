@@ -11,11 +11,12 @@ const UserEdit = () => {
     username: user.username,
     email: user.email,
     year: user.year,
+    role: user.role,
     status: user.status,
     level: user.level,
-    points: user.points,
-    total_studytime: user.total_studytime,
-    avatar_image: user.avatar_image,
+    score: user.score,
+    study_hours: user.study_hours,
+    avatar_image: user.avatar,
     password: user.password,
     confirmPassword: "", // Separate field for confirm password
   });
@@ -43,7 +44,7 @@ const UserEdit = () => {
 
     // Update the user in the users array
     const updatedUsers = users.map((u) =>
-      u.user_id === user.user_id ? { ...u, ...formData } : u,
+      u.id === user.id ? { ...u, ...formData } : u,
     );
 
     // Update the global users state
@@ -59,7 +60,7 @@ const UserEdit = () => {
         {/* Left Profile Picture Section */}
         <div className="col-span-1 flex flex-col items-center rounded-lg bg-[#2E3A47] p-6 shadow-lg">
           <img
-            src={formData.avatar_image}
+            src={formData.avatar}
             alt="User Avatar"
             className="mb-4 h-32 w-32 rounded-full"
           />
@@ -134,7 +135,7 @@ const UserEdit = () => {
               <label className="mb-1 block">Year</label>
               <select
                 name="year"
-                value={formData.year}
+                value={formData.role}
                 onChange={handleInputChange}
                 className="w-full rounded-md bg-[#334155] p-2 text-white"
               >
@@ -177,7 +178,7 @@ const UserEdit = () => {
                 <input
                   type="number"
                   name="points"
-                  value={formData.points}
+                  value={formData.score}
                   onChange={handleInputChange}
                   className="w-full rounded-md bg-[#334155] p-2 text-white"
                 />
@@ -190,7 +191,7 @@ const UserEdit = () => {
               <input
                 type="number"
                 name="total_studytime"
-                value={formData.total_studytime}
+                value={formData.study_hours}
                 onChange={handleInputChange}
                 className="w-full rounded-md bg-[#334155] p-2 text-white"
               />
