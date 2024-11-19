@@ -8,6 +8,7 @@ import { useAuth } from "../hooks/useAuth";
 function CourseIdPage({ title }) {
   const { courseId } = useParams();
   const [course, setCourse] = React.useState(null);
+  const [enrolledCourseId, setEnrolledCourseId] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
   const [enrolled, setEnrolled] = React.useState(false);
   const { userId } = useAuth();
@@ -51,7 +52,8 @@ function CourseIdPage({ title }) {
         },
       );
 
-      if (response.data.success === true) {
+      if (response.data) {
+        setEnrolledCourseId(response.data.enrolled_course_id);
         setEnrolled(true);
       }
     } catch (error) {
@@ -76,6 +78,7 @@ function CourseIdPage({ title }) {
       <CourseSideBar
         title={course.title}
         courseId={courseId}
+        enrolledCourseId={enrolledCourseId}
         isEnrolled={enrolled}
       />
       <div>
