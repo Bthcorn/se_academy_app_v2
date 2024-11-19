@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Pencil } from "lucide-react"; // Importing the Pencil icon for the edit button
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../ThemeContext"; // Import ThemeContext
 
 const UserTable = ({ users }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -11,19 +12,20 @@ const UserTable = ({ users }) => {
   const [isEditMode, setIsEditMode] = useState(false); // Track if edit mode is active
   const usersPerPage = 10;
   const navigate = useNavigate();
+  const { darkMode } = useTheme(); // Access the theme state
 
   // Function to filter and search users
   const filteredUsers = users
     .filter((user) =>
-      user.username.toLowerCase().includes(searchTerm.toLowerCase()),
+      user.username.toLowerCase().includes(searchTerm.toLowerCase())
     )
     .filter((user) =>
       filterStatus
         ? user.status.toLowerCase() === filterStatus.toLowerCase()
-        : true,
+        : true
     )
     .filter((user) =>
-      filterRole ? user.role.toLowerCase() === filterRole.toLowerCase() : true,
+      filterRole ? user.role.toLowerCase() === filterRole.toLowerCase() : true
     );
 
   // Calculate the total number of pages
@@ -32,7 +34,7 @@ const UserTable = ({ users }) => {
   // Get the users for the current page
   const currentUsers = filteredUsers.slice(
     (currentPage - 1) * usersPerPage,
-    currentPage * usersPerPage,
+    currentPage * usersPerPage
   );
 
   // Handler for changing the page
@@ -74,7 +76,11 @@ const UserTable = ({ users }) => {
   };
 
   return (
-    <div className="w-full rounded-lg bg-[#1E293B] p-4 shadow-lg">
+    <div
+      className={`w-full rounded-lg p-4 shadow-lg ${
+        darkMode ? "bg-[#1E293B]" : "bg-[#ffdce6]"
+      }`}
+    >
       {/* Search, Filter, and Edit Controls */}
       <div className="mb-4 flex justify-between space-x-4">
         <input
@@ -82,13 +88,17 @@ const UserTable = ({ users }) => {
           placeholder="Search by name"
           value={searchTerm}
           onChange={handleSearchChange}
-          className="rounded-md bg-[#2E3A47] px-4 py-2 text-white"
+          className={`rounded-md px-4 py-2 ${
+            darkMode ? "bg-[#2E3A47] text-white" : "bg-[#FFFFFF] text-black"
+          }`}
         />
 
         <select
           value={filterStatus}
           onChange={handleFilterChange}
-          className="rounded-md bg-[#2E3A47] px-4 py-2 text-white"
+          className={`rounded-md px-4 py-2 ${
+            darkMode ? "bg-[#2E3A47] text-white" : "bg-[#FFFFFF] text-black"
+          }`}
         >
           <option value="">Filter by status</option>
           <option value="Active">Active</option>
@@ -98,7 +108,9 @@ const UserTable = ({ users }) => {
         <select
           value={filterRole}
           onChange={handleRoleFilterChange}
-          className="rounded-md bg-[#2E3A47] px-4 py-2 text-white"
+          className={`rounded-md px-4 py-2 ${
+            darkMode ? "bg-[#2E3A47] text-white" : "bg-[#FFFFFF] text-black"
+          }`}
         >
           <option value="">Filter by role</option>
           <option value="Freshman">Freshman</option>
@@ -111,16 +123,18 @@ const UserTable = ({ users }) => {
         {/* Edit Button */}
         <button
           onClick={toggleEditMode}
-          className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+          className={`rounded-md px-4 py-2 ${
+            darkMode ? "bg-blue-500 text-white hover:bg-blue-600" : "bg-[#ff8ed3] text-black hover:bg-[#ff3bb2]"
+          }`}
         >
           {isEditMode ? "Cancel Edit" : "Edit"}
         </button>
       </div>
 
-      <table className="min-w-full table-auto text-white">
+      <table className="min-w-full table-auto">
         <thead>
-          <tr className="text-left text-gray-400">
-            <th className="py-2">#</th> {/* Index */}
+          <tr className={`text-left ${darkMode ? "text-gray-400" : "text-black"}`}>
+            <th className="py-2">#</th>
             <th className="py-2">User</th>
             <th className="py-2">Role</th>
             <th className="py-2">Status</th>
@@ -131,7 +145,7 @@ const UserTable = ({ users }) => {
         <tbody>
           {currentUsers.map((user, index) => (
             <React.Fragment key={user.id}>
-              <tr className="border-b border-gray-600">
+              <tr className={`border-b ${darkMode ? "border-gray-600" : "border-black"}`}>
                 {/* Index column */}
                 <td className="py-4">
                   {index + 1 + (currentPage - 1) * usersPerPage}
@@ -145,13 +159,15 @@ const UserTable = ({ users }) => {
                     alt={user.username}
                   />
                   <div>
-                    <p className="font-semibold">{user.username}</p>
+                    <p className={`font-semibold ${darkMode ? "text-white" : "text-black"}`}>
+                      {user.username}
+                    </p>
                   </div>
                 </td>
 
                 {/* Role column */}
                 <td className="py-4">
-                  <p>{user.role}</p>
+                  <p className={darkMode ? "text-white" : "text-black"}>{user.role}</p>
                 </td>
 
                 {/* Status column */}
@@ -159,10 +175,16 @@ const UserTable = ({ users }) => {
                   <span
                     className={`rounded-full px-2 py-1 text-sm ${
                       user.status.toLowerCase() === "active"
-                        ? "bg-green-500"
+                        ? darkMode
+                          ? "bg-green-500 text-white"
+                          : "bg-[#ffb1e1] text-black"
                         : user.status.toLowerCase() === "inactive"
-                          ? "bg-gray-500"
-                          : "bg-red-500"
+                        ? darkMode
+                          ? "bg-gray-500 text-white"
+                          : "bg-[#ff3bb2] text-black"
+                        : darkMode
+                        ? "bg-red-500 text-white"
+                        : "bg-[#FFFFFF] text-black"
                     }`}
                   >
                     {user.status}
@@ -171,24 +193,30 @@ const UserTable = ({ users }) => {
 
                 {/* Email column */}
                 <td className="py-4">
-                  <p className="text-gray-400">{user.email}</p>
+                  <p className={darkMode ? "text-gray-400" : "text-black"}>{user.email}</p>
                 </td>
 
                 {/* Actions: View Details and Edit */}
                 <td className="flex items-center justify-center space-x-4 py-4 text-center">
                   <button
-                    className="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+                    className={`rounded-lg px-4 py-2 ${
+                      darkMode
+                        ? "bg-blue-500 text-white hover:bg-blue-600"
+                        : "bg-[#ffb1e1] text-black hover:bg-[#ff3bb2]"
+                    }`}
                     onClick={() => toggleDetails(user.id)}
                   >
-                    {expandedUserId === user.id
-                      ? "Hide Details"
-                      : "View Details"}
+                    {expandedUserId === user.id ? "Hide Details" : "View Details"}
                   </button>
 
                   {isEditMode && (
                     <button
-                      className="text-yellow-400 hover:text-yellow-500"
-                      onClick={() => handleEdit(user)} // Navigate to edit page on click
+                      className={`${
+                        darkMode
+                          ? "text-yellow-400 hover:text-yellow-500"
+                          : "text-black hover:text-[#ff3bb2]"
+                      }`}
+                      onClick={() => handleEdit(user)}
                     >
                       <Pencil size={20} />
                     </button>
@@ -199,7 +227,12 @@ const UserTable = ({ users }) => {
               {/* Conditionally render the expanded details row */}
               {expandedUserId === user.id && (
                 <tr>
-                  <td colSpan="6" className="bg-[#2E3A47] p-4 text-gray-200">
+                  <td
+                    colSpan="6"
+                    className={`p-4 ${
+                      darkMode ? "bg-[#2E3A47] text-gray-200" : "bg-[#ffdce6] text-black"
+                    }`}
+                  >
                     {/* Additional user details */}
                     <p>User ID: {user.id}</p>
                     <p>Level: {user.level}</p>
@@ -219,8 +252,12 @@ const UserTable = ({ users }) => {
         <button
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
-          className={`mx-1 rounded-md bg-[#2E3A47] px-3 py-1 text-white hover:bg-[#3B4A58] ${
-            currentPage === 1 && "cursor-not-allowed opacity-50"
+          className={`mx-1 rounded-md px-3 py-1 ${
+            currentPage === 1
+              ? "cursor-not-allowed opacity-50"
+              : darkMode
+              ? "bg-[#2E3A47] text-white hover:bg-[#3B4A58]"
+              : "bg-[#ffb1e1] text-black hover:bg-[#ffc8ea]"
           }`}
         >
           &lt;
@@ -231,8 +268,14 @@ const UserTable = ({ users }) => {
           <button
             key={i}
             onClick={() => handlePageChange(i + 1)}
-            className={`mx-1 rounded-md bg-[#2E3A47] px-3 py-1 text-white hover:bg-[#3B4A58] ${
-              currentPage === i + 1 && "bg-blue-600"
+            className={`mx-1 rounded-md px-3 py-1 ${
+              currentPage === i + 1
+                ? darkMode
+                  ? "bg-blue-600 text-white"
+                  : "bg-[#ff8ed3] text-black"
+                : darkMode
+                ? "bg-[#2E3A47] text-white hover:bg-[#3B4A58]"
+                : "bg-[#ffb1e1] text-black hover:bg-[#ffc8ea]"
             }`}
           >
             {i + 1}
@@ -243,8 +286,12 @@ const UserTable = ({ users }) => {
         <button
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
-          className={`mx-1 rounded-md bg-[#2E3A47] px-3 py-1 text-white hover:bg-[#3B4A58] ${
-            currentPage === totalPages && "cursor-not-allowed opacity-50"
+          className={`mx-1 rounded-md px-3 py-1 ${
+            currentPage === totalPages
+              ? "cursor-not-allowed opacity-50"
+              : darkMode
+              ? "bg-[#2E3A47] text-white hover:bg-[#3B4A58]"
+              : "bg-[#ffb1e1] text-black hover:bg-[#ffc8ea]"
           }`}
         >
           &gt;
