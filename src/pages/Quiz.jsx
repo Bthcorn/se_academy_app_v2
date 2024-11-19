@@ -2,6 +2,9 @@ import React, { useEffect } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import QuizItem from "../components/QuizItem";
 import Button from "../components/Button";
+import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
+import { Config } from "../components/config";
 
 const quizData = [
   {
@@ -46,7 +49,11 @@ function Quiz() {
   const { quizId, courseId } = useParams();
   const [answers, setAnswers] = React.useState({});
   const [showAnswer, setShowAnswer] = React.useState(false);
-  // const [correctAnswers, setCorrectAnswers] = React.useState([]);
+  const [quizData, setQuizData] = React.useState([]);
+  const [userSubmission, setUserSubmission] = React.useState([]);
+  const [allSubmissions, setAllSubmissions] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const { userId } = useAuth();
   const { state } = useLocation();
 
   useEffect(() => {
@@ -57,16 +64,114 @@ function Quiz() {
     e.preventDefault();
     setShowAnswer(true);
     console.log(answers);
-    // fetch request to submit answers
-    // fetch get the correct answers or compare the answers
-    // result the score and show the correct answers
-    // store the submission in the database
+    submitQuiz();
   };
 
   const handleReset = () => {
     setAnswers({});
     setShowAnswer(false);
   };
+
+  const fetchQuiz = async () => {
+    try {
+      const response = await axios.get(
+        Config.API_URL + `/quiz/get_quiz_all/${courseId}`,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        setQuizData(response.data);
+        console.log(response.data);
+        // setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const submitQuiz = async () => {
+    try {
+      const response = await axios.post(
+        Config.API_URL + `/quiz/submit_quiz`,
+        {
+          user_id: userId,
+          course_id: courseId,
+          quiz_answers: answers,
+        },
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        console.log(response.data);
+        fetchUserSubmission(response.data.quiz_submission_id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchUserSubmission = async (submissionId) => {
+    try {
+      const response = await axios.get(
+        Config.API_URL + `/quiz/get_quiz_submission/${submissionId}`,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        setUserSubmission(response.data);
+        console.log(response.data);
+        fetchUserSubmissions();
+        // setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchUserSubmissions = async () => {
+    try {
+      const response = await axios.get(
+        Config.API_URL +
+          `/quiz/get_quiz_submission_course/${userId}/${courseId}`,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        setAllSubmissions(response.data);
+        console.log(response.data);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchQuiz();
+    fetchUserSubmissions();
+  }, []);
 
   return (
     <div className="flex h-full w-full flex-col">
@@ -85,7 +190,7 @@ function Quiz() {
         <p className="text-secondary-color5">
           Total Questions: {quizData.length}
         </p>
-        <p className="text-secondary-color5">Recent score: 0/3</p>
+        {/* <p className="text-secondary-color5">Recent score: </p> */}
       </div>
       <div className="mb-4 mt-4 flex flex-col gap-4">
         {quizData.map((quiz) => (
@@ -99,12 +204,12 @@ function Quiz() {
               onChange={(e) => {
                 setAnswers({
                   ...answers,
-                  [quiz.id]: parseInt(e.target.value),
+                  [quiz.id]: parseInt(e.target.value) || null,
                 });
               }}
             >
               <option value="">Select an answer</option>
-              {quiz.options.map((option, index) => (
+              {quiz.choices.map((option, index) => (
                 <option key={index} value={index}>
                   {option}
                 </option>
@@ -112,16 +217,31 @@ function Quiz() {
             </select>
             {showAnswer && (
               <div>
-                <p className="text-secondary-color5">
-                  Your Answer: {quiz.options[answers[quiz.id]]}
-                </p>
-                <p className="text-secondary-color5">
-                  Correct Answer: {quiz.options[quiz.correctAnswers]}
-                </p>
+                {/* <p className="text-secondary-color5">
+                  Your Answer: {quiz.choices[answers[quiz.id]]}
+                </p> */}
+                {/* <p className="text-secondary-color5">
+                  Correct Answer: {quiz.choices[quiz.correctAnswers]}
+                </p> */}
               </div>
             )}
           </div>
         ))}
+      </div>
+      <div>
+        {userSubmission && (
+          <div>
+            <h1>Quiz Submission</h1>
+            <p>Score: {userSubmission.scores}</p>
+            <p>
+              Correct Answers: {userSubmission.scores || 0}/{quizData.length}
+            </p>
+            <p>
+              Incorrect Answers: {quizData.length - userSubmission.scores || 0}/
+              {quizData.length}
+            </p>
+          </div>
+        )}
       </div>
       <div className="flex w-full justify-end gap-4">
         <Button
@@ -134,6 +254,26 @@ function Quiz() {
           variant={"outline"}
           onClick={handleReset}
         ></Button>
+      </div>
+      <h1 className="text-2xl">Recent Submissions</h1>
+      <div className="mt-4 h-56 gap-4 overflow-y-auto sm:h-80">
+        {allSubmissions.map((submission) => (
+          <div
+            key={submission.id}
+            className="mb-2 w-full rounded border border-gray-300 bg-secondary-color4/50 p-2 md:p-3"
+          >
+            <h1>Quiz Submission</h1>
+            <p>Score: {submission.scores}</p>
+            <p>
+              Correct Answers: {submission.scores || 0}/{quizData.length}
+            </p>
+            <p>
+              Incorrect Answers: {quizData.length - submission.scores || 0}/
+              {quizData.length}
+            </p>
+            <time>{new Date(submission.submitted_at).toLocaleString()}</time>
+          </div>
+        ))}
       </div>
     </div>
   );
