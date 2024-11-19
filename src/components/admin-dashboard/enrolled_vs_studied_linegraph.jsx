@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from "chart.js";
+import { useTheme } from "../ThemeContext";
 
 // Register Chart.js components
 ChartJS.register(
@@ -17,10 +18,12 @@ ChartJS.register(
   LinearScale,
   PointElement,
   Tooltip,
-  Legend,
+  Legend
 );
 
 export default function EnrolledVsStudiedLineGraph({ data }) {
+  const { darkMode } = useTheme(); // Access the current theme state
+
   // Line chart data and options
   const chartData = {
     labels: data.labels, // X-axis labels (e.g., months)
@@ -28,18 +31,22 @@ export default function EnrolledVsStudiedLineGraph({ data }) {
       {
         label: "Enrolled",
         data: data.enrolled, // Y-axis data for Enrolled
-        borderColor: "#A855F7", // Color for Enrolled line (purple)
-        backgroundColor: "rgba(168, 85, 247, 0.1)", // Light purple background
-        pointBackgroundColor: "#A855F7",
+        borderColor: darkMode ? "#A855F7" : "#ff3bb2", // Purple for dark mode, Lime for light mode
+        backgroundColor: darkMode
+          ? "rgba(168, 85, 247, 0.1)" // Light purple background
+          : "rgba(173, 208, 87, 0.1)", // Light green background for light mode
+        pointBackgroundColor: darkMode ? "#A855F7" : "#ff3bb2",
         tension: 0.4, // Smooth curve
         fill: true, // Fill the area under the curve
       },
       {
         label: "Studied",
         data: data.studied, // Y-axis data for Studied
-        borderColor: "#22D3EE", // Color for Studied line (blue)
-        backgroundColor: "rgba(34, 211, 238, 0.1)", // Light blue background
-        pointBackgroundColor: "#22D3EE",
+        borderColor: darkMode ? "#22D3EE" : "#ffb7fe", // Aqua for dark mode, Turquoise for light mode
+        backgroundColor: darkMode
+          ? "rgba(34, 211, 238, 0.1)" // Light blue background
+          : "rgba(0, 188, 163, 0.1)", // Light turquoise background for light mode
+        pointBackgroundColor: darkMode ? "#22D3EE" : "#ffb7fe",
         tension: 0.4, // Smooth curve
         fill: true, // Fill the area under the curve
       },
@@ -53,7 +60,7 @@ export default function EnrolledVsStudiedLineGraph({ data }) {
       legend: {
         position: "top",
         labels: {
-          color: "white",
+          color: darkMode ? "white" : "#111827", // White for dark mode, Black for light mode
         },
       },
       tooltip: {
@@ -67,7 +74,7 @@ export default function EnrolledVsStudiedLineGraph({ data }) {
     scales: {
       x: {
         ticks: {
-          color: "#9CA3AF", // X-axis tick color (gray)
+          color: darkMode ? "#9CA3AF" : "#4B5563", // Gray for dark mode, Darker gray for light mode
         },
         grid: {
           display: false, // Hide vertical grid lines
@@ -75,19 +82,29 @@ export default function EnrolledVsStudiedLineGraph({ data }) {
       },
       y: {
         ticks: {
-          color: "#9CA3AF", // Y-axis tick color (gray)
+          color: darkMode ? "#9CA3AF" : "#4B5563", // Gray for dark mode, Darker gray for light mode
           beginAtZero: true,
         },
         grid: {
-          color: "#374151", // Dark gray grid lines
+          color: darkMode ? "#374151" : "#D1D5DB", // Dark gray for dark mode, Light gray for light mode
         },
       },
     },
   };
 
   return (
-    <div className="h-full w-full rounded-lg bg-[#1E293B] p-4 shadow-lg">
-      <h2 className="mb-2 text-lg text-white">Total Hours Studied</h2>
+    <div
+      className={`h-full w-full rounded-lg p-4 shadow-lg ${
+        darkMode ? "bg-[#1E293B]" : "bg-[#FFDCE6]"
+      }`}
+    >
+      <h2
+        className={`mb-2 text-lg ${
+          darkMode ? "text-white" : "text-light-foreground"
+        }`}
+      >
+        Total Hours Studied
+      </h2>
       {/* Set a fixed height for the chart */}
       <div className="h-[600px]">
         <Line data={chartData} options={options} />
