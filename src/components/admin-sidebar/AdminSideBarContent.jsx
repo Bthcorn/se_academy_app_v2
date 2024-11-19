@@ -57,7 +57,7 @@ const AdminSideBarContent = () => {
             className="peer sr-only"
           />
           {/* Background */}
-          <span className="absolute inset-0 rounded-full bg-purple-600 peer-checked:bg-yellow-600 transition-all"></span>
+          <span className="absolute inset-0 rounded-full bg-purple-600 peer-checked:bg-light-popover transition-all"></span>
           {/* Toggle Circle */}
           <span className="absolute left-1 top-1 h-6 w-6 rounded-full bg-white flex items-center justify-center transition-all peer-checked:left-9">
             {darkMode ? (

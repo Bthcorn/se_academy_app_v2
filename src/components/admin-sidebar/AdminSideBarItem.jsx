@@ -13,13 +13,13 @@ const AdminSideBarItem = ({ icon, label, href }) => {
           isActive
             ? `${
                 darkMode
-                  ? "bg-muted text-primary-foreground border-l-4 border-pink-500"
-                  : "bg-yellow-600 text-light-foreground border-l-4 border-green-500"
+                  ? "bg-muted text-primary-foreground border-l-4 border-pink-500" // Dark mode active state
+                  : "bg-light-popover text-light-foreground border-l-4 border-secondary-color2" // Light mode active state
               }`
             : `${
                 darkMode
-                  ? "text-secondary-foreground hover:bg-secondary hover:text-white"
-                  : "text-light-foreground hover:bg-light-background hover:text-black"
+                  ? "text-secondary-foreground hover:bg-muted hover:text-white" // Dark mode hover state
+                  : "text-light-foreground hover:bg-light-popover hover:text-black" // Light mode hover state
               }`
         }`
       }
