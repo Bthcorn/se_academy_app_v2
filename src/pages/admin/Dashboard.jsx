@@ -188,7 +188,6 @@ export default function Dashboard() {
     enrolled: enrollments_summary,
     studied: ended_enrollments_summary,
   };
-
   return (
     <>
       <div className="grid min-h-screen grid-cols-4 gap-6">

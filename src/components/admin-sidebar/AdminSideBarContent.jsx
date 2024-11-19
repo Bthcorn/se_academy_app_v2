@@ -1,16 +1,11 @@
 import React from "react";
-import {
-  LayoutGrid,
-  User,
-  MessageSquare,
-  BookOpen,
-  BarChart,
-  Sliders,
-  Brush,
-} from "lucide-react";
+import { LayoutGrid, User, BookOpen, BarChart, Sun, Moon } from "lucide-react";
 import SideBarItem from "./AdminSideBarItem";
+import { useTheme } from "../ThemeContext";
 
 const AdminSideBarContent = () => {
+  const { darkMode, setDarkMode } = useTheme(); // Use ThemeContext to manage darkMode
+
   const items = [
     {
       icon: <LayoutGrid size={24} />,
@@ -32,40 +27,47 @@ const AdminSideBarContent = () => {
       label: "Leaderboard",
       href: "/admin/leaderboard",
     },
-    {
-      icon: <MessageSquare size={24} />,
-      label: "Feedback",
-      href: "/admin/feedback",
-    },
-  ];
-
-  const lowerItems = [
-    {
-      icon: <Sliders size={24} />,
-      label: "Settings",
-      href: "/admin/settings",
-    },
-    {
-      icon: <Brush size={24} />,
-      label: "Themes",
-      href: "/admin/themes",
-    },
   ];
 
   return (
-    <div className="flex flex-col space-y-4">
+    <div
+      className={`flex flex-col space-y-4 ${
+        darkMode ? "text-secondary-foreground" : "text-light-foreground"
+      }`} // Dynamically change text color
+    >
       {/* Upper section without a divider */}
       {items.map((item) => (
         <SideBarItem key={item.label} {...item} />
       ))}
 
       {/* Divider */}
-      <hr className="my-4 border-t border-gray-700" />
+      <hr
+        className={`my-4 ${
+          darkMode ? "border-secondary-foreground" : "border-light-border"
+        }`} // Change divider color dynamically
+      />
 
-      {/* Lower section with a divider */}
-      {lowerItems.map((item) => (
-        <SideBarItem key={item.label} {...item} />
-      ))}
+      {/* Theme Toggle Section */}
+      <div className="flex items-center justify-center">
+        <label className="relative inline-block w-16 h-8">
+          <input
+            type="checkbox"
+            checked={!darkMode}
+            onChange={() => setDarkMode(!darkMode)} // Toggle theme using context
+            className="peer sr-only"
+          />
+          {/* Background */}
+          <span className="absolute inset-0 rounded-full bg-purple-600 peer-checked:bg-light-popover transition-all"></span>
+          {/* Toggle Circle */}
+          <span className="absolute left-1 top-1 h-6 w-6 rounded-full bg-white flex items-center justify-center transition-all peer-checked:left-9">
+            {darkMode ? (
+              <Moon size={16} className="text-purple-600" />
+            ) : (
+              <Sun size={16} className="text-yellow-400" />
+            )}
+          </span>
+        </label>
+      </div>
     </div>
   );
 };

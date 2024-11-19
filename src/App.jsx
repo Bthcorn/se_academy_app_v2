@@ -1,8 +1,4 @@
-import {
-  BrowserRouter,
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import UserLayout from "./components/UserLayout";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -11,10 +7,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import AdminLayout from "./components/AdminLayout";
 import Users from "./pages/admin/Users";
 import UserEdit from "./components/admin-userboard/user_edit.jsx";
-import Feedback from "./pages/admin/Feedback";
 import Leaderboard from "./pages/admin/Leaderboard";
-import Settings from "./pages/admin/Settings";
-import Themes from "./pages/admin/Themes";
 import Courses from "./pages/admin/Courses";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -30,6 +23,9 @@ import AuthProvider from "./hooks/AuthContext.jsx";
 import RouteGuard from "./hooks/RouteGuard.jsx";
 import CourseVideos from "./pages/admin/CourseVideos.jsx";
 import AdminGuard from "./hooks/AdminGuard.jsx";
+import CourseAchievements from "./pages/admin/CourseAchievements.jsx";
+import { ThemeProvider } from "./components/ThemeContext.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -87,15 +83,19 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminLayout />,
+    element: (
+      <ThemeProvider>
+        <AdminLayout />
+      </ThemeProvider>
+    ),
     errorElement: <ErrorBoundary />,
     children: [
       {
         path: "dashboard",
         element: (
-          <AdminGuard>
+          
             <Dashboard />
-          </AdminGuard>
+         
         ),
       },
       {
@@ -109,20 +109,8 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "feedback",
-        element: <Feedback />,
-      },
-      {
         path: "leaderboard",
         element: <Leaderboard />,
-      },
-      {
-        path: "settings",
-        element: <Settings />,
-      },
-      {
-        path: "themes",
-        element: <Themes />,
       },
       {
         path: "courses",
@@ -133,8 +121,17 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "course/:courseId/videos",
-        element: <CourseVideos />,
+        path: "course",
+        children: [
+          {
+            path: ":courseId/videos",
+            element: <CourseVideos />,
+          },
+          {
+            path: ":courseId/achievements",
+            element: <CourseAchievements />,
+          },
+        ],
       },
       {
         path: "category",
