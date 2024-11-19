@@ -26,7 +26,6 @@ import AdminGuard from "./hooks/AdminGuard.jsx";
 import CourseAchievements from "./pages/admin/CourseAchievements.jsx";
 import { ThemeProvider } from "./components/ThemeContext.jsx";
 
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -43,7 +42,11 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: (
+          <RouteGuard>
+            <Profile />
+          </RouteGuard>
+        ),
       },
       {
         path: "my-courses",
@@ -92,11 +95,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "dashboard",
-        element: (
-          
-            <Dashboard />
-         
-        ),
+        element: <Dashboard />,
       },
       {
         path: "users",
