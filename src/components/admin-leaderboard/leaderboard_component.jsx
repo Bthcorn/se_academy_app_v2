@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ArrowUpRight, ArrowDownRight } from "lucide-react"; // Icons for the arrows
 import { data } from "autoprefixer";
 
-const LeaderboardComponent = ({ users }) => {
+const LeaderboardComponent = ({ users, userImages }) => {
   const [activeTab, setActiveTab] = useState('score'); // Default sorting by score
 
   
