@@ -10,6 +10,7 @@ import TotalEnrolledBarChart from "../../components/admin-dashboard/totalenrolle
 import TotalStudiedBarChart from "../../components/admin-dashboard/totalstudied_barchart";
 
 export default function Dashboard() {
+  // Fetch all users from the api
   const fetch_users = async () => {
     try {
       const response = await axios.get(Config.API_URL + `/user/get_all`, {
@@ -23,6 +24,7 @@ export default function Dashboard() {
     }
   };
 
+  // Fetch all enrollments from the api
   const fetch_enrollments = async () => {
     try {
       const response = await axios.get(Config.API_URL + `/enrolled_course/get_all`, {
@@ -36,6 +38,7 @@ export default function Dashboard() {
     }
   };
 
+  // Fetch all courses from the api
   const fetch_courses = async () => {
     try {
       const response = await axios.get(Config.API_URL + `/course/get_courses`, {
@@ -49,6 +52,7 @@ export default function Dashboard() {
     }
   };
 
+    // Fetch all achievements from the api
   const fetch_achievements = async () => {
     try {
       const response = await axios.get(Config.API_URL + `/achievement/get_all`, {
@@ -62,6 +66,7 @@ export default function Dashboard() {
     }
   };
 
+  // Fetch all quizzes from the api
   const fetch_quizzes = async () => {
     try {
       const response = await axios.get(Config.API_URL + `/quiz/get_all`, {
@@ -85,23 +90,23 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchAndSetUsers = async () => {
       const data = await fetch_users();
-      setUsers(data); // Store the fetched data in state
+      setUsers(data);
     };
     const fetchAndSetEnrollments = async () => {
       const data = await fetch_enrollments();
-      setEnrollments(data); // Store the fetched data in state
+      setEnrollments(data);
     };
     const fetchAndSetCourses = async () => {
       const data = await fetch_courses();
-      setCourses(data); // Store the fetched data in state
+      setCourses(data);
     };
     const fetchAndSetAchievements = async () => {
       const data = await fetch_achievements();
-      setAchievements(data); // Store the fetched data in state
+      setAchievements(data);
     };
     const fetchAndSetQuizzes = async () => {
       const data = await fetch_quizzes();
-      setQuizzes(data); // Store the fetched data in state
+      setQuizzes(data);
     };
 
     fetchAndSetUsers(); // Call the async function
@@ -111,6 +116,7 @@ export default function Dashboard() {
     fetchAndSetQuizzes(); // Call the async function
   }, []);
   
+  // Data that will be displayed in the top page cards
   var first_field_data = users.length;
   var second_field_data = courses.length;
   var third_field_data = achievements.length;
