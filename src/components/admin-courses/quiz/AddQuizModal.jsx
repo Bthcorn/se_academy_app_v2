@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Check, Trash2 } from "lucide-react";
 
-const AddQuizModal = ({ isOpen, quiz, onClose, onSave, correctAnswer }) => {
+const AddQuizModal = ({
+  isOpen,
+  quiz,
+  onClose,
+  onSave,
+  correctAnswer,
+  courseId,
+}) => {
   const [question, setQuestion] = useState("");
-  const [choices, setChoices] = useState([{ id: Date.now(), text: "" }]);
+  const [choices, setChoices] = useState([]);
+  const [localCourseId, setLocalCourseId] = useState(null);
+  const [quizId, setQuizId] = useState(null);
   var [localcorrectAnswer, setlocalCorrectAnswer] = useState(null);
   const [localcorrectAnswerMode, setlocalCorrectAnswerMode] = useState(false);
   const [removeChoiceMode, setRemoveChoiceMode] = useState(false);
@@ -12,33 +21,45 @@ const AddQuizModal = ({ isOpen, quiz, onClose, onSave, correctAnswer }) => {
   useEffect(() => {
     if (quiz) {
       setQuestion(quiz.question);
-      setChoices(quiz.options);
+      setChoices(quiz.choices);
+      setLocalCourseId(quiz.courseId);
+      setQuizId(quiz.id);
+      console.log(quiz.id);
       setlocalCorrectAnswer(correctAnswer);
+    } else {
+      setQuestion("");
+      setChoices([]);
+      setLocalCourseId(courseId);
+      console.log(courseId);
+      setlocalCorrectAnswer(null);
     }
   }, [quiz, correctAnswer]);
 
   if (!isOpen) return null;
 
   const handleAddChoice = () => {
-    const newChoice = { id: Date.now(), text: "" };
+    const newChoice = "";
     setChoices([...choices, newChoice]);
   };
 
-  const handleChoiceChange = (id, newText) => {
-    const updatedChoices = choices.map((choice) =>
-      choice.id === id ? { ...choice, text: newText } : choice,
-    );
+  const handleChoiceChange = (index, newText) => {
+    const updatedChoices = [...choices];
+    updatedChoices[index] = newText;
     setChoices(updatedChoices);
   };
 
-  const handleSetlocalCorrectAnswer = (id) => {
-    setlocalCorrectAnswer(id);
+  const handleSetlocalCorrectAnswer = (index) => {
+    setlocalCorrectAnswer(index);
+    console.log(index);
   };
 
-  const handleRemoveChoice = (id) => {
-    if (removeChoiceMode) {
-      setChoices(choices.filter((choice) => choice.id !== id));
-    }
+  const handleRemoveChoice = (index) => {
+    setChoices((prevChoices) => {
+      const updatedChoices = prevChoices.filter((choice, i) => i !== index);
+      console.log("Updated Choices:", updatedChoices);
+      return updatedChoices;
+    });
+    console.log("Removed index:", index);
   };
 
   const togglelocalCorrectAnswerMode = () => {
@@ -53,7 +74,7 @@ const AddQuizModal = ({ isOpen, quiz, onClose, onSave, correctAnswer }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave(question, choices, localcorrectAnswer);
+    onSave(localCourseId, question, choices, localcorrectAnswer, quizId);
     onClose(); // Close modal after submission
   };
 
@@ -77,32 +98,30 @@ const AddQuizModal = ({ isOpen, quiz, onClose, onSave, correctAnswer }) => {
           </div>
           <div className="mb-4">
             <label className="font-bold">Choices:</label>
-            {choices.map((choice) => (
-              <div key={choice.id} className="mt-2 flex items-center">
+            {choices.map((choice, index) => (
+              <div key={index} className="mt-2 flex items-center">
                 <input
                   type="text"
-                  className={`w-full rounded-md p-2 text-black ${choice.id === localcorrectAnswer ? "border-2 border-green-500 bg-green-500" : ""} ${localcorrectAnswerMode ? "border-2 border-green-500" : ""} ${removeChoiceMode ? "border-2 border-red-500" : ""}`}
-                  value={choice.text}
-                  onChange={(e) =>
-                    handleChoiceChange(choice.id, e.target.value)
-                  }
+                  className={`w-full rounded-md p-2 text-black ${index === localcorrectAnswer ? "border-2 border-green-500 bg-green-500" : ""} ${localcorrectAnswerMode ? "border-2 border-green-500" : ""} ${removeChoiceMode ? "border-2 border-red-500" : ""}`}
+                  value={choice}
+                  onChange={(e) => handleChoiceChange(index, e.target.value)}
                   required
                 />
                 <button
                   type="button"
                   className="ml-2 text-yellow-500"
-                  onClick={() => handleSetlocalCorrectAnswer(choice.id)}
+                  onClick={() => handleSetlocalCorrectAnswer(index)}
                   style={{ display: localcorrectAnswerMode ? "block" : "none" }}
                 >
                   <Check
                     size={24}
-                    className={`${choice.id === localcorrectAnswer ? "text-green-500" : "text-gray-300"}`}
+                    className={`${index === localcorrectAnswer ? "text-green-500" : "text-gray-300"}`}
                   />
                 </button>
                 <button
                   type="button"
                   className="ml-2 text-red-500"
-                  onClick={() => handleRemoveChoice(choice.id)}
+                  onClick={() => handleRemoveChoice(index)}
                   style={{ display: removeChoiceMode ? "block" : "none" }}
                 >
                   <Trash2 size={24} />
