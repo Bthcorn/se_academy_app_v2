@@ -150,16 +150,20 @@ function Home() {
               software engineering career.
             </p>
             <div className="mt-8 flex items-center gap-2 sm:items-start lg:mb-10">
-              <Button
-                label="Get Started"
-                icon={<ArrowRightSquareIcon size={20} className="mr-2" />}
-                variant={"gradient"}
-              />
-              <Button
-                label="View Courses"
-                icon={<SquareArrowOutUpRight size={20} className="mr-2" />}
-                variant={"secondary"}
-              />
+              <Link to={"/signup"}>
+                <Button
+                  label="Get Started"
+                  icon={<ArrowRightSquareIcon size={20} className="mr-2" />}
+                  variant={"gradient"}
+                />
+              </Link>
+              <Link to={"/course"}>
+                <Button
+                  label="View Courses"
+                  icon={<SquareArrowOutUpRight size={20} className="mr-2" />}
+                  variant={"secondary"}
+                />
+              </Link>
             </div>
           </div>
         </div>

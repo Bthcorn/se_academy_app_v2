@@ -22,6 +22,7 @@ function Profile() {
   const [level, setLevel] = React.useState(0);
   const [studyHours, setStudyHours] = React.useState(0);
   const [progress, setProgress] = React.useState([]);
+  const { logout } = useAuth();
 
   const handleEdit = () => {
     setEdit(!edit);
@@ -161,6 +162,11 @@ function Profile() {
             <span className="rounded-md bg-secondary-color4 p-2 text-xs text-accent-foreground">
               id: {user.id}
             </span>
+            <Button
+              label={"logout"}
+              variant="gradient"
+              onClick={() => logout()}
+            />
           </div>
         </div>
         <div className="h-0 w-full border"></div>
@@ -288,7 +294,7 @@ function Profile() {
               <History size={20} />
               <span className="">studytime: </span>
               <span className="flex items-center justify-center rounded-md bg-secondary-color3/20 px-2 py-1 text-secondary-color3">
-                {studyHours}
+                {studyHours.toFixed(2)}
               </span>
               <span>hrs</span>
             </div>
