@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddQuizModal from "./AddQuizModal";
 
 const quiz = [
@@ -26,21 +26,21 @@ const QuizModal = ({
   isOpen,
   close,
   quizzes,
-  correctAnswers,
   onAddQuestion,
   onEditQuestion,
+  courseId,
 }) => {
   const [showAddQuiz, setShowAddQuiz] = useState(false);
   const [editQuiz, setEditQuiz] = useState(null);
   const [editMode, setEditMode] = useState(false);
-
-  if (!isOpen) return null;
+  const [quiz, setQuiz] = useState(quizzes || []);
+  const [localCourseId, setLocalCourseId] = useState(null);
 
   // Function to find the correct answer ID for a given question
-  const getCorrectAnswer = (questionId) => {
-    const answer = correctAnswers.find((answer) => answer.id === questionId);
-    return answer ? answer.answer : null;
-  };
+  // const getCorrectAnswer = (index) => {
+  //   const answer = correctAnswers.find((answer) => answer.id === questionId);
+  //   return answer ? answer.answer : null;
+  // };
 
   const toggleEditMode = () => {
     setEditMode(!editMode);
@@ -50,6 +50,13 @@ const QuizModal = ({
     setEditQuiz(quiz);
     setShowAddQuiz(true);
   };
+
+  useEffect(() => {
+    setQuiz(quizzes || []);
+    setLocalCourseId(courseId);
+  }, [quizzes]);
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -63,31 +70,35 @@ const QuizModal = ({
           className="mb-4 overflow-auto rounded-lg bg-[#16202A] p-4"
           style={{ maxHeight: "40vh" }}
         >
-          {quiz.map((quiz, index) => (
-            <div
-              key={quiz.id}
-              className={`mb-6 cursor-pointer p-4 ${editMode ? "rounded-xl border-4 border-yellow-400 shadow-md transition-all duration-300 ease-in-out" : "border border-transparent"}`}
-              onClick={editMode ? () => openEditQuiz(quiz) : null}
-            >
-              <p className="font-bold">
-                {index + 1}. {quiz.question}
-              </p>
-              <div className="flex flex-col space-y-2">
-                {quiz.choice.map((option, index) => (
-                  <div
-                    key={index}
-                    className={`rounded-md p-2 ${
-                      index === quiz.correct_answer
-                        ? "bg-green-500"
-                        : "bg-[#404956]"
-                    }`}
-                  >
-                    {option}
-                  </div>
-                ))}
+          {quiz.length > 0 ? (
+            quiz.map((quiz, index) => (
+              <div
+                key={index}
+                className={`mb-6 cursor-pointer p-4 ${editMode ? "rounded-xl border-4 border-yellow-400 shadow-md transition-all duration-300 ease-in-out" : "border border-transparent"}`}
+                onClick={editMode ? () => openEditQuiz(quiz) : null}
+              >
+                <p className="font-bold">
+                  {index + 1}. {quiz.question}
+                </p>
+                <div className="flex flex-col space-y-2">
+                  {quiz.choices.map((option, index) => (
+                    <div
+                      key={index}
+                      className={`rounded-md p-2 ${
+                        index === quiz.correct_answer
+                          ? "bg-green-500"
+                          : "bg-[#404956]"
+                      }`}
+                    >
+                      {option}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <div className="text-center text-gray-300">No questions added</div>
+          )}
         </div>
 
         <button
@@ -130,12 +141,13 @@ const QuizModal = ({
         <AddQuizModal
           isOpen={showAddQuiz}
           quiz={editQuiz}
-          correctAnswer={editQuiz ? getCorrectAnswer(editQuiz.id) : null}
+          correctAnswer={editQuiz ? quiz[editQuiz.correct_answer] : null}
           onClose={() => {
             setShowAddQuiz(false);
             setEditQuiz(null);
           }}
           onSave={editQuiz ? onEditQuestion : onAddQuestion}
+          courseId={localCourseId}
         />
       )}
     </div>
