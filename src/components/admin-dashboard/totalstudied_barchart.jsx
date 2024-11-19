@@ -18,7 +18,7 @@ export default function TotalStudiedBarChart({ data }) {
       },
     ],
   };
-
+  const totalStudied = data.studied.reduce((a, b) => a + b, 0);
   const options = {
     responsive: true,
     plugins: {
@@ -56,7 +56,7 @@ export default function TotalStudiedBarChart({ data }) {
         <h2 className="text-white text-lg">Total Studied</h2>
         <p className="text-green-400 text-sm">24.7% ↑</p>
       </div>
-      <h3 className="text-white text-2xl mb-2">120</h3>
+      <h3 className="text-white text-2xl mb-2">{totalStudied}</h3>
       <Bar data={chartData} options={options} height={100} />
       <div className="flex justify-between text-gray-400 text-xs mt-4">
         <p>Last 12 months</p>

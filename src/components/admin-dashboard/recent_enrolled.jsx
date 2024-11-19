@@ -13,8 +13,6 @@ export default function RecentEnrolled({ data }) {
         <span>Course Name</span>
         <span>Course ID</span>
         <span>Date</span>
-        <span>Status</span>
-        <span>Total Hours</span>
       </div>
 
       {/* List of enrolled users */}
@@ -22,10 +20,10 @@ export default function RecentEnrolled({ data }) {
         {data.map((entry, index) => (
           <li key={index} className="grid grid-cols-6 items-center bg-[#0F172A] p-2 rounded-md text-[10px]">
             <p className="text-white">{entry.username}</p>  {/* User Name */}
-            <p className="text-white">{entry.course_name}</p>  {/* Course Name */}
+            <p className="text-white">{entry.course_title}</p>  {/* Course Name */}
             <p className="text-gray-400">{entry.course_id}</p>  {/* Course ID */}
             <p className="text-gray-400">{entry.enrolled_at}</p>  {/* Date */}
-            <p>
+            {/* <p>
               <span className={`px-2 py-1 rounded-full text-[9px] font-semibold ${
                 entry.status === 'Approved' ? 'bg-green-100 text-green-800' : 
                 entry.status === 'Pending' ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'
@@ -33,7 +31,7 @@ export default function RecentEnrolled({ data }) {
                 {entry.status}
               </span>
             </p>
-            <p className="text-white">{entry.course_length} hours</p>  {/* Total Hours */}
+            <p className="text-white">{entry.course_length} hours</p>  Total Hours */}
           </li>
         ))}
       </ul>

@@ -19,6 +19,7 @@ export default function TotalEnrolledBarChart({ data }) {
     ],
   };
 
+  const totalEnrolled = data.enrolled.reduce((a, b) => a + b, 0);
   const options = {
     responsive: true,
     plugins: {
@@ -56,7 +57,7 @@ export default function TotalEnrolledBarChart({ data }) {
         <h2 className="text-white text-lg">Total Enrolled</h2>
         <p className="text-green-400 text-sm">28.5% ↑</p>
       </div>
-      <h3 className="text-white text-2xl mb-2">144</h3>
+      <h3 className="text-white text-2xl mb-2">{totalEnrolled}</h3>
       <Bar data={chartData} options={options} height={100} />
       <div className="flex justify-between text-gray-400 text-xs mt-4">
         <p>Last 12 months</p>

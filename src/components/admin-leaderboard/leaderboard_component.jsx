@@ -3,7 +3,9 @@ import { ArrowUpRight, ArrowDownRight } from "lucide-react"; // Icons for the ar
 import { data } from "autoprefixer";
 
 const LeaderboardComponent = ({ users, userImages }) => {
-  const [activeTab, setActiveTab] = useState("points"); // Default sorting by points
+  const [activeTab, setActiveTab] = useState('score'); // Default sorting by score
+
+  
   //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   // PS. FROM SPOON // This should not be random, this is only for the sake of designing. Normally,it should compare wheather the rank had recently moved up or down, if that user's rank was moved up, the arrow is green otherwise red.
   const getRandomArrow = () =>
@@ -14,11 +16,11 @@ const LeaderboardComponent = ({ users, userImages }) => {
     );
   //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  // Sort users based on active tab (level, points, total_studytime)
+  // Sort users based on active tab (level, score, study_hours)
   const sortedUsers = [...users].sort((a, b) => {
-    if (activeTab === "level") return b.level - a.level;
-    if (activeTab === "studytime") return b.total_hours - a.total_hours;
-    return b.score - a.score; // Default is points
+    if (activeTab === 'level') return b.level - a.level;
+    if (activeTab === 'study_hours') return b.study_hours - a.study_hours;
+    return b.score - a.score; // Default is score
   });
 
   // The user with the highest score is the first in sortedUsers
@@ -32,8 +34,8 @@ const LeaderboardComponent = ({ users, userImages }) => {
   return (
     <div className="w-full rounded-lg bg-[#1E293B] p-6 text-white shadow-lg">
       {/* Tab Navigation */}
-      <div className="mb-8 flex justify-center">
-        {["points", "level", "studytime"].map((tab) => (
+      <div className="flex justify-center mb-8">
+        {['score', 'level', 'study_hours'].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -43,11 +45,7 @@ const LeaderboardComponent = ({ users, userImages }) => {
                 : "bg-[#2E3A47] text-gray-400"
             }`}
           >
-            {tab === "points"
-              ? "Points"
-              : tab === "level"
-                ? "Level"
-                : "Study Time"}
+            {tab === 'score' ? 'Score' : tab === 'level' ? 'Level' : 'Study Time'}
           </button>
         ))}
       </div>
@@ -62,11 +60,11 @@ const LeaderboardComponent = ({ users, userImages }) => {
             className="mb-4 h-16 w-16 rounded-full"
           />
           <p className="text-xl font-bold text-blue-300">
-            {activeTab === "points"
+            {activeTab === 'score'
               ? secondPlace.score
-              : activeTab === "level"
-                ? secondPlace.level
-                : secondPlace.study_hours}
+              : activeTab === 'level'
+              ? secondPlace.level
+              : secondPlace.study_hours}
           </p>
           <p className="text-sm text-gray-300">{secondPlace.username}</p>
           {/* {getRandomArrow()} */}
@@ -87,11 +85,11 @@ const LeaderboardComponent = ({ users, userImages }) => {
             className="mb-4 h-24 w-24 rounded-full border-4 border-yellow-400"
           />
           <p className="text-2xl font-bold text-yellow-400">
-            {activeTab === "points"
+            {activeTab === 'score'
               ? firstPlace.score
-              : activeTab === "level"
-                ? firstPlace.level
-                : firstPlace.study_hours}
+              : activeTab === 'level'
+              ? firstPlace.level
+              : firstPlace.study_hours}
           </p>
           <p className="text-sm text-gray-300">{firstPlace.username}</p>
           {/* {getRandomArrow()} */}
@@ -105,11 +103,11 @@ const LeaderboardComponent = ({ users, userImages }) => {
             className="mb-4 h-16 w-16 rounded-full"
           />
           <p className="text-xl font-bold text-green-300">
-            {activeTab === "points"
+            {activeTab === 'score'
               ? thirdPlace.score
-              : activeTab === "level"
-                ? thirdPlace.level
-                : thirdPlace.study_hours}
+              : activeTab === 'level'
+              ? thirdPlace.level
+              : thirdPlace.study_hours}
           </p>
           <p className="text-sm text-gray-300">{thirdPlace.username}</p>
           {/* {getRandomArrow()} */}
@@ -137,14 +135,14 @@ const LeaderboardComponent = ({ users, userImages }) => {
                 </p>
               </div>
             </div>
-            {/* Points/Level/Study Time */}
+            {/* score/Level/Study Time */}
             <div className="flex items-center">
-              <p className="mr-2 text-lg font-semibold">
-                {activeTab === "points"
+              <p className="text-lg font-semibold mr-2">
+                {activeTab === 'score'
                   ? user.score
-                  : activeTab === "level"
-                    ? user.level
-                    : user.study_hours}
+                  : activeTab === 'level'
+                  ? user.level
+                  : user.study_hours}
               </p>
               {/* Random Arrow */}
               {/* {getRandomArrow()} */}
