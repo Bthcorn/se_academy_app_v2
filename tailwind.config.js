@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: "class", // Enables class-based dark mode
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     container: {
@@ -11,6 +12,7 @@ export default {
     },
     extend: {
       colors: {
+        // Dark mode colors (existing ones)
         border: "#343B4F",
         input: "#343B4F",
         background: "#081028",
@@ -46,6 +48,46 @@ export default {
         card: {
           DEFAULT: "#0B1739",
           foreground: "#FAFAFA",
+        },
+
+        // Light mode colors (new ones)
+        light: {
+          border: "#D1D5DB", // Light gray
+          input: "#E5E7EB", // Slightly darker gray
+          background: "#FFFFFF", // White
+          foreground: "#111827", // Dark gray
+          primary: {
+            DEFAULT: "#3B82F6", // Blue
+            foreground: "#FFFFFF", // White
+          },
+          secondary: {
+            DEFAULT: "#F3F4F6", // Light gray
+            foreground: "#111827", // Dark gray
+            color2: "#60A5FA", // Light blue
+            color3: "#93C5FD", // Lighter blue
+            color4: "#E5E7EB", // Light gray
+            color5: "#F59E0B", // Amber
+          },
+          destructive: {
+            DEFAULT: "#EF4444", // Red
+            foreground: "#FFFFFF", // White
+          },
+          muted: {
+            DEFAULT: "#F9FAFB", // Off-white
+            foreground: "#6B7280", // Gray
+          },
+          accent: {
+            DEFAULT: "#F9FAFB", // Off-white
+            foreground: "#6B7280", // Gray
+          },
+          popover: {
+            DEFAULT: "#FFFFFF", // White
+            foreground: "#111827", // Dark gray
+          },
+          card: {
+            DEFAULT: "#F3F4F6", // Light gray
+            foreground: "#111827", // Dark gray
+          },
         },
       },
       borderRadius: {
