@@ -52,41 +52,41 @@ export default {
 
         // Light mode colors (new ones)
         light: {
-          border: "#D1D5DB", // Light gray
-          input: "#E5E7EB", // Slightly darker gray
-          background: "#FFFFFF", // White
-          foreground: "#111827", // Dark gray
+          border: "#FFDCE6", // Light pink for borders
+          input: "#E2F5B6", // Soft pastel green for input backgrounds
+          background: "#FFFFFF", // White for main background
+          foreground: "#111827", // Black for text readability
           primary: {
-            DEFAULT: "#3B82F6", // Blue
-            foreground: "#FFFFFF", // White
+            DEFAULT: "#85E0D6", // Aqua for primary elements
+            foreground: "#FFFFFF", // White text on primary buttons
           },
           secondary: {
-            DEFAULT: "#F3F4F6", // Light gray
-            foreground: "#111827", // Dark gray
-            color2: "#60A5FA", // Light blue
-            color3: "#93C5FD", // Lighter blue
-            color4: "#E5E7EB", // Light gray
-            color5: "#F59E0B", // Amber
+            DEFAULT: "#FFDCE6", // Light pink for secondary backgrounds
+            foreground: "#111827", // Black text
+            color2: "#ADD057", // Lime green for highlights
+            color3: "#00BCA3", // Aqua for accents
+            color4: "#E2F5B6", // Soft green for subtle elements
+            color5: "#85E0D6", // Aqua for secondary accents
           },
           destructive: {
-            DEFAULT: "#EF4444", // Red
-            foreground: "#FFFFFF", // White
+            DEFAULT: "#FF6347", // Tomato red for destructive actions
+            foreground: "#FFFFFF", // White text on destructive elements
           },
           muted: {
-            DEFAULT: "#F9FAFB", // Off-white
-            foreground: "#6B7280", // Gray
+            DEFAULT: "#E2F5B6", // Soft green for muted elements
+            foreground: "#6B7280", // Gray text for muted elements
           },
           accent: {
-            DEFAULT: "#F9FAFB", // Off-white
-            foreground: "#6B7280", // Gray
+            DEFAULT: "#FFDCE6", // Light pink for accents
+            foreground: "#6B7280", // Gray text for accents
           },
           popover: {
-            DEFAULT: "#FFFFFF", // White
-            foreground: "#111827", // Dark gray
+            DEFAULT: "#FFCBAD", // Warm peach for popovers
+            foreground: "#111827", // Black text
           },
           card: {
-            DEFAULT: "#F3F4F6", // Light gray
-            foreground: "#111827", // Dark gray
+            DEFAULT: "#E2F5B6", // Soft green for cards
+            foreground: "#111827", // Black text
           },
         },
       },
