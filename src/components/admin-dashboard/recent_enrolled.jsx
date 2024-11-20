@@ -6,11 +6,11 @@ export default function RecentEnrolled({ data }) {
 
   return (
     <div
-      className={`p-6 rounded-lg shadow-lg w-full max-w-2xl ${
+      className={`w-full max-w-2xl rounded-lg p-6 shadow-lg ${
         darkMode ? "bg-[#1E293B]" : "bg-[#FFDCE6]"
       }`}
     >
-      <div className="flex justify-between items-center mb-4">
+      <div className="mb-4 flex items-center justify-between">
         <h2
           className={`text-sm font-semibold ${
             darkMode ? "text-white" : "text-[#111827]"
@@ -22,7 +22,7 @@ export default function RecentEnrolled({ data }) {
 
       {/* Table header */}
       <div
-        className={`grid grid-cols-6 text-[10px] font-medium mb-2 ${
+        className={`mb-2 grid grid-cols-6 text-[10px] font-medium ${
           darkMode ? "text-gray-400" : "text-[#111827]"
         }`}
       >
@@ -37,16 +37,19 @@ export default function RecentEnrolled({ data }) {
         {data.map((entry, index) => (
           <li
             key={index}
-            className={`grid grid-cols-6 items-center p-2 rounded-md text-[10px] ${
+            className={`grid grid-cols-6 items-center rounded-md p-2 text-[10px] ${
               darkMode
                 ? "bg-[#0F172A] text-white"
-                : "bg-[#FFF] text-[#111827] border border-[#FFDCE6]"
+                : "border border-[#FFDCE6] bg-[#FFF] text-[#111827]"
             }`}
           >
             <p>{entry.username}</p> {/* User Name */}
             <p>{entry.course_title}</p> {/* Course Name */}
             <p className="text-gray-400">{entry.course_id}</p> {/* Course ID */}
-            <p className="text-gray-400">{entry.enrolled_at}</p> {/* Date */}
+            <p className="text-gray-400">
+              {new Date(entry.enrolled_at).toLocaleString()}
+            </p>{" "}
+            {/* Date */}
             {/* The following comments and logic are preserved */}
             {/* <p>
               <span className={`px-2 py-1 rounded-full text-[9px] font-semibold ${

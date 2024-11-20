@@ -20,7 +20,7 @@ const UserCard = ({ prop }) => {
           <li className="text-xs text-foreground">Courses: 5</li>
           <li className="text-xs text-foreground">Level: {prop.level}</li>
           <li className="text-xs text-foreground">
-            Studytime: {prop.study_hours}
+            Studytime: {prop.study_hours.toFixed(2)}
           </li>
         </ul>
       </div>
