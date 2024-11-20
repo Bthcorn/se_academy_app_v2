@@ -10,6 +10,7 @@ import Toast from "../Toast";
 const CourseSideBar = ({ title, courseId, isEnrolled, enrolledCourseId }) => {
   const [enrolled, setEnrolled] = React.useState(isEnrolled || false);
   const { userId } = useAuth();
+  const [ended, setEnded] = React.useState(false);
 
   const handleEnroll = async () => {
     try {
@@ -42,9 +43,9 @@ const CourseSideBar = ({ title, courseId, isEnrolled, enrolledCourseId }) => {
 
   const handleCheckFinish = async () => {
     try {
-      const response = await axios.put(
+      const response = await axios.get(
         Config.API_URL +
-          "/enrolled_course/update_enrolled_course/" +
+          "/enrolled_course/check_enrolled_course_ended/" +
           enrolledCourseId,
         {
           headers: {
@@ -54,7 +55,26 @@ const CourseSideBar = ({ title, courseId, isEnrolled, enrolledCourseId }) => {
       );
 
       if (response.data) {
-        console.log("Course finished:", enrolledCourseId);
+        console.log("Course finished:", enrolledCourseId, response.data.ended);
+        setEnded(response.data.ended);
+        if (response.data.ended === true) {
+          const response = await axios.put(
+            Config.API_URL +
+              `/enrolled_course/update_enrolled_course/${enrolledCourseId}`,
+            {
+              ended: true,
+            },
+            {
+              headers: {
+                Authorization: Config.AUTH_TOKEN(),
+              },
+            },
+          );
+
+          if (response.status === 200) {
+            console.log("Course marked as finished:", enrolledCourseId);
+          }
+        }
       }
     } catch (error) {
       console.error("Error checking course finish:", enrolledCourseId, error);

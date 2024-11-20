@@ -276,7 +276,7 @@ function Home() {
           ))}
         </div>
         <div className="mt-4 flex justify-center">
-          <Link to={"/courses"}>
+          <Link to={"/course"}>
             <Button
               label="View All Categories"
               variant="link"
