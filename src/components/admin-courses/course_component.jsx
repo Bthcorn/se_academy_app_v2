@@ -4,6 +4,7 @@ import CourseDetailsModal from "./CourseDetailsModal";
 import AddCourseModal from "./AddCourseModal";
 import { Config } from "../config";
 import axios from "axios";
+import Toast from "../Toast";
 
 const quiz = [
   {
@@ -125,9 +126,13 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
       );
       if (response.data) {
         console.log("Quiz updated:", response.data);
+        Toast("Quiz updated successfully", "success");
         fetchQuiz(); // Refresh quiz data
+      } else {
+        Toast("Error updating quiz", "error");
       }
     } catch (error) {
+      Toast("Error updating quiz", "error");
       console.error("Error updating quiz:", quiz.id, error);
     }
   };
@@ -156,10 +161,14 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
       );
       if (response.data) {
         console.log("Quiz added:", response.data);
+        Toast("Quiz added successfully", "success");
         fetchQuiz(); // Refresh quiz data
+      } else {
+        Toast("Error adding quiz", "error");
       }
     } catch (error) {
       console.error("Error adding quiz:", error);
+      Toast("Error adding quiz", "error");
     }
   };
 

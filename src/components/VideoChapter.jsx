@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { Config } from "./config";
 import { useAuth } from "../hooks/useAuth";
 import Button from "./Button";
+import Toast from "./Toast";
 
 const VideoChapter = ({ chapterId }) => {
   const [timeStart, setTimeStart] = React.useState(0);
@@ -135,7 +136,7 @@ const VideoChapter = ({ chapterId }) => {
 
   const handleVideoEnded = async () => {
     try {
-      await axios.put(
+      const response = await axios.put(
         Config.API_URL +
           "/enrolled_course/update_enrolled_course_video/" +
           userId +
@@ -152,8 +153,18 @@ const VideoChapter = ({ chapterId }) => {
         },
       );
       console.log("Video progress updated", videoProgress);
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+
+      if (response.status === 200) {
+        Toast("Course marked as finished!", "success");
+      } else {
+        Toast("Error marking course as finished", "error");
+      }
     } catch (error) {
       console.error("Error updating video progress:", error);
+      Toast("Error marking course as finished", "error");
     }
   };
 
