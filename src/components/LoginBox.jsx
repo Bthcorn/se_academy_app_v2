@@ -39,8 +39,11 @@ const LoginBox = () => {
           if (data["role"] == "admin") {
             setIsAdmin(true);
             navigate("/admin/dashboard");
+          } else {
+            setIsAdmin(false);
+            navigate("/");
           }
-          navigate("/");
+          // navigate("/");
 
           Toast("Login successful", "success");
         } else {

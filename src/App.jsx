@@ -26,6 +26,7 @@ import AdminGuard from "./hooks/AdminGuard.jsx";
 import CourseAchievements from "./pages/admin/CourseAchievements.jsx";
 import { ThemeProvider } from "./components/ThemeContext.jsx";
 import { Toaster } from "react-hot-toast";
+import CourseDetail from "./pages/CourseDetail.jsx";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
         path: "course/:courseId",
         element: <CourseIdPage />,
         children: [
+          {
+            index: true,
+            element: <CourseDetail />,
+          },
           {
             path: "chapter/:chapterId",
             element: <ChapterIdPage />,
@@ -158,7 +163,7 @@ function App() {
   return (
     <AuthProvider>
       <RouterProvider router={router} />
-      <Toaster/>
+      <Toaster />
     </AuthProvider>
   );
 }

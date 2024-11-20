@@ -182,7 +182,7 @@ const VideoChapter = ({ chapterId }) => {
 
   return (
     <div className="flex w-full flex-col items-center rounded-md border bg-secondary-color4/50 p-4">
-      <div className="flex w-full items-center justify-center">
+      <div className="flex w-full items-center justify-center overflow-hidden rounded-md">
         {videoSrc ? (
           <video
             ref={videoRef}
