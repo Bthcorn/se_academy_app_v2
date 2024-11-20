@@ -23,6 +23,9 @@ function Profile() {
   const [level, setLevel] = React.useState(0);
   const [studyHours, setStudyHours] = React.useState(0);
   const [progress, setProgress] = React.useState([]);
+  const [achievements, setAchievements] = React.useState([]);
+  const [badges, setBadges] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
   const { logout } = useAuth();
 
   const handleEdit = () => {
@@ -46,11 +49,34 @@ function Profile() {
         setScore(result.data.score);
         setLevel(result.data.level);
         setStudyHours(result.data.study_hours);
+        setAchievements(result.data.achievements);
+        console.log(result.data.achievements);
+
+        for (let i = 0; i < result.data.achievements.length; i++) {
+          const badge = await axios.get(
+            Config.API_URL +
+              "/achievement/get_achievement/" +
+              result.data.achievements[i],
+            {
+              headers: {
+                Authorization: Config.AUTH_TOKEN(),
+              },
+            },
+          );
+
+          if (badge.data) {
+            const arr = [...badges];
+            arr.push(badge.data);
+            setBadges(arr);
+          }
+        }
       }
 
       await fetchUserProgress(id);
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -149,6 +175,10 @@ function Profile() {
     fetchUser(userId);
     fetchUserImg(userId);
   }, [userId]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <section className="relative flex h-full w-full flex-col justify-center gap-2 px-4 py-8 md:flex-row md:py-12 md:pb-8 lg:pb-10">
@@ -314,22 +344,19 @@ function Profile() {
               <h2 className="text-xl text-foreground">Achievement</h2>
             </div>
             <ul className="flex list-inside list-disc flex-col">
-              <li className="flex items-center gap-2 py-2">
-                <span className="text-sm text-foreground">
-                  Completed React Course
-                </span>
-                <span className="flex items-center justify-center rounded-md bg-primary/20 px-2 py-1 text-primary">
-                  +100
-                </span>
-              </li>
-              <li className="flex items-center gap-2 py-2">
-                <span className="text-sm text-foreground">
-                  Completed React Course
-                </span>
-                <span className="flex items-center justify-center rounded-md bg-primary/20 px-2 py-1 text-primary">
-                  +100
-                </span>
-              </li>
+              {badges &&
+                badges.map((item, index) => (
+                  <li key={index} className="flex items-center gap-2">
+                    <img
+                      src={"data:image/jpeg;base64," + item.badge}
+                      alt="Badge"
+                      className="h-8 w-8 rounded-full"
+                    />
+                    <span className="text-sm text-foreground">
+                      {item.title}
+                    </span>
+                  </li>
+                ))}
             </ul>
           </div>
           <div className="flex h-auto w-full flex-col gap-2 rounded-md bg-secondary/60 px-2 py-3">
