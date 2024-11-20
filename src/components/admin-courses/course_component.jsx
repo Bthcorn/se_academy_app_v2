@@ -288,7 +288,10 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
               <p className="inline-flex">
                 Duration: {course.total_duration || 0} seconds
               </p>
-              <p>Category: {course.category_list}</p>
+              <p>
+                Category:{" "}
+                {course.category_list ? course.category_list.join(", ") : ""}
+              </p>
             </div>
 
             {/* Rating */}
