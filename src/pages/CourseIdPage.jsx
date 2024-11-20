@@ -54,7 +54,7 @@ function CourseIdPage({ title }) {
 
       if (response.data) {
         setEnrolledCourseId(response.data.enrolled_course_id);
-        setEnrolled(true);
+        setEnrolled(response.data.success);
       }
     } catch (error) {
       console.error("Error fetching enrolled courses:", error);

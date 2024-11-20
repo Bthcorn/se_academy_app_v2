@@ -191,7 +191,9 @@ const VideoChapter = ({ chapterId }) => {
         )}
       </div>
       <div className="mt-4 line-clamp-2 flex w-full max-w-[800px] flex-col justify-center">
-        <h1 className="text-md mb-4 font-medium md:text-3xl">{video.title}</h1>
+        <h1 className="text-md mb-4 font-medium md:text-3xl">
+          {video && video.video_title ? video.video_title : "No title"}
+        </h1>
         <p className="text-sm md:text-lg">
           Description:{" "}
           {video && video.video_description

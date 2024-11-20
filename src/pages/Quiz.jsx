@@ -260,7 +260,7 @@ function Quiz() {
         {allSubmissions.map((submission) => (
           <div
             key={submission.id}
-            className="mb-2 w-full rounded border border-gray-300 bg-secondary-color4/50 p-2 md:p-3"
+            className="mb-2 w-full rounded border border-gray-300 bg-secondary-color4/50 p-2 text-sm md:p-3"
           >
             <h1>Quiz Submission</h1>
             <p>Score: {submission.scores}</p>
