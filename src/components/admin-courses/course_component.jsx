@@ -286,7 +286,9 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
             <div className="mb-4 mt-4 flex flex-col items-start justify-start text-sm text-gray-300">
               <p>Year: {course.year}</p>
               <p className="inline-flex">
-                Duration: {course.total_duration || 0} seconds
+                Duration:{" "}
+                {course.total_duration ? course.total_duration.toFixed(2) : 0}{" "}
+                seconds
               </p>
               <p>
                 Category:{" "}
