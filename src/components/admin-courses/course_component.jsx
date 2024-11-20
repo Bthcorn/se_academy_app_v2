@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import AddQuizModal from "./quiz/QuizModal";
+import QuizModal from "./quiz/QuizModal";
 import CourseDetailsModal from "./CourseDetailsModal";
 import AddCourseModal from "./AddCourseModal";
 import { Config } from "../config";
@@ -34,6 +34,7 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
   const [filterStatus, setFilterStatus] = useState("all"); // For filtering courses
   const [img, setImg] = useState({});
   console.log(courses);
+  const [quiz, setQuiz] = useState([]);
 
   // Function to open the modal with the selected course
   const viewCourseDetails = (course) => {
@@ -76,6 +77,92 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
     setImg(images); // Set all image data once fetched
   };
 
+  const fetchQuiz = async () => {
+    const quizzes = {};
+    for (const course of courses) {
+      try {
+        const response = await axios.get(
+          `${Config.API_URL}/quiz/get_quiz_all_admin/${course.id}`,
+          {
+            headers: {
+              Authorization: Config.AUTH_TOKEN(),
+            },
+          },
+        );
+        if (response.data) {
+          console.log("Quiz data:", response.data);
+          quizzes[course.id] = response.data;
+        } else {
+          console.warn(`No quiz data found for course: ${course.id}`);
+        }
+      } catch (error) {
+        console.error("Error fetching quiz for course:", course.id, error);
+      }
+    }
+    setQuiz(quizzes);
+  };
+
+  const onEditQuestion = async (
+    courseId,
+    question,
+    choices,
+    correctAnswer,
+    quizId,
+  ) => {
+    try {
+      const response = await axios.put(
+        `${Config.API_URL}/quiz/update_quiz/${quizId}`,
+        {
+          question: question,
+          choices: choices,
+          correct_answers: correctAnswer,
+        },
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+      if (response.data) {
+        console.log("Quiz updated:", response.data);
+        fetchQuiz(); // Refresh quiz data
+      }
+    } catch (error) {
+      console.error("Error updating quiz:", quiz.id, error);
+    }
+  };
+
+  const onAddQuestion = async (
+    courseId,
+    question,
+    choices,
+    correctAnswer,
+    quizId,
+  ) => {
+    try {
+      const response = await axios.post(
+        `${Config.API_URL}/quiz/create_quiz/`,
+        {
+          course_id: courseId,
+          question,
+          choices,
+          correct_answer: correctAnswer,
+        },
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+      if (response.data) {
+        console.log("Quiz added:", response.data);
+        fetchQuiz(); // Refresh quiz data
+      }
+    } catch (error) {
+      console.error("Error adding quiz:", error);
+    }
+  };
+
   // handle debouncing for search
   function debounce(func, wait) {
     let timeout;
@@ -92,6 +179,7 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
 
   useEffect(() => {
     fetchImages();
+    fetchQuiz();
   }, [courses]);
 
   return (
@@ -232,12 +320,13 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
       <div className="w-full rounded-lg bg-[#1E293B] p-6 text-white shadow-lg">
         {/* Course content and modals */}
         {selectedCourse && (
-          <AddQuizModal
+          <QuizModal
             isOpen={showQuiz}
             close={() => setShowQuiz(false)}
-            quizzes={quiz}
-            correctAnswers={selectedCourse.correctAnswers}
-            // onAddQuestion={addQuestion}
+            quizzes={quiz[selectedCourse.id]}
+            onAddQuestion={onAddQuestion}
+            onEditQuestion={onEditQuestion}
+            courseId={selectedCourse.id}
           />
         )}
       </div>

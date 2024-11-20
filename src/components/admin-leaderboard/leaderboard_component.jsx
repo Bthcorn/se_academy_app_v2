@@ -16,8 +16,6 @@ const LeaderboardComponent = ({ users, userImages }) => {
     );
   //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
   // Sort users based on active tab (level, score, study_hours)
   const sortedUsers = [...users].sort((a, b) => {
     if (activeTab === 'level') return b.level - a.level;

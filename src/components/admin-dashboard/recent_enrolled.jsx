@@ -1,14 +1,31 @@
-import React from 'react';
+import React from "react";
+import { useTheme } from "../ThemeContext"; // Import ThemeContext
 
 export default function RecentEnrolled({ data }) {
+  const { darkMode } = useTheme(); // Access the current theme state
+
   return (
-    <div className="p-6 bg-[#1E293B] rounded-lg shadow-lg w-full max-w-2xl">
+    <div
+      className={`p-6 rounded-lg shadow-lg w-full max-w-2xl ${
+        darkMode ? "bg-[#1E293B]" : "bg-[#FFDCE6]"
+      }`}
+    >
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-sm font-semibold text-white">Recent Enrolled</h2>
+        <h2
+          className={`text-sm font-semibold ${
+            darkMode ? "text-white" : "text-[#111827]"
+          }`}
+        >
+          Recent Enrolled
+        </h2>
       </div>
 
       {/* Table header */}
-      <div className="grid grid-cols-6 text-gray-400 text-[10px] font-medium mb-2">
+      <div
+        className={`grid grid-cols-6 text-[10px] font-medium mb-2 ${
+          darkMode ? "text-gray-400" : "text-[#111827]"
+        }`}
+      >
         <span>User</span>
         <span>Course Name</span>
         <span>Course ID</span>
@@ -18,11 +35,19 @@ export default function RecentEnrolled({ data }) {
       {/* List of enrolled users */}
       <ul className="space-y-2">
         {data.map((entry, index) => (
-          <li key={index} className="grid grid-cols-6 items-center bg-[#0F172A] p-2 rounded-md text-[10px]">
-            <p className="text-white">{entry.username}</p>  {/* User Name */}
-            <p className="text-white">{entry.course_title}</p>  {/* Course Name */}
-            <p className="text-gray-400">{entry.course_id}</p>  {/* Course ID */}
-            <p className="text-gray-400">{entry.enrolled_at}</p>  {/* Date */}
+          <li
+            key={index}
+            className={`grid grid-cols-6 items-center p-2 rounded-md text-[10px] ${
+              darkMode
+                ? "bg-[#0F172A] text-white"
+                : "bg-[#FFF] text-[#111827] border border-[#FFDCE6]"
+            }`}
+          >
+            <p>{entry.username}</p> {/* User Name */}
+            <p>{entry.course_title}</p> {/* Course Name */}
+            <p className="text-gray-400">{entry.course_id}</p> {/* Course ID */}
+            <p className="text-gray-400">{entry.enrolled_at}</p> {/* Date */}
+            {/* The following comments and logic are preserved */}
             {/* <p>
               <span className={`px-2 py-1 rounded-full text-[9px] font-semibold ${
                 entry.status === 'Approved' ? 'bg-green-100 text-green-800' : 

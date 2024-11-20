@@ -7,7 +7,7 @@ import axios from "axios";
 import { Config } from "../config";
 import Toast from "../Toast";
 
-const CourseSideBar = ({ title, courseId, isEnrolled }) => {
+const CourseSideBar = ({ title, courseId, isEnrolled, enrolledCourseId }) => {
   const [enrolled, setEnrolled] = React.useState(isEnrolled || false);
   const { userId } = useAuth();
 
@@ -40,16 +40,45 @@ const CourseSideBar = ({ title, courseId, isEnrolled }) => {
     }
   };
 
+  const handleCheckFinish = async () => {
+    try {
+      const response = await axios.put(
+        Config.API_URL +
+          "/enrolled_course/update_enrolled_course/" +
+          enrolledCourseId,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (response.data) {
+        console.log("Course finished:", enrolledCourseId);
+      }
+    } catch (error) {
+      console.error("Error checking course finish:", enrolledCourseId, error);
+    }
+  };
+
   return (
-    <div className="relative h-full w-full rounded-md border bg-secondary-color4/50 p-4 md:w-80">
-      <h1>Subject: {title}</h1>
-      {/* <h2>Course Id: {courseId}</h2> */}
-      <div className="mt-2 grid lg:mt-4">
-        <nav className="grid items-start gap-2 text-xs font-medium md:text-sm">
-          <CourseSideBarContent courseId={courseId} isEnrolled={enrolled} />
+    <div className="relative flex h-full w-full flex-col rounded-md border bg-secondary-color4/50 p-4 md:w-80">
+      <h1>Title: {title}</h1>
+      <h2>Course Id: {courseId}</h2>
+      <div className="mt-2 h-full lg:mt-4">
+        <nav className="flex h-full flex-col items-start gap-2 text-xs font-medium md:text-sm">
+          <div className="grid w-full gap-2">
+            <CourseSideBarContent courseId={courseId} isEnrolled={enrolled} />
+          </div>
           {enrolled ? (
-            <div className="flex cursor-not-allowed items-center rounded-md px-3 py-2">
-              <span>Enrolled</span>
+            <div className="mt-auto flex cursor-not-allowed flex-col items-start gap-2">
+              <span>You have enrolled in this course.</span>
+              <Button
+                variant={"gradient"}
+                onClick={() => handleCheckFinish()}
+                label={"Check Finish"}
+                icon={<MousePointer size={20} className="mr-2" />}
+              />
             </div>
           ) : (
             <Button
@@ -57,7 +86,7 @@ const CourseSideBar = ({ title, courseId, isEnrolled }) => {
               onClick={() => handleEnroll()}
               label={"Enroll First!"}
               icon={<MousePointer size={20} className="mr-2" />}
-            ></Button>
+            />
           )}
         </nav>
       </div>

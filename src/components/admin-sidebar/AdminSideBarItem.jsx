@@ -14,12 +14,12 @@ const AdminSideBarItem = ({ icon, label, href }) => {
             ? `${
                 darkMode
                   ? "bg-muted text-primary-foreground border-l-4 border-pink-500" // Dark mode active state
-                  : "bg-light-popover text-light-foreground border-l-4 border-secondary-color2" // Light mode active state
+                  : "bg-light-accent text-light-foreground border-l-4 border-[#ff3bb2]" // Light mode active state
               }`
             : `${
                 darkMode
                   ? "text-secondary-foreground hover:bg-muted hover:text-white" // Dark mode hover state
-                  : "text-light-foreground hover:bg-light-popover hover:text-black" // Light mode hover state
+                  : "text-light-foreground hover:bg-light-accent hover:text-black" // Light mode hover state
               }`
         }`
       }

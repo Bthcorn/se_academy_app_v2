@@ -23,9 +23,10 @@ import AuthProvider from "./hooks/AuthContext.jsx";
 import RouteGuard from "./hooks/RouteGuard.jsx";
 import CourseVideos from "./pages/admin/CourseVideos.jsx";
 import AdminGuard from "./hooks/AdminGuard.jsx";
-import { ThemeProvider } from "./components/ThemeContext.jsx";
 import CourseAchievements from "./pages/admin/CourseAchievements.jsx";
+import { ThemeProvider } from "./components/ThemeContext.jsx";
 import { Toaster } from "react-hot-toast";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -42,7 +43,11 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: (
+          <RouteGuard>
+            <Profile />
+          </RouteGuard>
+        ),
       },
       {
         path: "my-courses",
@@ -91,11 +96,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "dashboard",
-        element: (
-          
-            <Dashboard />
-         
-        ),
+        element: <Dashboard />,
       },
       {
         path: "users",
