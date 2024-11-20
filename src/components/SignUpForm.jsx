@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
+import Toast from "./Toast";
 
 const SignUpForm = () => {
   const [firstname, setFirstname] = useState("");
@@ -48,15 +49,16 @@ const SignUpForm = () => {
       if (response.ok) {
         const data = await response.json();
         if (data["success"] == true) {
-          alert("User created successfully");
+          Toast("User created successfully", "success");
           window.location.href = "/login";
           return <Navigate to="/login" />;
         } else {
-          alert("Error: " + data["error_msg"]);
+          Toast(data["error_msg"], "error");
         }
       }
     } catch (error) {
       console.error(error);
+      Toast("Error creating user", "error");
     }
   };
 
