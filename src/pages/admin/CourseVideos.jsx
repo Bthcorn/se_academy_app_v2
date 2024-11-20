@@ -7,6 +7,7 @@ import AddVideoModal from "../../components/admin-videos/AddVideoModal";
 import VideoDetailsModal from "../../components/admin-videos/VideoDetailsModal";
 import { useAuth } from "../../hooks/useAuth";
 import UpdateVideoModal from "../../components/admin-videos/UpdateVideoModal";
+import Toast from "../../components/Toast";
 
 function CourseVideos() {
   const { courseId } = useParams();
@@ -71,12 +72,16 @@ function CourseVideos() {
         },
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
+        Toast("Video deleted successfully!", "success");
         console.log("Video deleted successfully.");
+        fetchVideos();
       } else {
+        Toast("Error deleting video", "error");
         console.error("Error deleting video:", response.statusText);
       }
     } catch (error) {
+      Toast("Error deleting video", "error");
       console.error("Error deleting video:", error);
     }
   };

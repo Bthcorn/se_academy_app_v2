@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Config } from "../config";
+import Toast from "../Toast";
 
 const UpdateVideoModal = ({ isOpen, onClose, videoId }) => {
   const [title, setTitle] = useState("");
@@ -24,13 +25,16 @@ const UpdateVideoModal = ({ isOpen, onClose, videoId }) => {
         },
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
+        Toast("Video details updated successfully!", "success");
         console.log("Video details updated successfully.");
         onClose();
       } else {
+        Toast("Error updating video details", "error");
         console.error("Error updating video details:", response.statusText);
       }
     } catch (error) {
+      Toast("Error updating video details", "error");
       console.error("Error updating video details:", error);
     }
   };
