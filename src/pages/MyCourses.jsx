@@ -10,6 +10,30 @@ function MyCourses() {
   const [courses, setCourses] = React.useState([]);
   const [progress, setProgress] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [img, setImg] = React.useState({});
+
+  const fetchImages = async (courseId) => {
+    try {
+      const response = await axios.get(
+        `${Config.API_URL}/course/get_course_img/${courseId}`,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (response.data) {
+        setImg((prevImg) => ({
+          ...prevImg,
+          [courseId]: "data:image/jpeg;base64," + response.data,
+        }));
+        console.log("Image fetched for course:", img);
+      }
+    } catch (error) {
+      console.error("Error fetching image for course:", courseId, error);
+    }
+  };
 
   const fetchEnrolledCourses = async (id) => {
     try {
@@ -33,6 +57,8 @@ function MyCourses() {
               },
             },
           );
+
+          await fetchImages(course.course_id);
 
           console.log("Course details:", courseResponse.data);
 
@@ -153,6 +179,7 @@ function MyCourses() {
           <CourseCard
             key={course.id}
             props={course}
+            image={img[course.id]}
             progress={progress[index] * 100}
             link={"/course/" + course.id}
           />
