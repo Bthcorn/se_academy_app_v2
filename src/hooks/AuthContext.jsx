@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { Config } from "../components/config";
 import axios from "axios";
+import Toast from "../components/Toast";
 
 export const AuthContext = createContext();
 
@@ -58,6 +59,7 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    Toast("Logged out", "success");
     setToken(null);
     setUserId(null);
     setIsLoggedIn(false);
