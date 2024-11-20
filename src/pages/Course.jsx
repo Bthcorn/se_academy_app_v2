@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import Button from "../components/Button";
 import CourseCard from "../components/CourseCard.jsx";
 import CategoryCard from "../components/CategoryCard";
@@ -9,6 +9,7 @@ function Course() {
   const [courses, setCourses] = React.useState([]);
   const [categories, setCategories] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [searchTerm, setSearchTerm] = React.useState("");
 
   const fetchCourses = async () => {
     try {
@@ -42,6 +43,43 @@ function Course() {
     }
   };
 
+  const search = async (searchTerm, status = "all") => {
+    try {
+      const response = await axios.get(
+        Config.API_URL + "/course/search_courses",
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+          params: {
+            course_name: searchTerm,
+            status: status,
+          },
+        },
+      );
+
+      if (response.status === 200) {
+        setCourses(response.data);
+        console.log("search", courses);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        func(...args);
+      }, wait);
+    };
+  }
+
+  // debounced search function
+  const debouncedSearch = useCallback(debounce(search, 500), []);
+
   useEffect(() => {
     fetchCourses();
   }, []);
@@ -69,17 +107,26 @@ function Course() {
           type="text"
           placeholder="Search for courses"
           className="mr-2 h-10 w-full rounded-md border border-none border-gray-300 bg-secondary-color4/50 p-2 text-foreground"
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+            debouncedSearch(e.target.value, "all");
+          }}
         />
-        <Button label="Search" variant="gradient" />
+        <Button
+          label="Reset"
+          variant="gradient"
+          onClick={() => setSearchTerm("")}
+        />
       </div>
       <div className="flex flex-wrap gap-2">
         {/* category badge */}
 
-        <Button label="All" variant="link" size={"sm"} />
+        {/* <Button label="All" variant="link" size={"sm"} />
         <Button label="Web Development" variant="link" size={"sm"} />
         <Button label="Mobile Development" variant="link" size={"sm"} />
         <Button label="Data Science" variant="link" size={"sm"} />
-        <Button label="Machine Learning" variant="link" size={"sm"} />
+        <Button label="Machine Learning" variant="link" size={"sm"} /> */}
       </div>
       <div
         id="display-courses"
@@ -89,12 +136,12 @@ function Course() {
           <CourseCard key={course.id} props={course} progress={null} />
         ))}
       </div>
-      <div className="flex items-center justify-center gap-4">
+      {/* <div className="flex items-center justify-center gap-4">
         <Button label="Previous" variant="link" size={"sm"} />
         <Button label="1" variant="link" size={"sm"} />
         <Button label="2" variant="link" size={"sm"} />
         <Button label="Next" variant="link" size={"sm"} />
-      </div>
+      </div> */}
       <div className="mb-8 items-center rounded-md bg-secondary/50 px-4 py-8 backdrop:blur supports-[backdrop-filter]:bg-secondary/20 lg:mb-12">
         <h2 className="mb-4 text-2xl font-semibold text-foreground md:text-3xl">
           Categories
