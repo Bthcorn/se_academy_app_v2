@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useRef, useState } from "react";
 import { Config } from "../config";
+import Toast from "../Toast";
 
 const AddVideoModal = ({ isOpen, onClose, OnAddVideo, courseId }) => {
   const [title, setTitle] = useState("");
@@ -17,7 +18,10 @@ const AddVideoModal = ({ isOpen, onClose, OnAddVideo, courseId }) => {
   const handleUploadVideo = async () => {
     // Upload video to the server
     const formData = new FormData();
-    formData.append("videos", VideoRef.current.files[0]);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("chapter", chapter);
+    formData.append("video", VideoRef.current.files[0]);
 
     try {
       const response = await axios.post(
@@ -35,14 +39,17 @@ const AddVideoModal = ({ isOpen, onClose, OnAddVideo, courseId }) => {
         },
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
+        Toast("Video uploaded successfully!", "success");
         console.log("Video uploaded successfully.");
-        await handleUpdateVideoDetails();
         onClose();
+        window.location.reload();
       } else {
+        Toast("Error uploading video", "error");
         console.error("Error uploading video:", response.statusText);
       }
     } catch (error) {
+      Toast("Error uploading video", "error");
       console.error("Error uploading video:", error);
     }
   };
@@ -64,13 +71,16 @@ const AddVideoModal = ({ isOpen, onClose, OnAddVideo, courseId }) => {
         },
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
+        Toast("Video details updated successfully!", "success");
         console.log("Video details updated successfully.");
         onClose();
       } else {
+        Toast("Error updating video details", "error");
         console.error("Error updating video details:", response.statusText);
       }
     } catch (error) {
+      Toast("Error updating video details", "error");
       console.error("Error updating video details:", error);
     }
   };
