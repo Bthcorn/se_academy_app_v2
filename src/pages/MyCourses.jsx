@@ -8,6 +8,7 @@ import { Config } from "../components/config.js";
 function MyCourses() {
   const { userId } = useAuth();
   const [courses, setCourses] = React.useState([]);
+  const [progress, setProgress] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
   const fetchEnrolledCourses = async (id) => {
@@ -32,6 +33,28 @@ function MyCourses() {
               },
             },
           );
+
+          console.log("Course details:", courseResponse.data);
+
+          const progressResponse = await axios.get(
+            Config.API_URL +
+              "/enrolled_course/get_enrolled_course_progress/" +
+              course.id,
+            {
+              headers: {
+                Authorization: Config.AUTH_TOKEN(),
+              },
+            },
+          );
+
+          console.log("Course progress:", progressResponse.data);
+
+          if (progressResponse.data) {
+            const num =
+              parseFloat(progressResponse.data.progress) /
+              parseFloat(progressResponse.data.total_video);
+            progress.push(num);
+          }
 
           if (courseResponse.data) {
             enrolledCourses.push(courseResponse.data);
@@ -126,11 +149,11 @@ function MyCourses() {
         id="display-courses"
         className="flex w-full max-w-5xl flex-wrap items-center justify-center gap-4 py-8 md:py-12 md:pb-8 lg:pb-10"
       >
-        {courses.map((course) => (
+        {courses.map((course, index) => (
           <CourseCard
             key={course.id}
             props={course}
-            progress={true}
+            progress={progress[index] * 100}
             link={"/course/" + course.id}
           />
         ))}
