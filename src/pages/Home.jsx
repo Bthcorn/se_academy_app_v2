@@ -68,6 +68,7 @@ const cores = [
 function Home() {
   const [categories, setCategories] = React.useState([]);
   const [courses, setCourses] = React.useState([]);
+  const [courseImg, setCourseImg] = React.useState({});
   const [leaderboard, setLeaderboard] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
@@ -99,12 +100,34 @@ function Home() {
 
       if (response.data) {
         setCourses(response.data);
+        await fetchImages(response.data);
       }
     } catch (error) {
       console.error("Error fetching popular courses:", error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const fetchImages = async (courses) => {
+    const images = {};
+    for (const course of courses) {
+      try {
+        const response = await axios.get(
+          `${Config.API_URL}/course/get_course_img/${course.id}`,
+          {
+            headers: {
+              Authorization: Config.AUTH_TOKEN(),
+            },
+          },
+        );
+        images[course.id] = `data:image/jpeg;base64,${response.data}`; // Save base64 string
+      } catch (error) {
+        console.error("Error fetching image for course:", course.id, error);
+      }
+      // await delay(1000); // Delay to prevent rate limiting
+    }
+    setCourseImg(images); // Set all image data once fetched
   };
 
   const fetchLeaderboard = async () => {
@@ -237,7 +260,12 @@ function Home() {
         <div className="flex flex-wrap items-center justify-start gap-4 lg:justify-center">
           {/* fetch three courses those have the most number of enrollment */}
           {courses.map((course, index) => (
-            <CourseCard key={index} props={course} progress={null} />
+            <CourseCard
+              key={index}
+              props={course}
+              image={courseImg[course.id]}
+              progress={null}
+            />
           ))}
         </div>
       </div>

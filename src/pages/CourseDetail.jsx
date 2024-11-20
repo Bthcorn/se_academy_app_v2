@@ -109,7 +109,7 @@ export default function CourseDetail() {
             <p>Category: {course.category_list.join(", ")}</p>
             <p>Year: {course.year}</p>
             <p className="inline-flex">
-              Duration: {course.total_duration || 0} hours
+              Duration: {course.total_duration.toFixed(2) || 0} seconds
             </p>
 
             {/* Rating */}

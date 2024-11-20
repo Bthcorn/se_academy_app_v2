@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import CourseComponent from "../../components/admin-courses/course_component";
 import axios from "axios";
 import { Config } from "../../components/config";
+import Toast from "../../components/Toast";
 
 const sampleCourses = [
   {
@@ -280,9 +281,14 @@ export default function Courses() {
         console.log("onAddCourse", courses);
         fetchCourses();
         console.log("Course added successfully!");
+        Toast("Course added successfully!", "success");
+      } else {
+        console.error("Failed to add course.");
+        Toast("Failed to add course.", "error");
       }
     } catch (error) {
       console.error(error);
+      Toast("Failed to add course.", "error");
     }
   };
 

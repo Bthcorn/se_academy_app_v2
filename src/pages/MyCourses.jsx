@@ -8,7 +8,7 @@ import { Config } from "../components/config.js";
 function MyCourses() {
   const { userId } = useAuth();
   const [courses, setCourses] = React.useState([]);
-  const [progress, setProgress] = React.useState([]);
+  const [progress, setProgress] = React.useState({});
   const [loading, setLoading] = React.useState(true);
   const [img, setImg] = React.useState({});
 
@@ -79,7 +79,10 @@ function MyCourses() {
             const num =
               parseFloat(progressResponse.data.progress) /
               parseFloat(progressResponse.data.total_video);
-            progress.push(num);
+            setProgress((prevProgress) => ({
+              ...prevProgress,
+              [course.course_id]: num,
+            }));
           }
 
           if (courseResponse.data) {
@@ -180,7 +183,7 @@ function MyCourses() {
             key={course.id}
             props={course}
             image={img[course.id]}
-            progress={progress[index] * 100}
+            progress={progress[course.id] * 100}
             link={"/course/" + course.id}
           />
         ))}
