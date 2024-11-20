@@ -33,6 +33,7 @@ const CourseComponent = ({ courses, onAddCourse, search, filter }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all"); // For filtering courses
   const [img, setImg] = useState({});
+  console.log(courses);
   const [quiz, setQuiz] = useState([]);
 
   // Function to open the modal with the selected course

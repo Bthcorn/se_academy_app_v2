@@ -5,6 +5,7 @@ import Button from "../Button";
 import { useAuth } from "../../hooks/useAuth";
 import axios from "axios";
 import { Config } from "../config";
+import Toast from "../Toast";
 
 const CourseSideBar = ({ title, courseId, isEnrolled, enrolledCourseId }) => {
   const [enrolled, setEnrolled] = React.useState(isEnrolled || false);
@@ -26,9 +27,13 @@ const CourseSideBar = ({ title, courseId, isEnrolled, enrolledCourseId }) => {
       );
 
       if (response.status === 200) {
+        Toast("Enrolled successfully!", "success");
         console.log("Enrolled course:", courseId);
+      } else {
+        Toast("Error enrolling course", "error");
       }
     } catch (error) {
+      Toast("Error enrolling course", "error");
       console.error("Error enrolling course:", courseId, error);
     } finally {
       setEnrolled(true);

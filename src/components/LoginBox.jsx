@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import Toast from "./Toast";
 
 const LoginBox = () => {
   const [username, setUsername] = useState("");
@@ -31,8 +32,6 @@ const LoginBox = () => {
       if (response.ok) {
         const data = await response.json();
         if (data["success"] == true) {
-          alert("Login successful");
-
           localStorage.setItem("token", response.headers.get("Authorization"));
           // login with AuthContext ensuring user is logged in
           login(response.headers.get("Authorization"), data["id"]);
@@ -42,11 +41,16 @@ const LoginBox = () => {
             navigate("/admin/dashboard");
           }
           navigate("/");
+
+          Toast("Login successful", "success");
         } else {
-          alert("Error: " + data["error_msg"]);
+          Toast(data["error_msg"], "error");
         }
+      } else {
+        Toast("Error logging in", "error");
       }
     } catch (error) {
+      Toast("Error logging in", "error");
       console.error(error);
     }
   };
