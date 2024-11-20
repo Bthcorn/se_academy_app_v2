@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import Toast from "./Toast";
 
 const SignUpForm = () => {
@@ -26,6 +26,8 @@ const SignUpForm = () => {
     return re.test(email);
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -50,8 +52,7 @@ const SignUpForm = () => {
         const data = await response.json();
         if (data["success"] == true) {
           Toast("User created successfully", "success");
-          window.location.href = "/login";
-          return <Navigate to="/login" />;
+          navigate("/login");
         } else {
           Toast(data["error_msg"], "error");
         }
