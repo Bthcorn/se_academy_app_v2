@@ -2,6 +2,7 @@ import React from "react";
 import Logo from "../Logo";
 import SideBarContent from "./AdminSideBarContent";
 import { useTheme } from "../ThemeContext"; // Import ThemeContext hook
+import { Link } from "react-router-dom";
 
 const AdminSideBar = ({ open, toggle }) => {
   const { darkMode } = useTheme(); // Access the theme state from ThemeContext
@@ -10,8 +11,8 @@ const AdminSideBar = ({ open, toggle }) => {
     <div
       className={`fixed inset-y-0 left-0 z-50 h-full w-64 flex-col shadow-lg transition ${
         open
-          ? "animate-in slide-in-from-left duration-500 md:block"
-          : "animate-out slide-out-to-left hidden duration-300"
+          ? "duration-500 animate-in slide-in-from-left md:block"
+          : "hidden duration-300 animate-out slide-out-to-left"
       } ${
         darkMode
           ? "bg-secondary text-secondary-foreground"
@@ -52,16 +53,18 @@ const AdminSideBar = ({ open, toggle }) => {
             darkMode ? "border-secondary-foreground" : "border-light-border"
           }`}
         >
-          <div className="flex items-center">
-            <img
-              className="h-10 w-10 rounded-full"
-              src="https://avatar.iran.liara.run/public/42"
-              alt="User Avatar"
-            />
-            <div className="ml-3">
-              <p>John Carter</p>
+          <Link to="/profile">
+            <div className="flex items-center">
+              <img
+                className="h-10 w-10 rounded-full"
+                src="https://avatar.iran.liara.run/public/42"
+                alt="User Avatar"
+              />
+              <div className="ml-3">
+                <p>Profile</p>
+              </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

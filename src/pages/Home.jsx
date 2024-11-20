@@ -69,6 +69,7 @@ function Home() {
   const [categories, setCategories] = React.useState([]);
   const [courses, setCourses] = React.useState([]);
   const [courseImg, setCourseImg] = React.useState({});
+  const [userImg, setUserImg] = React.useState({});
   const [leaderboard, setLeaderboard] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
@@ -130,6 +131,27 @@ function Home() {
     setCourseImg(images); // Set all image data once fetched
   };
 
+  const fetchUserImages = async (users) => {
+    const images = {};
+    for (const user of users) {
+      try {
+        const response = await axios.get(
+          `${Config.API_URL}/user/avatar/${user.id}`,
+          {
+            headers: {
+              Authorization: Config.AUTH_TOKEN(),
+            },
+          },
+        );
+        images[user.id] = `data:image/jpeg;base64,${response.data}`; // Save base64 string
+      } catch (error) {
+        console.error("Error fetching image for user:", user.id, error);
+      }
+      // await delay(1000); // Delay to prevent rate limiting
+    }
+    setUserImg(images); // Set all image data once fetched
+  };
+
   const fetchLeaderboard = async () => {
     try {
       const response = await axios.get(
@@ -143,6 +165,7 @@ function Home() {
 
       if (response.data) {
         setLeaderboard(response.data);
+        await fetchUserImages(response.data);
       }
     } catch (error) {
       console.error("Error fetching leaderboard:", error);
@@ -281,7 +304,12 @@ function Home() {
         <div className="flex flex-wrap items-center justify-start gap-4 lg:justify-center">
           {/* Ordered by points from backend */}
           {leaderboard.map((user, index) => (
-            <UserCard key={index} prop={user} />
+            <UserCard
+              key={index}
+              prop={user}
+              image={userImg[user.id]}
+              rank={index + 1}
+            />
           ))}
         </div>
       </div>
