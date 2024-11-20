@@ -5,6 +5,7 @@ import { Award, Crown, History, Sparkle, Sprout, Star } from "lucide-react";
 import { Config } from "../components/config";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
+import Toast from "../components/Toast";
 // import { useAuth } from "../hooks/useAuth";
 
 function Profile() {
@@ -85,10 +86,14 @@ function Profile() {
       );
 
       if (result.status === 200) {
+        Toast("Image saved", "success");
         fetchUser(id);
+      } else {
+        Toast("Error saving image", "error");
       }
     } catch (error) {
       console.log(error);
+      Toast("Error saving image", "error");
     }
   };
 
@@ -112,9 +117,13 @@ function Profile() {
 
       if (result.status === 200) {
         fetchUser(id);
+        Toast("Profile updated", "success");
+      } else {
+        Toast("Error updating profile", "error");
       }
     } catch (error) {
       console.log(error);
+      Toast("Error updating profile", "error");
     }
   };
 

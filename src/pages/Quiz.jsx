@@ -5,6 +5,7 @@ import Button from "../components/Button";
 import axios from "axios";
 import { useAuth } from "../hooks/useAuth";
 import { Config } from "../components/config";
+import Toast from "../components/Toast";
 
 const quizData = [
   {
@@ -114,9 +115,13 @@ function Quiz() {
       if (response.status === 200) {
         console.log(response.data);
         fetchUserSubmission(response.data.quiz_submission_id);
+        Toast("Quiz submitted successfully", "success");
+      } else {
+        Toast("Error submitting quiz", "error");
       }
     } catch (error) {
       console.log(error);
+      Toast("Error submitting quiz", "error");
     }
   };
 

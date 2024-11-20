@@ -4,6 +4,7 @@ import axios from "axios";
 import { Config } from "../config";
 import { Link, useNavigate } from "react-router-dom";
 import { X } from "lucide-react";
+import Toast from "../Toast";
 
 const parseIntField = ["enrolled", "total_video", "year"];
 const parseFloatField = ["rating", "total_duration"];
@@ -55,9 +56,13 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
       );
 
       if (response.status === 200) {
+        Toast("Course updated successfully.", "success");
         closeEditModal();
+      } else {
+        Toast("Error updating course.", "error");
       }
     } catch (error) {
+      Toast("Error updating course.", "error");
       console.error(error);
     }
   };
@@ -76,9 +81,17 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
           },
         },
       );
-      console.log(response);
+
+      if (response.status === 200) {
+        console.log("Image uploaded successfully.");
+        Toast("Image uploaded successfully.", "success");
+      } else {
+        console.log("Error uploading image.");
+        Toast("Error uploading image.", "error");
+      }
     } catch (error) {
       console.error(error);
+      Toast("Error uploading image.", "error");
     }
   };
 
@@ -171,9 +184,14 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
 
       if (response.status === 200) {
         console.log("Category list updated successfully.");
+        Toast("Category list updated successfully.", "success");
+      } else {
+        console.log("Error updating category list.");
+        Toast("Error updating category list.", "error");
       }
     } catch (error) {
       console.error(error);
+      Toast("Error updating category list.", "error");
     }
   };
 

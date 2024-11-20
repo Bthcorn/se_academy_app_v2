@@ -73,11 +73,17 @@ const CourseSideBar = ({ title, courseId, isEnrolled, enrolledCourseId }) => {
 
           if (response.status === 200) {
             console.log("Course marked as finished:", enrolledCourseId);
+            Toast("Course marked as finished!", "success");
+          } else {
+            Toast("Error marking course as finished", "error");
           }
+        } else {
+          Toast("Course not finished yet", "error");
         }
       }
     } catch (error) {
       console.error("Error checking course finish:", enrolledCourseId, error);
+      Toast("Error checking course finish", "error");
     }
   };
 
