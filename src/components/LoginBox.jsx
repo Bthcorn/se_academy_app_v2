@@ -32,8 +32,6 @@ const LoginBox = () => {
       if (response.ok) {
         const data = await response.json();
         if (data["success"] == true) {
-          alert("Login successful");
-
           localStorage.setItem("token", response.headers.get("Authorization"));
           // login with AuthContext ensuring user is logged in
           login(response.headers.get("Authorization"), data["id"]);

@@ -25,7 +25,6 @@ import CourseVideos from "./pages/admin/CourseVideos.jsx";
 import AdminGuard from "./hooks/AdminGuard.jsx";
 import { ThemeProvider } from "./components/ThemeContext.jsx";
 import CourseAchievements from "./pages/admin/CourseAchievements.jsx";
-import { ThemeProvider } from "./components/ThemeContext.jsx";
 import { Toaster } from "react-hot-toast";
 const router = createBrowserRouter([
   {
