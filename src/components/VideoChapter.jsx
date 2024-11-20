@@ -48,8 +48,6 @@ const VideoChapter = ({ chapterId }) => {
         },
       );
 
-      await fetchVideoDetails(id);
-
       console.log("Video details:", response);
 
       const videoBlob = new Blob([response.data], {
@@ -58,6 +56,7 @@ const VideoChapter = ({ chapterId }) => {
       const videoUrl = URL.createObjectURL(videoBlob); // Create a local URL for the video blob
       setVideoSrc(videoUrl);
       console.log("Video URL:", videoUrl);
+      await fetchVideoDetails(id);
     } catch (error) {
       console.log("Error fetching video details:", id, error);
     } finally {
@@ -203,7 +202,7 @@ const VideoChapter = ({ chapterId }) => {
       </div>
       <div className="mt-4 line-clamp-2 flex w-full max-w-[800px] flex-col justify-center">
         <h1 className="text-md mb-4 font-medium md:text-3xl">
-          {video && video.video_title ? video.video_title : "No title"}
+          {video && video.title ? video.title : "No title"}
         </h1>
         <p className="text-sm md:text-lg">
           Description:{" "}
