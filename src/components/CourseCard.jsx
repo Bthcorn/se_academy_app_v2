@@ -4,7 +4,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Course from "../pages/Course.jsx";
 
-const CourseCard = ({ props, progress, link }) => {
+const CourseCard = ({ props, progress, link, image }) => {
   if (props === undefined) {
     props = {
       title: "Course Title",
@@ -20,7 +20,10 @@ const CourseCard = ({ props, progress, link }) => {
     <div className="group flex h-auto w-full flex-col rounded-md border bg-secondary-color4/50 px-2 py-2 backdrop-blur duration-200 hover:scale-105 hover:shadow-md sm:h-auto sm:max-h-none sm:w-64 sm:px-4 sm:py-4">
       <div className="relative m-2 hidden w-full sm:m-0 sm:block">
         <img
-          src="https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&q=80"
+          src={
+            image ||
+            "https://images.unsplash.com/photo-1461988320302-91bde64fc8e4?ixid=2yJhcHBfaWQiOjEyMDd9&fm=jpg&q=80"
+          }
           alt="test"
           className="aspect-video overflow-hidden rounded-md object-cover"
         />

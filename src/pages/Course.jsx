@@ -10,6 +10,7 @@ function Course() {
   const [categories, setCategories] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
   const [searchTerm, setSearchTerm] = React.useState("");
+  const [img, setImg] = React.useState({});
 
   const fetchCourses = async () => {
     try {
@@ -21,6 +22,7 @@ function Course() {
 
       if (response.data) {
         setCourses(response.data);
+        await fetchImages(response.data);
       }
 
       const responseCategories = await axios.get(
@@ -76,6 +78,27 @@ function Course() {
       }, wait);
     };
   }
+
+  const fetchImages = async (courses) => {
+    const images = {};
+    for (const course of courses) {
+      try {
+        const response = await axios.get(
+          `${Config.API_URL}/course/get_course_img/${course.id}`,
+          {
+            headers: {
+              Authorization: Config.AUTH_TOKEN(),
+            },
+          },
+        );
+        images[course.id] = `data:image/jpeg;base64,${response.data}`; // Save base64 string
+      } catch (error) {
+        console.error("Error fetching image for course:", course.id, error);
+      }
+      // await delay(1000); // Delay to prevent rate limiting
+    }
+    setImg(images); // Set all image data once fetched
+  };
 
   // debounced search function
   const debouncedSearch = useCallback(debounce(search, 500), []);
@@ -133,7 +156,12 @@ function Course() {
         className="flex w-full max-w-5xl flex-wrap items-center justify-center gap-4 py-8 md:py-12 md:pb-8 lg:pb-10"
       >
         {courses.map((course) => (
-          <CourseCard key={course.id} props={course} progress={null} />
+          <CourseCard
+            key={course.id}
+            props={course}
+            image={img[course.id]}
+            progress={null}
+          />
         ))}
       </div>
       {/* <div className="flex items-center justify-center gap-4">
