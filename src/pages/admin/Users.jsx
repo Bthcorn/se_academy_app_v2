@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from 'react'
-import {Config} from "../../components/config"
-import axios from 'axios';
-import UserTable from '../../components/admin-userboard/usertable';
+import React, { useEffect, useState } from "react";
+import { Config } from "../../components/config";
+import axios from "axios";
+import UserTable from "../../components/admin-userboard/usertable";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
+  const [userImages, setUserImages] = useState({});
   const sampleUserData = [
     {
       username: "John Doe",
@@ -332,6 +333,27 @@ export default function Users() {
       total_studytime: 90000,
     },
   ];
+
+  const fetchUserImages = async (users) => {
+    const images = {};
+    for (const user of users) {
+      try {
+        const response = await axios.get(
+          `${Config.API_URL}/user/avatar/${user.id}`,
+          {
+            headers: {
+              Authorization: Config.AUTH_TOKEN(),
+            },
+          },
+        );
+        images[user.id] = `data:image/jpeg;base64,${response.data}`; // Save base64 string
+      } catch (error) {
+        console.error("Error fetching image for user:", user.id, error);
+      }
+      // await delay(1000); // Delay to prevent rate limiting
+    }
+    setUserImages(images); // Set all image data once fetched
+  };
   // Try to fetch all users from the API
   useEffect(() => {
     const fetch_users = async () => {
@@ -340,19 +362,19 @@ export default function Users() {
           headers: {
             Authorization: Config.AUTH_TOKEN(),
           },
-
-      });
-      setUsers(response.data);
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-  };
-  fetch_users();
+        });
+        setUsers(response.data);
+        await fetchUserImages(response.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    fetch_users();
   }, []);
 
   return (
-    <div className="p-6 w-full">
-      <UserTable users={users} />
+    <div className="w-full p-6">
+      <UserTable users={users} image={userImages} />
     </div>
   );
 }
