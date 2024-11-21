@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { Pencil } from "lucide-react"; // Importing the Pencil icon for the edit button
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "../ThemeContext"; // Import ThemeContext
 
-const UserTable = ({ users }) => {
+const UserTable = ({ users, image }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
-  const [filterYear, setFilterYear] = useState("");
+  const [filterRole, setFilterRole] = useState("");
   const [expandedUserId, setExpandedUserId] = useState(null); // To track which user row is expanded
   const [isEditMode, setIsEditMode] = useState(false); // Track if edit mode is active
   const usersPerPage = 10;
   const navigate = useNavigate();
+  const { darkMode } = useTheme(); // Access the theme state
 
   // Function to filter and search users
   const filteredUsers = users
@@ -23,7 +25,7 @@ const UserTable = ({ users }) => {
         : true,
     )
     .filter((user) =>
-      filterYear ? user.year.toLowerCase() === filterYear.toLowerCase() : true,
+      filterRole ? user.role.toLowerCase() === filterRole.toLowerCase() : true,
     );
 
   // Calculate the total number of pages
@@ -52,9 +54,9 @@ const UserTable = ({ users }) => {
     setCurrentPage(1); // Reset to page 1 when filtering
   };
 
-  // Handler for filtering by year
-  const handleYearFilterChange = (event) => {
-    setFilterYear(event.target.value);
+  // Handler for filtering by role
+  const handleRoleFilterChange = (event) => {
+    setFilterRole(event.target.value);
     setCurrentPage(1); // Reset to page 1 when filtering
   };
 
@@ -74,7 +76,11 @@ const UserTable = ({ users }) => {
   };
 
   return (
-    <div className="w-full rounded-lg bg-[#1E293B] p-4 shadow-lg">
+    <div
+      className={`w-full rounded-lg p-4 shadow-lg ${
+        darkMode ? "bg-[#1E293B]" : "bg-[#ffdce6]"
+      }`}
+    >
       {/* Search, Filter, and Edit Controls */}
       <div className="mb-4 flex justify-between space-x-4">
         <input
@@ -82,13 +88,17 @@ const UserTable = ({ users }) => {
           placeholder="Search by name"
           value={searchTerm}
           onChange={handleSearchChange}
-          className="rounded-md bg-[#2E3A47] px-4 py-2 text-white"
+          className={`rounded-md px-4 py-2 ${
+            darkMode ? "bg-[#2E3A47] text-white" : "bg-[#FFFFFF] text-black"
+          }`}
         />
 
         <select
           value={filterStatus}
           onChange={handleFilterChange}
-          className="rounded-md bg-[#2E3A47] px-4 py-2 text-white"
+          className={`rounded-md px-4 py-2 ${
+            darkMode ? "bg-[#2E3A47] text-white" : "bg-[#FFFFFF] text-black"
+          }`}
         >
           <option value="">Filter by status</option>
           <option value="Active">Active</option>
@@ -96,33 +106,41 @@ const UserTable = ({ users }) => {
         </select>
 
         <select
-          value={filterYear}
-          onChange={handleYearFilterChange}
-          className="rounded-md bg-[#2E3A47] px-4 py-2 text-white"
+          value={filterRole}
+          onChange={handleRoleFilterChange}
+          className={`rounded-md px-4 py-2 ${
+            darkMode ? "bg-[#2E3A47] text-white" : "bg-[#FFFFFF] text-black"
+          }`}
         >
-          <option value="">Filter by year</option>
+          <option value="">Filter by role</option>
           <option value="Freshman">Freshman</option>
           <option value="Sophomore">Sophomore</option>
           <option value="Junior">Junior</option>
           <option value="Senior">Senior</option>
-          <option value="Post-Grad">Post-Grad</option>
+          <option value="Graduated">Graduated</option>
         </select>
 
         {/* Edit Button */}
-        <button
+        {/* <button
           onClick={toggleEditMode}
-          className="rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+          className={`rounded-md px-4 py-2 ${
+            darkMode
+              ? "bg-blue-500 text-white hover:bg-blue-600"
+              : "bg-[#ff8ed3] text-black hover:bg-[#ff3bb2]"
+          }`}
         >
           {isEditMode ? "Cancel Edit" : "Edit"}
-        </button>
+        </button> */}
       </div>
 
-      <table className="min-w-full table-auto text-white">
+      <table className="min-w-full table-auto">
         <thead>
-          <tr className="text-left text-gray-400">
-            <th className="py-2">#</th> {/* Index */}
+          <tr
+            className={`text-left ${darkMode ? "text-gray-400" : "text-black"}`}
+          >
+            <th className="py-2">#</th>
             <th className="py-2">User</th>
-            <th className="py-2">Year</th>
+            <th className="py-2">Role</th>
             <th className="py-2">Status</th>
             <th className="py-2">Email</th>
             <th className="py-2 text-center">Actions</th>
@@ -130,8 +148,10 @@ const UserTable = ({ users }) => {
         </thead>
         <tbody>
           {currentUsers.map((user, index) => (
-            <React.Fragment key={user.user_id}>
-              <tr className="border-b border-gray-600">
+            <React.Fragment key={user.id}>
+              <tr
+                className={`border-b ${darkMode ? "border-gray-600" : "border-black"}`}
+              >
                 {/* Index column */}
                 <td className="py-4">
                   {index + 1 + (currentPage - 1) * usersPerPage}
@@ -141,28 +161,40 @@ const UserTable = ({ users }) => {
                 <td className="inline-flex items-center py-4">
                   <img
                     className="mr-4 h-10 w-10 rounded-full"
-                    src={user.avatar_image}
+                    src={image[user.id] || "https://via.placeholder.com/150"}
                     alt={user.username}
                   />
                   <div>
-                    <p className="font-semibold">{user.username}</p>
+                    <p
+                      className={`font-semibold ${darkMode ? "text-white" : "text-black"}`}
+                    >
+                      {user.username}
+                    </p>
                   </div>
                 </td>
 
-                {/* Year column */}
+                {/* Role column */}
                 <td className="py-4">
-                  <p>{user.year}</p>
+                  <p className={darkMode ? "text-white" : "text-black"}>
+                    {user.role}
+                  </p>
                 </td>
 
                 {/* Status column */}
                 <td className="py-4">
                   <span
                     className={`rounded-full px-2 py-1 text-sm ${
-                      user.status === "Active"
-                        ? "bg-green-500"
-                        : user.status === "Inactive"
-                          ? "bg-gray-500"
-                          : "bg-red-500"
+                      user.status.toLowerCase() === "active"
+                        ? darkMode
+                          ? "bg-green-500 text-white"
+                          : "bg-[#ffb1e1] text-black"
+                        : user.status.toLowerCase() === "inactive"
+                          ? darkMode
+                            ? "bg-gray-500 text-white"
+                            : "bg-[#ff3bb2] text-black"
+                          : darkMode
+                            ? "bg-red-500 text-white"
+                            : "bg-[#FFFFFF] text-black"
                     }`}
                   >
                     {user.status}
@@ -171,24 +203,34 @@ const UserTable = ({ users }) => {
 
                 {/* Email column */}
                 <td className="py-4">
-                  <p className="text-gray-400">{user.email}</p>
+                  <p className={darkMode ? "text-gray-400" : "text-black"}>
+                    {user.email}
+                  </p>
                 </td>
 
                 {/* Actions: View Details and Edit */}
                 <td className="flex items-center justify-center space-x-4 py-4 text-center">
                   <button
-                    className="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
-                    onClick={() => toggleDetails(user.user_id)}
+                    className={`rounded-lg px-4 py-2 ${
+                      darkMode
+                        ? "bg-blue-500 text-white hover:bg-blue-600"
+                        : "bg-[#ffb1e1] text-black hover:bg-[#ff3bb2]"
+                    }`}
+                    onClick={() => toggleDetails(user.id)}
                   >
-                    {expandedUserId === user.user_id
+                    {expandedUserId === user.id
                       ? "Hide Details"
                       : "View Details"}
                   </button>
 
                   {isEditMode && (
                     <button
-                      className="text-yellow-400 hover:text-yellow-500"
-                      onClick={() => handleEdit(user)} // Navigate to edit page on click
+                      className={`${
+                        darkMode
+                          ? "text-yellow-400 hover:text-yellow-500"
+                          : "text-black hover:text-[#ff3bb2]"
+                      }`}
+                      onClick={() => handleEdit(user)}
                     >
                       <Pencil size={20} />
                     </button>
@@ -197,14 +239,21 @@ const UserTable = ({ users }) => {
               </tr>
 
               {/* Conditionally render the expanded details row */}
-              {expandedUserId === user.user_id && (
+              {expandedUserId === user.id && (
                 <tr>
-                  <td colSpan="6" className="bg-[#2E3A47] p-4 text-gray-200">
+                  <td
+                    colSpan="6"
+                    className={`p-4 ${
+                      darkMode
+                        ? "bg-[#2E3A47] text-gray-200"
+                        : "bg-[#ffdce6] text-black"
+                    }`}
+                  >
                     {/* Additional user details */}
-                    <p>User ID: {user.user_id}</p>
+                    <p>User ID: {user.id}</p>
                     <p>Level: {user.level}</p>
-                    <p>Points: {user.points}</p>
-                    <p>Total Study Time: {user.total_studytime} hours</p>
+                    <p>Points: {user.score}</p>
+                    <p>Total Study Time: {user.study_hours.toFixed(2)} hours</p>
                   </td>
                 </tr>
               )}
@@ -219,8 +268,12 @@ const UserTable = ({ users }) => {
         <button
           disabled={currentPage === 1}
           onClick={() => handlePageChange(currentPage - 1)}
-          className={`mx-1 rounded-md bg-[#2E3A47] px-3 py-1 text-white hover:bg-[#3B4A58] ${
-            currentPage === 1 && "cursor-not-allowed opacity-50"
+          className={`mx-1 rounded-md px-3 py-1 ${
+            currentPage === 1
+              ? "cursor-not-allowed opacity-50"
+              : darkMode
+                ? "bg-[#2E3A47] text-white hover:bg-[#3B4A58]"
+                : "bg-[#ffb1e1] text-black hover:bg-[#ffc8ea]"
           }`}
         >
           &lt;
@@ -231,8 +284,14 @@ const UserTable = ({ users }) => {
           <button
             key={i}
             onClick={() => handlePageChange(i + 1)}
-            className={`mx-1 rounded-md bg-[#2E3A47] px-3 py-1 text-white hover:bg-[#3B4A58] ${
-              currentPage === i + 1 && "bg-blue-600"
+            className={`mx-1 rounded-md px-3 py-1 ${
+              currentPage === i + 1
+                ? darkMode
+                  ? "bg-blue-600 text-white"
+                  : "bg-[#ff8ed3] text-black"
+                : darkMode
+                  ? "bg-[#2E3A47] text-white hover:bg-[#3B4A58]"
+                  : "bg-[#ffb1e1] text-black hover:bg-[#ffc8ea]"
             }`}
           >
             {i + 1}
@@ -243,8 +302,12 @@ const UserTable = ({ users }) => {
         <button
           disabled={currentPage === totalPages}
           onClick={() => handlePageChange(currentPage + 1)}
-          className={`mx-1 rounded-md bg-[#2E3A47] px-3 py-1 text-white hover:bg-[#3B4A58] ${
-            currentPage === totalPages && "cursor-not-allowed opacity-50"
+          className={`mx-1 rounded-md px-3 py-1 ${
+            currentPage === totalPages
+              ? "cursor-not-allowed opacity-50"
+              : darkMode
+                ? "bg-[#2E3A47] text-white hover:bg-[#3B4A58]"
+                : "bg-[#ffb1e1] text-black hover:bg-[#ffc8ea]"
           }`}
         >
           &gt;

@@ -42,8 +42,8 @@ function About() {
             <p className="text-pretty text-xs font-light text-accent-foreground">
               Struggling to remember key concepts? Our comprehensive course
               summaries, organized by topics, make it easy to review the
-              material from your classes, ensuring you're always ready for tests
-              and assignments.
+              material from your classes, ensuring you&apos;re always ready for
+              tests and assignments.
             </p>
           </div>
           <div className="w-full rounded-md bg-secondary-color4/60 px-3 py-4 shadow-md duration-300 hover:scale-105">
@@ -131,8 +131,8 @@ function About() {
         <h2 className="text-center text-2xl font-semibold leading-relaxed text-foreground md:text-start md:text-3xl">
           Developers
         </h2>
-        <div className="flex flex-wrap gap-4 justify-center">
-          <div className="rounded-md border w-72 px-3 py-2 duration-200 hover:scale-105">
+        <div className="flex flex-wrap justify-center gap-4">
+          <div className="w-72 rounded-md border px-3 py-2 duration-200 hover:scale-105">
             <img
               src="https://avatar.iran.liara.run/public/42"
               alt="Avatar"
@@ -154,7 +154,7 @@ function About() {
               </div>
             </div>
           </div>
-          <div className="rounded-md border w-72 px-3 py-2 duration-200 hover:scale-105">
+          <div className="w-72 rounded-md border px-3 py-2 duration-200 hover:scale-105">
             <img
               src="https://avatar.iran.liara.run/public/42"
               alt="Avatar"
@@ -176,7 +176,7 @@ function About() {
               </div>
             </div>
           </div>
-          <div className="rounded-md border w-72 px-3 py-2 duration-200 hover:scale-105">
+          <div className="w-72 rounded-md border px-3 py-2 duration-200 hover:scale-105">
             <img
               src="https://avatar.iran.liara.run/public/42"
               alt="Avatar"

@@ -1,8 +1,4 @@
-import {
-  BrowserRouter,
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import UserLayout from "./components/UserLayout";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -11,10 +7,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import AdminLayout from "./components/AdminLayout";
 import Users from "./pages/admin/Users";
 import UserEdit from "./components/admin-userboard/user_edit.jsx";
-import Feedback from "./pages/admin/Feedback";
 import Leaderboard from "./pages/admin/Leaderboard";
-import Settings from "./pages/admin/Settings";
-import Themes from "./pages/admin/Themes";
 import Courses from "./pages/admin/Courses";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -28,6 +21,12 @@ import Signup from "./pages/Signup.jsx";
 import Quiz from "./pages/Quiz.jsx";
 import AuthProvider from "./hooks/AuthContext.jsx";
 import RouteGuard from "./hooks/RouteGuard.jsx";
+import CourseVideos from "./pages/admin/CourseVideos.jsx";
+import AdminGuard from "./hooks/AdminGuard.jsx";
+import CourseAchievements from "./pages/admin/CourseAchievements.jsx";
+import { ThemeProvider } from "./components/ThemeContext.jsx";
+import { Toaster } from "react-hot-toast";
+import CourseDetail from "./pages/CourseDetail.jsx";
 
 const router = createBrowserRouter([
   {
@@ -45,7 +44,11 @@ const router = createBrowserRouter([
       },
       {
         path: "profile",
-        element: <Profile />,
+        element: (
+          <RouteGuard>
+            <Profile />
+          </RouteGuard>
+        ),
       },
       {
         path: "my-courses",
@@ -60,11 +63,15 @@ const router = createBrowserRouter([
         element: <CourseIdPage />,
         children: [
           {
+            index: true,
+            element: <CourseDetail />,
+          },
+          {
             path: "chapter/:chapterId",
             element: <ChapterIdPage />,
           },
           {
-            path: "quiz/:quizId",
+            path: "quiz",
             element: <Quiz />,
           },
         ],
@@ -85,7 +92,14 @@ const router = createBrowserRouter([
   },
   {
     path: "/admin",
-    element: <AdminLayout />,
+    element: (
+      <ThemeProvider>
+        <AdminGuard>
+          <AdminLayout />
+        </AdminGuard>
+      </ThemeProvider>
+    ),
+    errorElement: <ErrorBoundary />,
     children: [
       {
         path: "dashboard",
@@ -102,24 +116,34 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "feedback",
-        element: <Feedback />,
-      },
-      {
         path: "leaderboard",
         element: <Leaderboard />,
       },
       {
-        path: "settings",
-        element: <Settings />,
-      },
-      {
-        path: "themes",
-        element: <Themes />,
-      },
-      {
         path: "courses",
         element: <Courses />,
+      },
+      {
+        path: "course",
+        children: [
+          {
+            path: ":courseId/videos",
+            element: <CourseVideos />,
+          },
+          {
+            path: ":courseId/achievements",
+            element: <CourseAchievements />,
+          },
+        ],
+      },
+      {
+        path: "category",
+        children: [
+          {
+            path: ":categoryId",
+            element: <Category />,
+          },
+        ],
       },
     ],
   },
@@ -137,6 +161,7 @@ function App() {
   return (
     <AuthProvider>
       <RouterProvider router={router} />
+      <Toaster />
     </AuthProvider>
   );
 }

@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: "class", // Enables class-based dark mode
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     container: {
@@ -11,6 +12,7 @@ export default {
     },
     extend: {
       colors: {
+        // Dark mode colors (existing ones)
         border: "#343B4F",
         input: "#343B4F",
         background: "#081028",
@@ -46,6 +48,46 @@ export default {
         card: {
           DEFAULT: "#0B1739",
           foreground: "#FAFAFA",
+        },
+
+        // Light mode colors (new ones)
+        light: {
+          border: "#FFDCE6", // Light pink for borders
+          input: "#E2F5B6", // Soft pastel green for input backgrounds
+          background: "#FFFFFF", // White for main background
+          foreground: "#111827", // Black for text readability
+          primary: {
+            DEFAULT: "#85E0D6", // Aqua for primary elements
+            foreground: "#FFFFFF", // White text on primary buttons
+          },
+          secondary: {
+            DEFAULT: "#FFDCE6", // Light pink for secondary backgrounds
+            foreground: "#111827", // Black text
+            color2: "#ADD057", // Lime green for highlights
+            color3: "#00BCA3", // Aqua for accents
+            color4: "#E2F5B6", // Soft green for subtle elements
+            color5: "#85E0D6", // Aqua for secondary accents
+          },
+          destructive: {
+            DEFAULT: "#FF6347", // Tomato red for destructive actions
+            foreground: "#FFFFFF", // White text on destructive elements
+          },
+          muted: {
+            DEFAULT: "#E2F5B6", // Soft green for muted elements
+            foreground: "#6B7280", // Gray text for muted elements
+          },
+          accent: {
+            DEFAULT: "#FFDCE6", // Light pink for accents
+            foreground: "#6B7280", // Gray text for accents
+          },
+          popover: {
+            DEFAULT: "#FFCBAD", // Warm peach for popovers
+            foreground: "#111827", // Black text
+          },
+          card: {
+            DEFAULT: "#E2F5B6", // Soft green for cards
+            foreground: "#111827", // Black text
+          },
         },
       },
       borderRadius: {

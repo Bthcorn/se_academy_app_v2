@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import Toast from "./Toast";
 
 const LoginBox = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { login, setIsAdmin } = useAuth();
 
   const validateForm = () => {
     return username && password;
@@ -29,14 +32,28 @@ const LoginBox = () => {
       if (response.ok) {
         const data = await response.json();
         if (data["success"] == true) {
-          alert("Login successful");
           localStorage.setItem("token", response.headers.get("Authorization"));
-          navigate("/");
+          // login with AuthContext ensuring user is logged in
+          login(response.headers.get("Authorization"), data["id"]);
+          // check if user is admin
+          if (data["role"] == "admin") {
+            setIsAdmin(true);
+            navigate("/admin/dashboard");
+          } else {
+            setIsAdmin(false);
+            navigate("/");
+          }
+          // navigate("/");
+
+          Toast("Login successful", "success");
         } else {
-          alert("Error: " + data["error_msg"]);
+          Toast(data["error_msg"], "error");
         }
+      } else {
+        Toast("Error logging in", "error");
       }
     } catch (error) {
+      Toast("Error logging in", "error");
       console.error(error);
     }
   };

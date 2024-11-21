@@ -1,6 +1,8 @@
 import { Lock, Unlock } from "lucide-react";
 import React from "react";
 import CourseSideBarItem from "./CourseSideBarItem";
+import axios from "axios";
+import { Config } from "../config";
 
 const content = [
   {
@@ -35,17 +37,56 @@ const content = [
   },
 ];
 
-const CourseSideBarContent = ({ courseId }) => {
-  const [enrolled, setEnrolled] = React.useState(false);
+const CourseSideBarContent = ({ courseId, isEnrolled }) => {
+  // const [enrolled, setEnrolled] = React.useState(isEnrolled);
+  const [content, setContent] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+
+  const fetchVideoItems = async (id) => {
+    try {
+      const response = await axios.get(
+        Config.API_URL + `/course/get_videos_detail/${id}`,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (response.data) {
+        setContent(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching videos for course:", courseId, error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchVideoItems(courseId);
+  }, [courseId]);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   return (
     <>
       {content.map((item) => (
         <CourseSideBarItem
-          key={item.label}
+          key={item.id}
+          enrolled={isEnrolled}
+          label={item.title}
           {...item}
-          href={`${item.quizId ? `quiz/${item.quizId}` : `chapter/${item.chapterId}`}`}
+          href={`chapter/${item.id}`}
         />
       ))}
+      <CourseSideBarItem
+        label="Quiz"
+        href={`/course/${courseId}/quiz`}
+        enrolled={isEnrolled}
+      />
     </>
   );
 };
