@@ -209,7 +209,7 @@ function Quiz() {
               onChange={(e) => {
                 setAnswers({
                   ...answers,
-                  [quiz.id]: parseInt(e.target.value) || null,
+                  [quiz.id]: parseInt(e.target.value) || 0,
                 });
               }}
             >
