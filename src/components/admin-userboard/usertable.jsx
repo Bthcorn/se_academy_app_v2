@@ -252,8 +252,8 @@ const UserTable = ({ users, image }) => {
                     {/* Additional user details */}
                     <p>User ID: {user.id}</p>
                     <p>Level: {user.level}</p>
-                    <p>Points: {user.points}</p>
-                    <p>Total Study Time: {user.total_studytime} hours</p>
+                    <p>Points: {user.score}</p>
+                    <p>Total Study Time: {user.study_hours.toFixed(2)} hours</p>
                   </td>
                 </tr>
               )}
