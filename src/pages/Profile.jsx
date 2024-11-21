@@ -26,6 +26,8 @@ function Profile() {
   const [achievements, setAchievements] = React.useState([]);
   const [badges, setBadges] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
+  const [leaderboard, setLeaderboard] = React.useState([]);
+  const [userImg, setUserImg] = React.useState({});
   const { logout } = useAuth();
 
   const handleEdit = () => {
@@ -65,9 +67,10 @@ function Profile() {
           );
 
           if (badge.data) {
-            const arr = [...badges];
-            arr.push(badge.data);
-            setBadges(arr);
+            // const arr = [...badges];
+            // arr.push(badge.data);
+            // setBadges(arr);
+            setBadges((prev) => [...prev, badge.data]);
           }
         }
       }
@@ -170,10 +173,54 @@ function Profile() {
     }
   };
 
+  const fetchUserImages = async (users) => {
+    const images = {};
+    for (const user of users) {
+      try {
+        const response = await axios.get(
+          `${Config.API_URL}/user/avatar/${user.id}`,
+          {
+            headers: {
+              Authorization: Config.AUTH_TOKEN(),
+            },
+          },
+        );
+        images[user.id] = `data:image/jpeg;base64,${response.data}`; // Save base64 string
+      } catch (error) {
+        console.error("Error fetching image for user:", user.id, error);
+      }
+      // await delay(1000); // Delay to prevent rate limiting
+    }
+    setUserImg(images); // Set all image data once fetched
+  };
+
+  const fetchLeaderboard = async () => {
+    try {
+      const response = await axios.get(
+        Config.API_URL + "/user/top/get_leaderboard",
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
+        },
+      );
+
+      if (response.data) {
+        setLeaderboard(response.data);
+        await fetchUserImages(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching leaderboard:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     // console.log(user);
     fetchUser(userId);
     fetchUserImg(userId);
+    fetchLeaderboard();
   }, [userId]);
 
   if (loading) {
@@ -365,39 +412,31 @@ function Profile() {
               <h2 className="text-xl text-foreground">Leader Board</h2>
             </div>
             <div className="flex flex-col gap-2">
-              <div className="flex items-center gap-2">
-                <img
-                  src="https://avatar.iran.liara.run/public/42"
-                  alt="Avatar"
-                  className="h-8 w-8 rounded-full"
-                />
-                <span className="text-sm text-foreground">1. John Doe</span>
-                <span className="flex items-center justify-center rounded-md bg-secondary-color2/20 px-2 py-1 text-secondary-color2">
-                  100
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <img
-                  src="https://avatar.iran.liara.run/public/42"
-                  alt="Avatar"
-                  className="h-8 w-8 rounded-full"
-                />
-                <span className="text-sm text-foreground">2. John Doe</span>
-                <span className="flex items-center justify-center rounded-md bg-secondary-color2/20 px-2 py-1 text-secondary-color2">
-                  100
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <img
-                  src={"https://avatar.iran.liara.run/public/42"}
-                  alt="Avatar"
-                  className="h-8 w-8 rounded-full"
-                />
-                <span className="text-sm text-foreground">3. John Doe</span>
-                <span className="flex items-center justify-center rounded-md bg-secondary-color2/20 px-2 py-1 text-secondary-color2">
-                  100
-                </span>
-              </div>
+              {leaderboard.length > 0 ? (
+                leaderboard.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-2 rounded-md bg-secondary-color4/50 px-2 py-1"
+                  >
+                    <img
+                      src={
+                        userImg[item.id] ||
+                        "https://avatar.iran.liara.run/public/42"
+                      }
+                      alt="Avatar"
+                      className="h-8 w-8 rounded-full"
+                    />
+                    <span className="text-sm text-foreground">
+                      {index + 1}. {item.firstname} {item.lastname}
+                    </span>
+                    <span className="flex items-center justify-center rounded-md bg-secondary-color4/40 px-2 py-1 text-secondary-color2">
+                      {item.score}
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <p>No leaderboard</p>
+              )}
             </div>
           </div>
         </div>
