@@ -17,6 +17,7 @@ function CourseAchievements() {
   const [achievementId, setAchievementId] = useState("");
   const [img, setImg] = useState({});
   const { userId } = useAuth();
+  const [badges, setBadges] = useState({});
 
   const fetchCourse = async () => {
     try {
@@ -54,6 +55,23 @@ function CourseAchievements() {
       if (response.data) {
         console.log("Achievements:", response.data);
         setAchievements(response.data);
+        for (let i = 0; i < response.data.length; i++) {
+          const badge = await axios.get(
+            Config.API_URL +
+              "/achievement/get_achievement/" +
+              response.data[i].id,
+            {
+              headers: {
+                Authorization: Config.AUTH_TOKEN(),
+              },
+            },
+          );
+
+          if (badge.data) {
+            console.log("badge", badge.data);
+            setBadges({ ...badges, [badge.data.id]: badge.data.badge });
+          }
+        }
       }
     } catch (error) {
       console.error("Error fetching videos for course:", courseId, error);
@@ -155,7 +173,7 @@ function CourseAchievements() {
             >
               <div className="flex items-center gap-4">
                 <img
-                  src={img[achievement.id]}
+                  src={"data:image/png;base64," + badges[achievement.id]}
                   alt={achievement.title}
                   className="h-12 w-12 rounded-lg object-cover"
                 />
