@@ -27,8 +27,10 @@ const AdminSideBar = ({ open, toggle }) => {
           }`}
         >
           <div className="inline-flex items-center">
+            <Link to="/" className="inline-flex">
             <Logo />
             <p className="ml-2 text-lg font-semibold">SE Academy</p>
+            </Link>
           </div>
         </div>
 

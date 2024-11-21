@@ -8,6 +8,7 @@ import Button from "../components/Button";
 function Category() {
   const { categoryId } = useParams();
   const [courses, setCourses] = React.useState([]);
+  const [courseImg, setCourseImg] = React.useState({});
   const [loading, setLoading] = React.useState(true);
   const [category, setCategory] = React.useState({});
 
@@ -30,6 +31,27 @@ function Category() {
     }
   };
 
+  const fetchImages = async (courses) => {
+    const images = {};
+    for (const course of courses) {
+      try {
+        const response = await axios.get(
+          `${Config.API_URL}/course/get_course_img/${course.id}`,
+          {
+            headers: {
+              Authorization: Config.AUTH_TOKEN(),
+            },
+          },
+        );
+        images[course.id] = `data:image/jpeg;base64,${response.data}`; // Save base64 string
+      } catch (error) {
+        console.error("Error fetching image for course:", course.id, error);
+      }
+      // await delay(1000); // Delay to prevent rate limiting
+    }
+    setCourseImg(images); // Set all image data once fetched
+  };
+
   const fetchCourses = async () => {
     try {
       const response = await axios.get(
@@ -45,6 +67,7 @@ function Category() {
 
       if (response.status === 200) {
         setCourses(response.data);
+        await fetchImages(response.data);
       }
     } catch (error) {
       console.error(error);
@@ -78,7 +101,7 @@ function Category() {
         className="flex w-full max-w-5xl flex-wrap items-center justify-center gap-4 py-8 md:py-12 md:pb-8 lg:pb-10"
       >
         {courses.map((course) => (
-          <CourseCard key={course.id} props={course} progress={null} />
+          <CourseCard key={course.id} props={course} image={courseImg[course.id]} progress={null} />
         ))}
       </div>
     </section>

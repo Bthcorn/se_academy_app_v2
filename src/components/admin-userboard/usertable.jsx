@@ -121,7 +121,7 @@ const UserTable = ({ users, image }) => {
         </select>
 
         {/* Edit Button */}
-        <button
+        {/* <button
           onClick={toggleEditMode}
           className={`rounded-md px-4 py-2 ${
             darkMode
@@ -130,7 +130,7 @@ const UserTable = ({ users, image }) => {
           }`}
         >
           {isEditMode ? "Cancel Edit" : "Edit"}
-        </button>
+        </button> */}
       </div>
 
       <table className="min-w-full table-auto">
