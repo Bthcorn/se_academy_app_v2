@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Config } from "../../components/config";
-import { Eye, User, UserPlus, Star } from "lucide-react";
+import { Star, Users, Album, Quote } from "lucide-react";
 import RecentEnrolled from "../../components/admin-dashboard/recent_enrolled";
 import TopPageCard from "../../components/admin-dashboard/toppagecard";
 import UserByYear from "../../components/admin-dashboard/userbyyear";
@@ -27,11 +27,14 @@ export default function Dashboard() {
   // Fetch all enrollments from the api
   const fetch_enrollments = async () => {
     try {
-      const response = await axios.get(Config.API_URL + `/enrolled_course/get_all`, {
-        headers: {
-          Authorization: Config.AUTH_TOKEN(),
+      const response = await axios.get(
+        Config.API_URL + `/enrolled_course/get_all`,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
         },
-      });
+      );
       return response.data;
     } catch (error) {
       console.error("Error fetching enrollments:", error);
@@ -41,11 +44,14 @@ export default function Dashboard() {
   // fetch enrollments summary
   const fetch_enrollments_summary = async () => {
     try {
-      const response = await axios.get(Config.API_URL + `/enrolled_course/get_enrollment_summary`, {
-        headers: {
-          Authorization: Config.AUTH_TOKEN(),
+      const response = await axios.get(
+        Config.API_URL + `/enrolled_course/get_enrollment_summary`,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
         },
-      });
+      );
       return response.data;
     } catch (error) {
       console.error("Error fetching enrollments summary:", error);
@@ -54,17 +60,20 @@ export default function Dashboard() {
 
   const fetch_ended_enrollments_summary = async () => {
     try {
-      const response = await axios.get(Config.API_URL + `/enrolled_course/get_ended_enrollment_summary`, {
-        headers: {
-          Authorization: Config.AUTH_TOKEN(),
+      const response = await axios.get(
+        Config.API_URL + `/enrolled_course/get_ended_enrollment_summary`,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
         },
-      });
+      );
       return response.data;
     } catch (error) {
       console.error("Error fetching ended enrollments summary:", error);
     }
   };
-  
+
   // Fetch all courses from the api
   const fetch_courses = async () => {
     try {
@@ -79,14 +88,17 @@ export default function Dashboard() {
     }
   };
 
-    // Fetch all achievements from the api
+  // Fetch all achievements from the api
   const fetch_achievements = async () => {
     try {
-      const response = await axios.get(Config.API_URL + `/achievement/get_all`, {
-        headers: {
-          Authorization: Config.AUTH_TOKEN(),
+      const response = await axios.get(
+        Config.API_URL + `/achievement/get_all`,
+        {
+          headers: {
+            Authorization: Config.AUTH_TOKEN(),
+          },
         },
-      });
+      );
       return response.data;
     } catch (error) {
       console.error("Error fetching achievements:", error);
@@ -106,7 +118,6 @@ export default function Dashboard() {
       console.error("Error fetching quizzes:", error);
     }
   };
-
 
   const [users, setUsers] = useState([]);
   const [enrollments, setEnrollments] = useState([]);
@@ -154,7 +165,7 @@ export default function Dashboard() {
     fetchAndSetAchievements();
     fetchAndSetQuizzes();
   }, []);
-  
+
   // Data that will be displayed in the top page cards
   var first_field_data = users.length;
   var second_field_data = courses.length;
@@ -163,11 +174,17 @@ export default function Dashboard() {
 
   // Data for Doughnut chart
   const students_per_year_data = {
-    "first year": users.filter((user) => user.role.toLowerCase() === "freshman").length,
-    "second year": users.filter((user) => user.role.toLowerCase() === "sophomore").length,
-    "third year": users.filter((user) => user.role.toLowerCase() === "junior").length,
-    "fourth year": users.filter((user) => user.role.toLowerCase() === "senior").length,
-    "graduated": users.filter((user) => user.role.toLowerCase() === "graduated").length,
+    "first year": users.filter((user) => user.role.toLowerCase() === "freshman")
+      .length,
+    "second year": users.filter(
+      (user) => user.role.toLowerCase() === "sophomore",
+    ).length,
+    "third year": users.filter((user) => user.role.toLowerCase() === "junior")
+      .length,
+    "fourth year": users.filter((user) => user.role.toLowerCase() === "senior")
+      .length,
+    graduated: users.filter((user) => user.role.toLowerCase() === "graduated")
+      .length,
   };
 
   var enrolled_vs_studied_data = {
@@ -188,97 +205,97 @@ export default function Dashboard() {
     enrolled: enrollments_summary,
     studied: ended_enrollments_summary,
   };
-//   // Sample data for the first field: Total Users
-// const first_field_data_sample = 451;
+  //   // Sample data for the first field: Total Users
+  // const first_field_data_sample = 451;
 
-// // Sample data for enrolled vs studied line graph
-// const enrolled_vs_studied_data_sample = {
-//   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-//   enrolled: [50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300, 325],
-//   studied: [40, 65, 85, 115, 130, 160, 185, 205, 230, 260, 280, 310],
-// };
+  // // Sample data for enrolled vs studied line graph
+  // const enrolled_vs_studied_data_sample = {
+  //   labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+  //   enrolled: [50, 75, 100, 125, 150, 175, 200, 225, 250, 275, 300, 325],
+  //   studied: [40, 65, 85, 115, 130, 160, 185, 205, 230, 260, 280, 310],
+  // };
 
-// // Sample data for users grouped by year
-// const students_per_year_data_sample = {
-//   "first year": 50,
-//   "second year": 75,
-//   "third year": 100,
-//   "fourth year": 125,
-//   "graduated": 150,
-// };
+  // // Sample data for users grouped by year
+  // const students_per_year_data_sample = {
+  //   "first year": 50,
+  //   "second year": 75,
+  //   "third year": 100,
+  //   "fourth year": 125,
+  //   "graduated": 150,
+  // };
 
-// Sample data for second field: Total Courses
-// const second_field_data_sample = 123;
+  // Sample data for second field: Total Courses
+  // const second_field_data_sample = 123;
 
-// // Sample data for third field: Total Achievements
-// const third_field_data_sample = 78;
+  // // Sample data for third field: Total Achievements
+  // const third_field_data_sample = 78;
 
-// // Sample data for fourth field: Total Quizzes
-// const forth_field_data_sample = 36;
+  // // Sample data for fourth field: Total Quizzes
+  // const forth_field_data_sample = 36;
 
-// // Adjusted sample data for recent enrollments
-// const enrollments_sample = [
-//   {
-//     username: "Jane Doe",
-//     course_title: "Calculus 1",
-//     course_id: "C101",
-//     enrolled_at: "Sep 10, 2024",
-//   },
-//   {
-//     username: "John Smith",
-//     course_title: "Introduction to Biology",
-//     course_id: "C102",
-//     enrolled_at: "Aug 24, 2024",
-//   },
-//   {
-//     username: "Emily Davis",
-//     course_title: "Physics Fundamentals",
-//     course_id: "C103",
-//     enrolled_at: "Jul 13, 2024",
-//   },
-//   {
-//     username: "Chris Johnson",
-//     course_title: "Modern Literature",
-//     course_id: "C104",
-//     enrolled_at: "Jun 18, 2024",
-//   },
-//   {
-//     username: "Jane Doe",
-//     course_title: "Calculus 1",
-//     course_id: "C101",
-//     enrolled_at: "Sep 10, 2024",
-//   },
-//   {
-//     username: "John Smith",
-//     course_title: "Introduction to Biology",
-//     course_id: "C102",
-//     enrolled_at: "Aug 24, 2024",
-//   },
-//   {
-//     username: "Emily Davis",
-//     course_title: "Physics Fundamentals",
-//     course_id: "C103",
-//     enrolled_at: "Jul 13, 2024",
-//   },
-//   {
-//     username: "Chris Johnson",
-//     course_title: "Modern Literature",
-//     course_id: "C104",
-//     enrolled_at: "Jun 18, 2024",
-//   },
-//   {
-//     username: "Jane Doe",
-//     course_title: "Calculus 1",
-//     course_id: "C101",
-//     enrolled_at: "Sep 10, 2024",
-//   },
-//   {
-//     username: "John Smith",
-//     course_title: "Introduction to Biology",
-//     course_id: "C102",
-//     enrolled_at: "Aug 24, 2024",
-//   },
-// ];
+  // // Adjusted sample data for recent enrollments
+  // const enrollments_sample = [
+  //   {
+  //     username: "Jane Doe",
+  //     course_title: "Calculus 1",
+  //     course_id: "C101",
+  //     enrolled_at: "Sep 10, 2024",
+  //   },
+  //   {
+  //     username: "John Smith",
+  //     course_title: "Introduction to Biology",
+  //     course_id: "C102",
+  //     enrolled_at: "Aug 24, 2024",
+  //   },
+  //   {
+  //     username: "Emily Davis",
+  //     course_title: "Physics Fundamentals",
+  //     course_id: "C103",
+  //     enrolled_at: "Jul 13, 2024",
+  //   },
+  //   {
+  //     username: "Chris Johnson",
+  //     course_title: "Modern Literature",
+  //     course_id: "C104",
+  //     enrolled_at: "Jun 18, 2024",
+  //   },
+  //   {
+  //     username: "Jane Doe",
+  //     course_title: "Calculus 1",
+  //     course_id: "C101",
+  //     enrolled_at: "Sep 10, 2024",
+  //   },
+  //   {
+  //     username: "John Smith",
+  //     course_title: "Introduction to Biology",
+  //     course_id: "C102",
+  //     enrolled_at: "Aug 24, 2024",
+  //   },
+  //   {
+  //     username: "Emily Davis",
+  //     course_title: "Physics Fundamentals",
+  //     course_id: "C103",
+  //     enrolled_at: "Jul 13, 2024",
+  //   },
+  //   {
+  //     username: "Chris Johnson",
+  //     course_title: "Modern Literature",
+  //     course_id: "C104",
+  //     enrolled_at: "Jun 18, 2024",
+  //   },
+  //   {
+  //     username: "Jane Doe",
+  //     course_title: "Calculus 1",
+  //     course_id: "C101",
+  //     enrolled_at: "Sep 10, 2024",
+  //   },
+  //   {
+  //     username: "John Smith",
+  //     course_title: "Introduction to Biology",
+  //     course_id: "C102",
+  //     enrolled_at: "Aug 24, 2024",
+  //   },
+  // ];
 
   return (
     <>
@@ -291,28 +308,28 @@ export default function Dashboard() {
             title="Users"
             count={first_field_data}
             percentage=" xx.x %"
-            icon={<Eye size={20} className="text-gray-400" />}
+            icon={<Users size={20} className="text-gray-400" />}
             isIncrease={true}
           />
           <TopPageCard
             title="Courses"
             count={second_field_data}
             percentage="xx.x %"
-            icon={<User size={20} className="text-gray-400" />}
+            icon={<Album size={20} className="text-gray-400" />}
             isIncrease={false}
           />
           <TopPageCard
             title="Achievements"
             count={third_field_data}
             percentage="xx.x%"
-            icon={<UserPlus size={20} className="text-gray-400" />}
+            icon={<Star size={20} className="text-gray-400" />}
             isIncrease={true}
           />
           <TopPageCard
             title="Quizzes"
             count={forth_field_data}
             percentage="xx.x%"
-            icon={<Star size={20} className="text-gray-400" />}
+            icon={<Quote size={20} className="text-gray-400" />}
             isIncrease={true}
           />
         </div>
