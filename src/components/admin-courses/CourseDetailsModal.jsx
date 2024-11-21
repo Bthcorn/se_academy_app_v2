@@ -19,6 +19,7 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
   const [categoryData, setCategoryData] = useState([]);
   const [achievementData, setAchievementData] = useState([]);
   const [addCategory, setAddCategory] = useState("");
+  const [badges, setBadges] = useState({});
 
   const openEditModal = (field) => {
     setEditField({ name: field, value: selectedCourse[field] });
@@ -145,6 +146,24 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
 
       if (response.data) {
         setAchievementData(response.data);
+        console.log("achievements", response.data);
+        for (let i = 0; i < response.data.length; i++) {
+          const badge = await axios.get(
+            Config.API_URL +
+              "/achievement/get_achievement/" +
+              response.data[i].id,
+            {
+              headers: {
+                Authorization: Config.AUTH_TOKEN(),
+              },
+            },
+          );
+
+          if (badge.data) {
+            console.log("badge", badge.data);
+            setBadges({ ...badges, [badge.data.id]: badge.data.badge });
+          }
+        }
       }
     } catch (error) {
       console.error(error);
@@ -462,7 +481,9 @@ const CourseDetailsModal = ({ selectedCourse, close, openQuiz }) => {
                       >
                         <span>{achievement.title}</span>
                         <img
-                          src={achievement.badge}
+                          src={
+                            "data:image/jpeg;base64," + badges[achievement.id]
+                          }
                           alt={`${achievement.title} Badge`}
                           className="h-8 w-8 rounded-full object-cover"
                         />
