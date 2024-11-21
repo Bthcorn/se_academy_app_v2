@@ -94,7 +94,9 @@ const router = createBrowserRouter([
     path: "/admin",
     element: (
       <ThemeProvider>
-        <AdminLayout />
+        <AdminGuard>
+          <AdminLayout />
+        </AdminGuard>
       </ThemeProvider>
     ),
     errorElement: <ErrorBoundary />,
@@ -119,11 +121,7 @@ const router = createBrowserRouter([
       },
       {
         path: "courses",
-        element: (
-          <AdminGuard>
-            <Courses />
-          </AdminGuard>
-        ),
+        element: <Courses />,
       },
       {
         path: "course",
