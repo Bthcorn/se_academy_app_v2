@@ -76,7 +76,7 @@ const CourseSideBarContent = ({ courseId, isEnrolled }) => {
       {content.map((item) => (
         <CourseSideBarItem
           key={item.id}
-          enrolled={isEnrolled || item.chapter === 0}
+          enrolled={isEnrolled}
           label={item.title}
           {...item}
           href={`chapter/${item.id}`}
